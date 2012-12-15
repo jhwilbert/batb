@@ -1,78 +1,71 @@
 var player;
-var fullPlaylist = ['acvIVA9-FMQ','MYleNL1lKPA','7CFQY0Yf1iI','MYleNL1lKPA','7CFQY0Yf1iI','MYleNL1lKPA'];
-var selectedPlaylist = [];
+var full_playlist = ['MYleNL1lKPA','MYleNL1lKPA','MYleNL1lKPA','MYleNL1lKPA','MYleNL1lKPA','MYleNL1lKPA'];
+var selected_playlist = [];
 
 /***************/
 /*  StartPage  */
 /***************/
 
-$(document).ready(function() {
-    // Load Player
-    var tag = document.createElement('script');
-    tag.src = "//www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-});
-
-function onPlayerReady(event) {
-    console.debug("Player ready...");
-    
-    // Define Page  
-    if(ua == 'mobile') {
-        startMobilePage();
-    } else {
-        startDesktopPage();
+$(document).ready(function() {    
+    switch (ua) {
+        case 'mobile':
+            console.debug("Mobile Version");
+            createPlaylist(ua)
+           // mobilePage();
+            break;
+        case 'desktop':
+            console.debug("Desktop Version");
+            createPlaylist(ua)
+            //desktopPage();
+            break;
     }
-}
-
-/*
+});
 
 function createPlaylist(ua) {
     if(ua == 'mobile') {
-        selectedPlaylist[0] = fullPlaylist[videoId];
-        
-        console.debug("Mobile: play single video",selectedPlaylist);
-        startMobilePage(); // Start the page and add player
+        console.debug("Play single video");
+        console.debug(full_playlist,videoId);
     } else {
-        selectedPlaylist = fullPlaylist.splice(videoId,fullPlaylist.length);
-        console.debug("Desktop: play all videos",selectedPlaylist);
-        startDesktopPage(); // Start the page and add player
+        console.debug("Play multiple video playlist");
+        console.debug(full_playlist);
     }
 }
 
-*/
+/***************/
+/*  StartPage  */
+/***************/
 
-function startMobilePage() {
-    console.debug("Displaying Mobile Version");
-    
+function mobilePage() {
     $("#pre-player").show();
     $("#pre-player").click(function() {
-        player.loadVideoById('MYleNL1lKPA',0);
+        createIframe();
         $("#pre-player").hide();
-        $("#player").show();   
     });
 }
 
-function startDesktopPage() {
-    console.debug("Displaying Desktop Version");
+function desktopPage() {
     $("#pre-player").hide();
-    player.loadVideoById('acvIVA9-FMQ',0);
-    $("#player").show();   
-
+    createIframe();
 }
 
 /***************/
 /*   Player    */
 /***************/
 
+function createIframe() {
+    var tag = document.createElement('script');
+    tag.src = "//www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
+
         height: viewportSize().h,
         width: viewportSize().w,
         events: {
             'onReady': onPlayerReady,
-            'onStateChange' : onytplayerStateChange
         },
         
         playerVars: {
@@ -88,7 +81,6 @@ function onYouTubeIframeAPIReady() {
 function onytplayerStateChange(newState) {
    var state = newState.data;
    debugMsg(state);   
-   
    switch (newState.data) {
         case 0:
             console.debug("End of playlist");
@@ -97,18 +89,25 @@ function onytplayerStateChange(newState) {
             break;
         case 1:
             debugMsg("Playing",state);
-            setTimeout(function(){
-                $("#overlay").hide();
-            },400)
-            break;
         case -1:
-            //$("#overlay").show();
             debugMsg("Unstarted",state);
-            break;
    }
 }
 
-
+function onPlayerReady(event) {
+    
+    console.debug("Ready Event");
+    
+    if(typeof(videoId) == 'number' && videoId < playList.length) {
+        // Valid video
+    } else {
+        videoId = 0;
+    }
+    
+	player.loadPlaylist(playList,videoId);
+	player.addEventListener("onStateChange", "onytplayerStateChange");
+	event.target.playVideo();
+}
 
 function detectKey(e) {
     if(e.charCode == 32) {

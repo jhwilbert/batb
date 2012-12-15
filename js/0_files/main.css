@@ -11,14 +11,11 @@ body {
     position:absolute;
     width:100%;
     height:100%;
-    opacity:1;
+    opacity:0.3;
     background:rgb(200,0,0);
     display:none;
 }
 
-#player {
-    display:none;
-}
 #pre-player {
     display:none;
 }
