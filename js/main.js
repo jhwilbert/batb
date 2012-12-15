@@ -1,19 +1,36 @@
 var player;
-var fullPlaylist = ['acvIVA9-FMQ','MYleNL1lKPA','7CFQY0Yf1iI','MYleNL1lKPA','7CFQY0Yf1iI','MYleNL1lKPA'];
+var fullPlaylist = ['YHp1zbW_IE8','EBI2y-QlnHo','YHp1zbW_IE8','EBI2y-QlnHo','YHp1zbW_IE8','EBI2y-QlnHo'];
 var selectedPlaylist = [];
+var videoStatic
 
 /***************/
 /*  StartPage  */
 /***************/
 
 $(document).ready(function() {
+    console.log("Page ready...");
+    createPlaylist(ua);
+       
     // Load Player
+    videoStatic = document.getElementById('static');
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 });
+
+
+function showStatic() {
+    videoStatic.currentTime = 0.1;
+    $("#static").show();
+    videoStatic.play();
+}
+
+function hideStatic() {
+    $("#static").hide();
+}
+
 
 function onPlayerReady(event) {
     console.debug("Player ready...");
@@ -26,29 +43,23 @@ function onPlayerReady(event) {
     }
 }
 
-/*
-
 function createPlaylist(ua) {
+    console.debug("Playlist Created...", selectedPlaylist);
+    
+    // Create playlist based on device
     if(ua == 'mobile') {
-        selectedPlaylist[0] = fullPlaylist[videoId];
-        
-        console.debug("Mobile: play single video",selectedPlaylist);
-        startMobilePage(); // Start the page and add player
+        selectedPlaylist[0] = fullPlaylist[videoId];        
     } else {
         selectedPlaylist = fullPlaylist.splice(videoId,fullPlaylist.length);
-        console.debug("Desktop: play all videos",selectedPlaylist);
-        startDesktopPage(); // Start the page and add player
     }
 }
 
-*/
 
 function startMobilePage() {
     console.debug("Displaying Mobile Version");
-    
     $("#pre-player").show();
     $("#pre-player").click(function() {
-        player.loadVideoById('MYleNL1lKPA',0);
+        player.loadPlaylist(selectedPlaylist,0);
         $("#pre-player").hide();
         $("#player").show();   
     });
@@ -57,7 +68,7 @@ function startMobilePage() {
 function startDesktopPage() {
     console.debug("Displaying Desktop Version");
     $("#pre-player").hide();
-    player.loadVideoById('acvIVA9-FMQ',0);
+    player.loadPlaylist(selectedPlaylist,0);
     $("#player").show();   
 
 }
@@ -73,8 +84,7 @@ function onYouTubeIframeAPIReady() {
         events: {
             'onReady': onPlayerReady,
             'onStateChange' : onytplayerStateChange
-        },
-        
+        },    
         playerVars: {
             controls: '0',
             showinfo : '0',
@@ -84,6 +94,7 @@ function onYouTubeIframeAPIReady() {
         }
   });
 }
+
 
 function onytplayerStateChange(newState) {
    var state = newState.data;
@@ -97,17 +108,14 @@ function onytplayerStateChange(newState) {
             break;
         case 1:
             debugMsg("Playing",state);
-            setTimeout(function(){
-                $("#overlay").hide();
-            },400)
+            hideStatic();
             break;
         case -1:
-            //$("#overlay").show();
+            showStatic();
             debugMsg("Unstarted",state);
             break;
    }
 }
-
 
 
 function detectKey(e) {
@@ -129,8 +137,7 @@ function viewportSize() {
      var viewportwidth;
      var viewportheight;
     // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
-     if (typeof window.innerWidth != 'undefined')
-     {
+     if (typeof window.innerWidth != 'undefined') {
           viewportwidth = window.innerWidth,
           viewportheight = window.innerHeight
      }

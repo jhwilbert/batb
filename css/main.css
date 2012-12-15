@@ -16,6 +16,10 @@ body {
     display:none;
 }
 
+#static {
+    z-index:10000;
+}
+
 #player {
     display:none;
 }
@@ -46,8 +50,3 @@ body {
     top:0;
 }
 
-#state {
-    border:1px solid red;
-    width:100px;
-
-}
