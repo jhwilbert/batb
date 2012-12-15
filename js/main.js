@@ -1,41 +1,32 @@
 var player;
 var fullPlaylist = ['YHp1zbW_IE8','EBI2y-QlnHo','YHp1zbW_IE8','EBI2y-QlnHo','YHp1zbW_IE8','EBI2y-QlnHo'];
+var selectedRefereers = ["facebook","blogger","localhost"];
 var selectedPlaylist = [];
-var videoStatic
 
 /***************/
 /*  StartPage  */
 /***************/
 
 $(document).ready(function() {
+    
     console.log("Page ready...");
-    createPlaylist(ua);
-       
-    // Load Player
-    videoStatic = document.getElementById('static');
-    var tag = document.createElement('script');
-    tag.src = "//www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
+    createPlaylist(ua,checkRefereer()); // create playlist for Desktop or Mobile
+    loadPlayer(); // Start YT player
 });
 
 
 function showStatic() {
-    videoStatic.currentTime = 0.1;
     $("#static").show();
-    videoStatic.play();
 }
 
 function hideStatic() {
     $("#static").hide();
 }
 
-
 function onPlayerReady(event) {
     console.debug("Player ready...");
     
-    // Define Page  
+    // Define Page
     if(ua == 'mobile') {
         startMobilePage();
     } else {
@@ -43,8 +34,9 @@ function onPlayerReady(event) {
     }
 }
 
-function createPlaylist(ua) {
-    console.debug("Playlist Created...", selectedPlaylist);
+function createPlaylist(ua,refereerListed) {
+
+    console.debug("Playlist Created...", selectedPlaylist,refereerListed);
     
     // Create playlist based on device
     if(ua == 'mobile') {
@@ -67,15 +59,55 @@ function startMobilePage() {
 
 function startDesktopPage() {
     console.debug("Displaying Desktop Version");
+    
+    $("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true" autoplay><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4" >Your browser does not support the video tag.</video>');
+    
     $("#pre-player").hide();
     player.loadPlaylist(selectedPlaylist,0);
     $("#player").show();   
 
 }
 
+/***********************/
+/*  Refereer Deection  */
+/***********************/
+
+function checkRefereer() {
+    if(document.referrer != "" && refereerListed()) {
+        console.debug("Page has refeer and is listed - return...");
+        return 1;
+    } else if (document.referrer != "" && !refereerListed()) {
+        console.debug("Page has refeer and is not listed...",document.referrer);
+    } else {
+        console.debug("Page has no refreeer...");
+    }    
+    
+    return 0;
+}
+
+function refereerListed() {
+    var foundReferee;
+    for(var i=0; i< selectedRefereers.length; i++) {
+        if(document.referrer.indexOf(selectedRefereers[i]) != -1) {
+            foundReferee =  selectedRefereers[i];
+            return true
+            break;
+        }
+    }
+    return false
+}
+
 /***************/
 /*   Player    */
 /***************/
+
+function loadPlayer() {
+    var tag = document.createElement('script');
+    tag.src = "//www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    
+}
 
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
@@ -118,6 +150,10 @@ function onytplayerStateChange(newState) {
 }
 
 
+/************/
+/* UTILS    */
+/************/
+
 function detectKey(e) {
     if(e.charCode == 32) {
         player.nextVideo();
@@ -128,10 +164,6 @@ function debugMsg(msg) {
     $("#state").html(msg);
     console.debug(msg);
 }
-
-/************/
-/* UTILS    */
-/************/
 
 function viewportSize() {
      var viewportwidth;
