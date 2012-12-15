@@ -50,8 +50,11 @@ function createPlaylist(ua,refereerListed) {
 function startMobilePage() {
     console.debug("Displaying Mobile Version");
     $("#pre-player").show();
-    $("#pre-player").click(function() {
+    
+    $("#pre-player").click(function() { // add click
+        
         player.loadPlaylist(selectedPlaylist,0);
+        
         $("#pre-player").hide();
         $("#player").show();   
     });
@@ -59,13 +62,12 @@ function startMobilePage() {
 
 function startDesktopPage() {
     console.debug("Displaying Desktop Version");
-    
-    $("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true" autoplay><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4" >Your browser does not support the video tag.</video>');
-    
-    $("#pre-player").hide();
-    player.loadPlaylist(selectedPlaylist,0);
-    $("#player").show();   
 
+    player.loadPlaylist(selectedPlaylist,0);
+        
+    $("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true" autoplay><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4" >Your browser does not support the video tag.</video>');
+    $("#pre-player").hide();
+    $("#player").show();   
 }
 
 /***********************/
