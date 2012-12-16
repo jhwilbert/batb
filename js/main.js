@@ -1,5 +1,5 @@
 var player;
-var fullPlaylist = ['YHp1zbW_IE8','EBI2y-QlnHo','YHp1zbW_IE8','EBI2y-QlnHo','YHp1zbW_IE8','EBI2y-QlnHo'];
+var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var selectedRefereers = ["facebook","blogger","localhost"];
 var selectedPlaylist = [];
 
@@ -8,20 +8,10 @@ var selectedPlaylist = [];
 /***************/
 
 $(document).ready(function() {
-    
     console.log("Page ready...");
     createPlaylist(ua,checkRefereer()); // create playlist for Desktop or Mobile
     loadPlayer(); // Start YT player
 });
-
-
-function showStatic() {
-    $("#static").show();
-}
-
-function hideStatic() {
-    $("#static").hide();
-}
 
 function onPlayerReady(event) {
     console.debug("Player ready...");
@@ -35,8 +25,7 @@ function onPlayerReady(event) {
 }
 
 function createPlaylist(ua,refereerListed) {
-
-    console.debug("Playlist Created...", selectedPlaylist,refereerListed);
+    console.debug("Playlist Created...", selectedPlaylist,refereerListed); 
     
     // Create playlist based on device
     if(ua == 'mobile') {
@@ -46,17 +35,13 @@ function createPlaylist(ua,refereerListed) {
     }
 }
 
-
 function startMobilePage() {
     console.debug("Displaying Mobile Version");
     $("#pre-player").show();
     
     $("#pre-player").click(function() { // add click
-        
         player.loadPlaylist(selectedPlaylist,0);
-        
-        $("#pre-player").hide();
-        $("#player").show();   
+        $("#pre-player").hide();   
     });
 }
 
@@ -67,7 +52,6 @@ function startDesktopPage() {
         
     $("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true" autoplay><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4" >Your browser does not support the video tag.</video>');
     $("#pre-player").hide();
-    $("#player").show();   
 }
 
 /***********************/
@@ -104,6 +88,7 @@ function refereerListed() {
 /***************/
 
 function loadPlayer() {
+    console.debug("Loading Player...")
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -142,10 +127,10 @@ function onytplayerStateChange(newState) {
             break;
         case 1:
             debugMsg("Playing",state);
-            hideStatic();
+            $("#static").hide();
             break;
         case -1:
-            showStatic();
+            $("#static").show();
             debugMsg("Unstarted",state);
             break;
    }

@@ -21,7 +21,6 @@ body {
 }
 
 #player {
-    display:none;
 }
 #pre-player {
     display:none;
@@ -43,7 +42,7 @@ body {
 
 #debug {
     float:left;
-    font-size:11px;
+    font-size:15px;
     width:100%;
     background:grey;
     position:absolute;
