@@ -3,6 +3,8 @@ var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','Ivm
 var selectedRefereers = ["facebook","blogger","localhost"];
 var selectedPlaylist = [];
 var videoElement;
+var videoStatus = {}
+var threshold = 50;
 
 /***************/
 /*  StartPage  */
@@ -106,22 +108,55 @@ function refereerListed() {
             break;
         }
     }
-    return false
+    return false;
 }
 
 /***********************/
 /* Playback Detection */
 /***********************/
 
-function detectInterruption(duration,currentTime) {
+function videoInterrupted(duration,currentTime) {
 	if(duration != 0 && currentTime !=0) {
 		var percentPlayed = Math.round((currentTime/duration) * 100);
-		console.debug("detectInterruption() :: Duration:",duration,"CurrentTime:",currentTime,"PercentPlayed",percentPlayed + "%");
+		var videoIndex = player.getPlaylistIndex();
+		console.debug("detectInterruption() :: Duration:",duration,"CurrentTime:",currentTime,"PercentPlayed",percentPlayed + "%","video index",player.getPlaylistIndex());
+		storeStatus(videoIndex,percentPlayed)
 	} else {
 		console.debug("detectInterruption() :: Film hasn't started",duration,currentTime);
 	}
 }
 
+function storeStatus(videoIndex,percentPlayed) {
+	videoStatus[videoIndex] = percentPlayed;
+	
+	console.debug("storeStatus() ::", videoStatus);
+	
+	if(videoIndex > 1 ) {
+		checkWatched();
+	} else {
+		console.debug("storeStatus() :: Still Gathering Data");
+	}
+}
+
+function checkWatched() {
+	var percentWatched = checkVideoStatus();
+	
+	if ( percentWatched > threshold) {
+		console.debug("storeStatus() :: Overall Percent Watched:",percentWatched,"All Good, let's keep playing videos");
+	} else {
+		console.debug("storeStatus() :: Overall Percent Watched:", percentWatched,"Emergency, we need a barbican card");
+	}	
+}
+
+function checkVideoStatus() {
+	var totalPercent = 0;
+	var numItems = 0;
+	$.each(videoStatus,function(index,content) {
+		totalPercent += content;
+		numItems++;
+	});
+	return totalPercent/numItems;
+}
 
 /***************/
 /*   Player    */
@@ -163,14 +198,13 @@ function onYouTubeIframeAPIReady() {
 
 }
 
-
 function onytplayerStateChange(newState) {
    var state = newState.data;
    debugMsg(state);   
    
    switch (newState.data) {
         case 0:
-            console.debug("onytplayerStateChange() :: End of playlist");
+            console.debug("-------------------------------End of playlist-------------------------------");
             $("#player").remove();
             $("#post-player").show();
 			window.focus();
@@ -178,6 +212,13 @@ function onytplayerStateChange(newState) {
         case 1:
 			console.debug("onytplayerStateChange() :: Hiding static");
             debugMsg("Playing",state);
+			console.debug("-------------------------------Playing Video-------------------------------",player.getPlaylistIndex());
+			
+			if(player.getPlaylistIndex() > 0) { // Update the video object with a fully played video
+				console.debug("Previous Played fully");
+				storeStatus(player.getPlaylistIndex()-1,100);
+			}
+			
             $("#video-container").hide();
 			window.focus();
             break;
@@ -211,7 +252,7 @@ function detectKey(e) {
 
     if(e.charCode == 32) {
         player.nextVideo();
-		detectInterruption(player.getDuration(),player.getCurrentTime())
+		videoInterrupted(player.getDuration(),player.getCurrentTime())
     }   
 }
 
