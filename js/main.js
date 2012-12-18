@@ -12,7 +12,7 @@ var threshold = 50;
 
 $(document).ready(function() {
     console.log("Page ready...");
-	loadVideo();
+	loadNoiseVideo();
 });
 
 
@@ -20,21 +20,21 @@ $(document).ready(function() {
 /* Video Loader */
 /***************/
                                                                                                                                                                                                                                                                                            
-function videoLoaded() {
-   console.debug("videoLoaded() :: Video loaded...")
+function noiseVideoLoaded() {
+   console.log("noiseVideoLoaded() :: Video loaded...")
    videoElement.play(); // Start Playing Noise Static
    createPlaylist(ua,checkRefereer()); // Create playlist for Desktop or Mobile
    loadPlayer(); // Start YT player
 	
 }
 
-function loadVideo() {
-	console.debug("loadVideo() :: Loading Static video...");
+function loadNoiseVideo() {
+	console.log("loadVideo() :: Loading Static video...");
 	$("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true"><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4">Your browser does not support the video tag.</video>');
    
 	videoElement = document.getElementById("static");
 	videoElement.addEventListener('progress',updateLoadingStatus,false);
-	videoElement.addEventListener('canplaythrough',videoLoaded,false);
+	videoElement.addEventListener('canplaythrough',noiseVideoLoaded,false);
 }
 
 function updateLoadingStatus() {
@@ -44,7 +44,7 @@ function updateLoadingStatus() {
 }
 
 function onPlayerReady(event) {
-    console.debug("onPlayerReady(e) :: Player ready...");
+    console.log("onPlayerReady(e) :: Player ready...");
     // Define Page
     if(ua == 'mobile') {
         startMobilePage();
@@ -54,7 +54,7 @@ function onPlayerReady(event) {
 }
 
 function createPlaylist(ua,refereerListed) {
-    console.debug("createPlaylist() :: Playlist Created...", selectedPlaylist,refereerListed); 
+    console.log("createPlaylist() :: Playlist Created...", selectedPlaylist,refereerListed); 
     
     // Create playlist based on device
     if(ua == 'mobile') {
@@ -64,8 +64,12 @@ function createPlaylist(ua,refereerListed) {
     }
 }
 
+/***************/
+/* View Control */
+/***************/
+
 function startMobilePage() {
-    console.debug("Displaying Mobile Version");
+    console.log("Displaying Mobile Version");
 
     $("#pre-player").show();
     $("#pre-player").click(function() { // add click
@@ -75,7 +79,7 @@ function startMobilePage() {
 }
 
 function startDesktopPage() {
-    console.debug("Displaying Desktop Version");
+    console.log("Displaying Desktop Version");
 
     player.loadPlaylist(selectedPlaylist,0);
     $("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true" autoplay><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4" >Your browser does not support the video tag.</video>');
@@ -88,12 +92,12 @@ function startDesktopPage() {
 
 function checkRefereer() {
     if(document.referrer != "" && refereerListed()) {
-        console.debug("Page has refeer and is listed - return...");
+        console.log("Page has refeer and is listed - return...");
         return 1;
     } else if (document.referrer != "" && !refereerListed()) {
-        console.debug("Page has refeer and is not listed...",document.referrer);
+        console.log("Page has refeer and is not listed...",document.referrer);
     } else {
-        console.debug("Page has no refreeer...");
+        console.log("Page has no refreeer...");
     }    
     
     return 0;
@@ -119,36 +123,44 @@ function videoInterrupted(duration,currentTime) {
 	if(duration != 0 && currentTime !=0) {
 		var percentPlayed = Math.round((currentTime/duration) * 100);
 		var videoIndex = player.getPlaylistIndex();
-		console.debug("detectInterruption() :: Duration:",duration,"CurrentTime:",currentTime,"PercentPlayed",percentPlayed + "%","video index",player.getPlaylistIndex());
+		console.log("videoInterrupted() :: Duration:",duration,"CurrentTime:",currentTime,"PercentPlayed",percentPlayed + "%","video index",player.getPlaylistIndex());
 		storeStatus(videoIndex,percentPlayed)
 	} else {
-		console.debug("detectInterruption() :: Film hasn't started",duration,currentTime);
+		console.log("videoInterrupted() :: Film hasn't started",duration,currentTime);
 	}
 }
 
 function storeStatus(videoIndex,percentPlayed) {
 	videoStatus[videoIndex] = percentPlayed;
-	
-	console.debug("storeStatus() ::", videoStatus);
-	
+	console.log("storeStatus() ::", videoStatus);
 	if(videoIndex > 1 ) {
-		checkWatched();
+		checkWatched(); //check if we need Barbican cards to appear
 	} else {
-		console.debug("storeStatus() :: Still Gathering Data");
+		console.log("storeStatus() :: Still Gathering Data");
 	}
 }
 
+function storeStatusPlayed() {
+	if(player.getPlaylistIndex() > 0) { 
+	 	var prevVideo = player.getPlaylistIndex()-1;
+		if(videoStatus[prevVideo] == undefined) { // Update the video object 100% if it hasn't been interrupted
+			console.log("storeStatusPlayed() :: Previous Played fully");
+			storeStatus(prevVideo,100);
+		}
+	 }
+}
+
 function checkWatched() {
-	var percentWatched = checkVideoStatus();
+	var percentWatched = Math.round(updateTotalPercent());
 	
 	if ( percentWatched > threshold) {
-		console.debug("storeStatus() :: Overall Percent Watched:",percentWatched,"All Good, let's keep playing videos");
+		console.log("checkWatched() :: Overall Percent Watched:",percentWatched,"All Good, let's keep playing videos");
 	} else {
-		console.debug("storeStatus() :: Overall Percent Watched:", percentWatched,"Emergency, we need a barbican card");
+		console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"Emergency, we need a barbican card");
 	}	
 }
 
-function checkVideoStatus() {
+function updateTotalPercent() {
 	var totalPercent = 0;
 	var numItems = 0;
 	$.each(videoStatus,function(index,content) {
@@ -158,12 +170,20 @@ function checkVideoStatus() {
 	return totalPercent/numItems;
 }
 
+function detectKey(e) {
+	e.preventDefault();
+    if(e.charCode == 32) {
+        player.nextVideo();
+		videoInterrupted(player.getDuration(),player.getCurrentTime())
+    }   
+}
+
 /***************/
-/*   Player    */
+/*  YT Player  */
 /***************/
 
 function loadPlayer() {
-    console.debug("loadPlayer() :: Loading Player...");
+    console.log("loadPlayer() :: Loading Player...");
 
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
@@ -172,14 +192,11 @@ function loadPlayer() {
 
 	var postContentClr = $("iframe#textarea1IFrame").contents().find("body")
 	postContentClr.html("").parent().focus(function() {
-		console.debug("focus is on iframe")
+		console.log("focus is on iframe")
 	});
-
-	
 }
 
-function onYouTubeIframeAPIReady() {   
-	 
+function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
         height: viewportSize().h,
         width: viewportSize().w,
@@ -195,7 +212,6 @@ function onYouTubeIframeAPIReady() {
             disablekb: '1'
         }
   });
-
 }
 
 function onytplayerStateChange(newState) {
@@ -204,32 +220,28 @@ function onytplayerStateChange(newState) {
    
    switch (newState.data) {
         case 0:
-            console.debug("-------------------------------End of playlist-------------------------------");
+            console.log("-------------------------------End of playlist-------------------------------");
             $("#player").remove();
             $("#post-player").show();
 			window.focus();
             break;
         case 1:
-			console.debug("onytplayerStateChange() :: Hiding static");
+			console.log("onytplayerStateChange() :: Hiding static");
             debugMsg("Playing",state);
-			console.debug("-------------------------------Playing Video-------------------------------",player.getPlaylistIndex());
-			
-			if(player.getPlaylistIndex() > 0) { // Update the video object with a fully played video
-				console.debug("Previous Played fully");
-				storeStatus(player.getPlaylistIndex()-1,100);
-			}
+			console.log("-------------------------------Playing Video-------------------------------",player.getPlaylistIndex());
+			storeStatusPlayed();
 			
             $("#video-container").hide();
 			window.focus();
             break;
         case -1:
-			console.debug("onytplayerStateChange() :: Showing static");
+			console.log("onytplayerStateChange() :: Showing static");
             $("#video-container").show();
             debugMsg("Unstarted",state);
 			window.focus();
             break;
 		case 2:
-			console.debug("onytplayerStateChange() :: Paused");
+			console.log("onytplayerStateChange() :: Paused");
 			debugMsg("Paused",state);
 			window.focus();
 			break;
@@ -237,28 +249,17 @@ function onytplayerStateChange(newState) {
    }
 }
 
-
-$(window).focus(function() {
-    console.debug("Window has focus")
-});
-
-
 /************/
 /* UTILS    */
 /************/
 
-function detectKey(e) {
-	e.preventDefault();
-
-    if(e.charCode == 32) {
-        player.nextVideo();
-		videoInterrupted(player.getDuration(),player.getCurrentTime())
-    }   
-}
+$(window).focus(function() {
+    console.log("Window has focus")
+});
 
 function debugMsg(msg) {
     $("#state").html(msg);
-    console.debug(msg);
+    //console.log(msg);
 }
 
 function viewportSize() {
