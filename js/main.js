@@ -2,6 +2,7 @@ var player;
 var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var selectedRefereers = ["facebook","blogger","localhost"];
 var selectedPlaylist = [];
+var videoElement;
 
 /***************/
 /*  StartPage  */
@@ -9,13 +10,40 @@ var selectedPlaylist = [];
 
 $(document).ready(function() {
     console.log("Page ready...");
-    createPlaylist(ua,checkRefereer()); // create playlist for Desktop or Mobile
-    loadPlayer(); // Start YT player
+	loadVideo();
 });
 
+
+/***************/
+/* Video Loader */
+/***************/
+                                                                                                                                                                                                                                                                                           
+function videoLoaded() {
+   console.debug("videoLoaded() :: Video loaded...")
+   videoElement.play();
+
+   createPlaylist(ua,checkRefereer()); // create playlist for Desktop or Mobile
+   loadPlayer(); // Start YT player
+	
+}
+
+function loadVideo() {
+	console.debug("loadVideo() :: Loading Static video...");
+	$("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true"><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4">Your browser does not support the video tag.</video>');
+   
+	videoElement = document.getElementById("static");
+	videoElement.addEventListener('progress',updateLoadingStatus,false);
+	videoElement.addEventListener('canplaythrough',videoLoaded,false);
+}
+
+function updateLoadingStatus() {
+   var loadingStatus = document.getElementById("loading-status");
+   var percentLoaded = parseInt(((videoElement.buffered.end(0) / videoElement.duration) * 100));
+   loadingStatus.innerHTML =   percentLoaded + '%';
+}
+
 function onPlayerReady(event) {
-    console.debug("Player ready...");
-    
+    console.debug("onPlayerReady(e) :: Player ready...");
     // Define Page
     if(ua == 'mobile') {
         startMobilePage();
@@ -25,7 +53,7 @@ function onPlayerReady(event) {
 }
 
 function createPlaylist(ua,refereerListed) {
-    console.debug("Playlist Created...", selectedPlaylist,refereerListed); 
+    console.debug("createPlaylist() :: Playlist Created...", selectedPlaylist,refereerListed); 
     
     // Create playlist based on device
     if(ua == 'mobile') {
@@ -37,6 +65,7 @@ function createPlaylist(ua,refereerListed) {
 
 function startMobilePage() {
     console.debug("Displaying Mobile Version");
+
     $("#pre-player").show();
     
     $("#pre-player").click(function() { // add click
@@ -88,15 +117,23 @@ function refereerListed() {
 /***************/
 
 function loadPlayer() {
-    console.debug("Loading Player...")
+    console.debug("loadPlayer() :: Loading Player...");
+
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    
+
+	var postContentClr = $("iframe#textarea1IFrame").contents().find("body")
+	postContentClr.html("").parent().focus(function() {
+		console.debug("focus is on iframe")
+	});
+
+	
 }
 
-function onYouTubeIframeAPIReady() {    
+function onYouTubeIframeAPIReady() {   
+	 
     player = new YT.Player('player', {  
         height: viewportSize().h,
         width: viewportSize().w,
@@ -112,6 +149,7 @@ function onYouTubeIframeAPIReady() {
             disablekb: '1'
         }
   });
+
 }
 
 
@@ -121,20 +159,34 @@ function onytplayerStateChange(newState) {
    
    switch (newState.data) {
         case 0:
-            console.debug("End of playlist");
+            console.debug("onytplayerStateChange() :: End of playlist");
             $("#player").remove();
             $("#post-player").show();
             break;
         case 1:
+			console.debug("onytplayerStateChange() :: Hiding static");
             debugMsg("Playing",state);
-            $("#static").hide();
+            $("#video-container").hide();
+			window.focus();
             break;
         case -1:
-            $("#static").show();
+			console.debug("onytplayerStateChange() :: Showing static");
+            $("#video-container").show();
             debugMsg("Unstarted",state);
             break;
+		case 2:
+			console.debug("onytplayerStateChange() :: Paused");
+			debugMsg("Paused",state);
+			window.focus();
+			break;
+			
    }
 }
+
+
+$(window).focus(function() {
+    console.debug("Window has focus")
+});
 
 
 /************/
@@ -142,6 +194,10 @@ function onytplayerStateChange(newState) {
 /************/
 
 function detectKey(e) {
+
+	console.debug(player);
+	e.preventDefault();
+	console.debug(e);
     if(e.charCode == 32) {
         player.nextVideo();
     }   

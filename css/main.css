@@ -21,7 +21,9 @@ body {
 }
 
 #player {
+	border:1px solid red;
 }
+
 #pre-player {
     display:none;
 }
