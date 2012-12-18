@@ -1,5 +1,5 @@
 var player;
-var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
+var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0','qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var selectedRefereers = ["facebook","blogger","localhost"];
 var selectedPlaylist = [];
 var videoElement;
@@ -15,33 +15,31 @@ $(document).ready(function() {
 	loadNoiseVideo();
 });
 
-
 /***************/
 /* Video Loader */
 /***************/
                                                                                                                                                                                                                                                                                            
-function noiseVideoLoaded() {
-   console.log("noiseVideoLoaded() :: Video loaded...")
-   videoElement.play(); // Start Playing Noise Static
-   createPlaylist(ua,checkRefereer()); // Create playlist for Desktop or Mobile
-   loadPlayer(); // Start YT player
-	
-}
-
 function loadNoiseVideo() {
-	console.log("loadVideo() :: Loading Static video...");
-	$("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true"><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4">Your browser does not support the video tag.</video>');
-   
-	videoElement = document.getElementById("static");
-	videoElement.addEventListener('progress',updateLoadingStatus,false);
-	videoElement.addEventListener('canplaythrough',noiseVideoLoaded,false);
+	console.log("loadNoiseVideo() :: Loading Static video...");
+
+	
+	$("#video-container").html('<video id="static" width="100%" loop="loop" autobuffer="true" autoplay="true">Your browser does not support the video tag.</video>');
+    
+    videoElement = document.getElementById("static");
+    
+    if(videoElement.canPlayType('video/mp4') == "maybe") {
+         console.debug("Supports MP4");
+         $("#static").html('<source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4">') ;       
+    } else {
+        console.debug("Doesn't support MP4");
+        $("#static").html('<source src="../videos/static5.ogg" type="video/ogg">');
+    }
+    
+    createPlaylist(ua,checkRefereer()); // Create playlist for Desktop or Mobile
+    loadPlayer(); // Start YT player
+       	
 }
 
-function updateLoadingStatus() {
-   var loadingStatus = document.getElementById("loading-status");
-   var percentLoaded = parseInt(((videoElement.buffered.end(0) / videoElement.duration) * 100));
-   loadingStatus.innerHTML =   percentLoaded + '%';
-}
 
 function onPlayerReady(event) {
     console.log("onPlayerReady(e) :: Player ready...");
@@ -58,7 +56,7 @@ function createPlaylist(ua,refereerListed) {
     
     // Create playlist based on device
     if(ua == 'mobile') {
-        selectedPlaylist[0] = fullPlaylist[videoId];        
+        selectedPlaylist[0] = "A0BzTZMFmT4 ";        
     } else {
         selectedPlaylist = fullPlaylist.splice(videoId,fullPlaylist.length);
     }
@@ -69,7 +67,7 @@ function createPlaylist(ua,refereerListed) {
 /***************/
 
 function startMobilePage() {
-    console.log("Displaying Mobile Version");
+    console.log("startMobilePage() :: Displaying Mobile Version");
 
     $("#pre-player").show();
     $("#pre-player").click(function() { // add click
@@ -79,10 +77,8 @@ function startMobilePage() {
 }
 
 function startDesktopPage() {
-    console.log("Displaying Desktop Version");
-
+    console.log("startDesktopPage() :: Displaying Desktop Version");
     player.loadPlaylist(selectedPlaylist,0);
-    $("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true" autoplay><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4" >Your browser does not support the video tag.</video>');
     $("#pre-player").hide();
 }
 
@@ -93,6 +89,7 @@ function startDesktopPage() {
 function checkRefereer() {
     if(document.referrer != "" && refereerListed()) {
         console.log("Page has refeer and is listed - return...");
+        displayMessage("The user is coming from a listed refereer");
         return 1;
     } else if (document.referrer != "" && !refereerListed()) {
         console.log("Page has refeer and is not listed...",document.referrer);
@@ -155,8 +152,10 @@ function checkWatched() {
 	
 	if ( percentWatched > threshold) {
 		console.log("checkWatched() :: Overall Percent Watched:",percentWatched,"All Good, let's keep playing videos");
+		
 	} else {
 		console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"Emergency, we need a barbican card");
+        displayMessage("Play Barbican Card Next");
 	}	
 }
 
@@ -189,11 +188,6 @@ function loadPlayer() {
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-	var postContentClr = $("iframe#textarea1IFrame").contents().find("body")
-	postContentClr.html("").parent().focus(function() {
-		console.log("focus is on iframe")
-	});
 }
 
 function onYouTubeIframeAPIReady() {    
@@ -229,10 +223,11 @@ function onytplayerStateChange(newState) {
 			console.log("onytplayerStateChange() :: Hiding static");
             debugMsg("Playing",state);
 			console.log("-------------------------------Playing Video-------------------------------",player.getPlaylistIndex());
-			storeStatusPlayed();
+	        storeStatusPlayed();
 			
+
             $("#video-container").hide();
-			window.focus();
+            window.focus();
             break;
         case -1:
 			console.log("onytplayerStateChange() :: Showing static");
@@ -254,33 +249,36 @@ function onytplayerStateChange(newState) {
 /************/
 
 $(window).focus(function() {
-    console.log("Window has focus")
+    console.log("Window has focus");
 });
 
 function debugMsg(msg) {
     $("#state").html(msg);
-    //console.log(msg);
+}
+
+function displayMessage(msg) {
+    $("#message").html(msg)
+    $("#message").css("display","block");
+    setTimeout(function() {
+        $("#message").css("display","none");
+        
+    },2000);
 }
 
 function viewportSize() {
      var viewportwidth;
      var viewportheight;
-    // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
+
      if (typeof window.innerWidth != 'undefined') {
           viewportwidth = window.innerWidth,
           viewportheight = window.innerHeight
-     }
-    // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
-     else if (typeof document.documentElement != 'undefined'
+     } else if (typeof document.documentElement != 'undefined'
          && typeof document.documentElement.clientWidth !=
          'undefined' && document.documentElement.clientWidth != 0)
      {
            viewportwidth = document.documentElement.clientWidth,
            viewportheight = document.documentElement.clientHeight
-     }
-     // older versions of IE
-     else
-     {
+     } else {
            viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
            viewportheight = document.getElementsByTagName('body')[0].clientHeight
      }

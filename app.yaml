@@ -7,10 +7,12 @@ threadsafe: yes
 handlers:
 - url: /js
   static_dir: js
-
-- url: /videos
-  static_dir: videos
-    
+  
+- url: /videos/(.*\.ogg)
+  static_files: videos/\1
+  mime_type: video/ogg
+  upload: videos/(.*\.ogg)
+        
 - url: /css
   static_dir: css
     
@@ -24,3 +26,4 @@ handlers:
 libraries:
 - name: webapp2
   version: "2.5.1"
+

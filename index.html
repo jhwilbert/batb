@@ -2,23 +2,23 @@
 <html>
   <head>
 		<title>Batb</title>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/main.css"/>
   </head>
   	<body onkeypress="return detectKey(event)"> 
 		<div id="loading-status">0%</div>
 		
 		<div id="debug"><strong>Device</strong>: {{ ua }} <div id="state"></div></div>
-
+		<div id="message">Display Barbican Card</div>
 		<div id="video-container"></div>
 		<div id="overlay"></div>
-
+		
     	<div id="pre-player" class="pages">PRE PLAYER - CLICK HERE TO PLAY</div>
     	<div id="post-player" class="pages">POST PLAYER - SEND ME OFF TO BARBICAN</div>
 		
 		<div id="player"></div>
 		
-		<script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+		<script src="../js/jquery-1.8.3.min.js" type="text/javascript"></script>
 		<script>var videoId = {{video}}; ua = "{{ua}}"</script>
-		<script src="js/main.js" type="text/javascript"></script>
+		<script src="../js/main.js" type="text/javascript"></script>
   </body>
 </html>

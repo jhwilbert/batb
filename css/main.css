@@ -16,12 +16,23 @@ body {
     display:none;
 }
 
+#message {
+    display:none;
+    position:absolute;
+    top:60px;
+    left:50%;
+    margin-left:-200px;  
+    width:400px; 
+    padding:20px;
+    text-align:center;
+    background:red;
+}
+
 #static {
     z-index:10000;
 }
 
 #player {
-	border:1px solid red;
 }
 
 #pre-player {
