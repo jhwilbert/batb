@@ -20,9 +20,8 @@ $(document).ready(function() {
                                                                                                                                                                                                                                                                                            
 function videoLoaded() {
    console.debug("videoLoaded() :: Video loaded...")
-   videoElement.play();
-
-   createPlaylist(ua,checkRefereer()); // create playlist for Desktop or Mobile
+   videoElement.play(); // Start Playing Noise Static
+   createPlaylist(ua,checkRefereer()); // Create playlist for Desktop or Mobile
    loadPlayer(); // Start YT player
 	
 }
@@ -67,7 +66,6 @@ function startMobilePage() {
     console.debug("Displaying Mobile Version");
 
     $("#pre-player").show();
-    
     $("#pre-player").click(function() { // add click
         player.loadPlaylist(selectedPlaylist,0);
         $("#pre-player").hide();   
@@ -78,7 +76,6 @@ function startDesktopPage() {
     console.debug("Displaying Desktop Version");
 
     player.loadPlaylist(selectedPlaylist,0);
-        
     $("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true" autoplay><source src="http://jhwilbert.com/v1/static_5.mp4" type="video/mp4" >Your browser does not support the video tag.</video>');
     $("#pre-player").hide();
 }
@@ -111,6 +108,20 @@ function refereerListed() {
     }
     return false
 }
+
+/***********************/
+/* Playback Detection */
+/***********************/
+
+function detectInterruption(duration,currentTime) {
+	if(duration != 0 && currentTime !=0) {
+		var percentPlayed = Math.round((currentTime/duration) * 100);
+		console.debug("detectInterruption() :: Duration:",duration,"CurrentTime:",currentTime,"PercentPlayed",percentPlayed + "%");
+	} else {
+		console.debug("detectInterruption() :: Film hasn't started",duration,currentTime);
+	}
+}
+
 
 /***************/
 /*   Player    */
@@ -162,6 +173,7 @@ function onytplayerStateChange(newState) {
             console.debug("onytplayerStateChange() :: End of playlist");
             $("#player").remove();
             $("#post-player").show();
+			window.focus();
             break;
         case 1:
 			console.debug("onytplayerStateChange() :: Hiding static");
@@ -173,6 +185,7 @@ function onytplayerStateChange(newState) {
 			console.debug("onytplayerStateChange() :: Showing static");
             $("#video-container").show();
             debugMsg("Unstarted",state);
+			window.focus();
             break;
 		case 2:
 			console.debug("onytplayerStateChange() :: Paused");
@@ -194,12 +207,11 @@ $(window).focus(function() {
 /************/
 
 function detectKey(e) {
-
-	console.debug(player);
 	e.preventDefault();
-	console.debug(e);
+
     if(e.charCode == 32) {
         player.nextVideo();
+		detectInterruption(player.getDuration(),player.getCurrentTime())
     }   
 }
 
