@@ -1,11 +1,11 @@
 var player;
-var fullPlaylist = ['qRBrptVex2I','6BOHpjIZyx0','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0','iCkYw3cRwLo'];
-var cardIndex = [1,6];
+var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','A1oqJiMczCg','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0','A1oqJiMczCg','A1oqJiMczCg','A1oqJiMczCg'];
 var selectedRefereers = ["facebook","blogger","localhost"];
 var videoElement;
 var videoStatus = {}
 var threshold = 50;
 var counter = 0;
+var keysEnabled = true;
 
 /***************/
 /*  StartPage  */
@@ -21,8 +21,7 @@ $(document).ready(function() {
 /***************/
 /* Video Loader */
 /***************/
-
-                                                                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                                                       
 function loadNoiseVideo() {
     
     console.debug("Loading Video...");
@@ -30,6 +29,8 @@ function loadNoiseVideo() {
     $('#container').append('<div id="video-container"></div>')
     $('#video-container').append('<video id="static" class="video-js vjs-default-skin" width="100%" autoplay preload="auto" loop data-setup="{}">'+
                                  '<source type="video/ogg" src="videos_ogg/static5_low.ogg"><source type="video/mp4" src="videos_mp4/static5.mp4"></video>');
+    
+    player.loadPlaylist(fullPlaylist,0);
     
     videoElement = document.getElementById("static");
     videoElement.addEventListener('canplaythrough',playVideo,false);
@@ -41,12 +42,9 @@ function playVideo() {
     
     videoElement.removeEventListener('canplaythrough',playVideo);
     $("#loading").remove();
-    videoElement.play();
-    
     $("#video-container").css("opacity","1");
     
     // Load Playlist tart Playing videos
-    player.loadPlaylist(fullPlaylist,0);
     $("#player").css("opacity","1");
 }
 
@@ -97,6 +95,7 @@ function videoInterrupted(duration,currentTime) {
 function storeStatus(videoIndex,percentPlayed) {
     videoStatus[videoIndex] = percentPlayed;
     console.log("storeStatus() ::", videoStatus);
+         
     if(videoIndex > 1 ) {
         checkWatched(); //check if we need Barbican cards to appear
     } else {
@@ -118,23 +117,14 @@ function checkWatched() {
     var percentWatched = Math.round(updateTotalPercent());
     
     if ( percentWatched > threshold) {
-        console.log("checkWatched() :: Overall Percent Watched:",percentWatched,"All Good, let's keep playing videos");
+        console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"All Good, let's keep playing videos");
         
     } else {
-        console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"Emergency, we need a barbican card");
-        player.playVideoAt(nextCard());
-        console.debug("Play Barbican Card Next");
-    }
-}
+        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** EMERGENCY ** Play Barbican Card Next");
+        keysEnabled = false;
 
-function nextCard() {
-    counter++;
-    
-    if(counter== cardIndex.length) {
-        counter=0;
+        player.playVideoAt(fullPlaylist.length);
     }
-    console.debug("Play card in position",cardIndex[counter]);
-    return cardIndex[counter];
 }
 
 function updateTotalPercent() {
@@ -149,9 +139,14 @@ function updateTotalPercent() {
 
 function detectKey(e) {
     e.preventDefault();
-    if(e.charCode == 32) {
-        player.nextVideo();
-        videoInterrupted(player.getDuration(),player.getCurrentTime())
+    
+    if(keysEnabled) {
+        if(e.charCode == 32) {
+            player.nextVideo();
+            videoInterrupted(player.getDuration(),player.getCurrentTime())
+        }
+    } else {
+        console.debug("detectKey(e) :: keys are disabled at this point");
     }
 }
 
@@ -195,34 +190,30 @@ function onYouTubeIframeAPIReady() {
 
 function onytplayerStateChange(newState) {
    var state = newState.data;
-   debugMsg(state);   
-   
+
    switch (newState.data) {
         case 0:
             console.log("-------------------------------End of playlist-------------------------------");
             $("#player").remove();
             $("#container").append('<div id="post-layer" class="pages">POST PLAYER</div>');
             $("#post-player").show();
-            
             window.focus();
             break;
         case 1:
-            console.log("onytplayerStateChange() :: Hiding static");
-            debugMsg("Playing",state);
             console.log("------------------------------Playing Video-------------------------------",player.getPlaylistIndex());
+            console.log("onytplayerStateChange() :: Hiding static");
             storeStatusPlayed();
             $("#video-container").hide();
             window.focus();
             break;
         case -1:
+             console.log("-- Unstarted --");
             console.log("onytplayerStateChange() :: Showing static");
             $("#video-container").show();
-            debugMsg("Unstarted",state);
             window.focus();
             break;
         case 2:
             console.log("onytplayerStateChange() :: Paused");
-            debugMsg("Paused",state);
             window.focus();
             break;
    }
@@ -235,19 +226,6 @@ function onytplayerStateChange(newState) {
 $(window).focus(function() {
     console.log("Window has focus");
 });
-
-function debugMsg(msg) {
-    $("#state").html(msg);
-}
-
-function displayMessage(msg) {
-    $("#message").html(msg)
-    $("#message").css("display","block");
-    setTimeout(function() {
-        $("#message").css("display","none");
-        
-    },2000);
-}
 
 function viewportSize() {
      var viewportwidth;

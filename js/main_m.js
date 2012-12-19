@@ -1,5 +1,5 @@
 var player;
-var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0','qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
+var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var selectedRefereers = ["facebook","blogger","localhost"];
 var selectedPlaylist = [];
 var videoElement;
@@ -228,12 +228,12 @@ function onytplayerStateChange(newState) {
 	        storeStatusPlayed();
 			
 
-            $("#video-container").hide();
+            $("#video-container").css("opacity","0");
             window.focus();
             break;
         case -1:
 			console.log("onytplayerStateChange() :: Showing static");
-            $("#video-container").show();
+            $("#video-container").css("opacity","1");
             debugMsg("Unstarted",state);
 			window.focus();
             break;
