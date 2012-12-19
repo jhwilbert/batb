@@ -11,15 +11,15 @@ handlers:
 - url: /imgs
   static_dir: imgs
       
-- url: /videos/(.*\.ogg)
-  static_files: videos/\1
+- url: /videos_ogg/(.*\.ogg)
+  static_files: videos_ogg/\1
   mime_type: video/ogg
-  upload: videos/(.*\.ogg)
+  upload: videos_ogg/(.*\.ogg)
 
-- url: /videos/(.*\.mp4)
-  static_files: videos/\1
+- url: /videos_mp4/(.*\.mp4)
+  static_files: videos_mp4/\1
   mime_type: video/mp4
-  upload: videos/(.*\.mp4)        
+  upload: /videos_mp4/(.*\.mp4)        
 
 - url: /css
   static_dir: css

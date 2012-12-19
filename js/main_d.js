@@ -28,10 +28,10 @@ function loadNoiseVideo() {
     if (Modernizr.video) {
         $("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true">Your browser does not support the video tag.</video>');
         
-        if (Modernizr.video.ogg) {
-             $("#static").append('<source src="../videos/static5_low.ogg" type="video/ogg">');
-        } else if (Modernizr.video.h264){
-            $("#static").append('<source src="../videos/static5.mp4" type="video/mp4">') ; 
+        if (Modernizr.video.h264) {
+            $("#static").append('<source src="../videos_mp4/static5.mp4" type="video/mp4">') ; 
+        } else if (Modernizr.video.ogg){
+              $("#static").append('<source src="../videos_ogg/static5_low.ogg" type="video/ogg">');           
         }
     } else {
         alert("This browser doensn't support HTML5 video");
@@ -39,7 +39,9 @@ function loadNoiseVideo() {
     
     videoElement = document.getElementById("static");
     videoElement.addEventListener('canplaythrough',playVideo,false);
+    
 }
+
 
 function playVideo() {
     console.debug("Video Loaded....",videoElement);
