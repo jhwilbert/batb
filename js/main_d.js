@@ -23,7 +23,7 @@ $(document).ready(function() {
 function loadNoiseVideo() {
     console.log("Loading Noise...");
     var noiseImage = new Image(); 
-    noiseImage.src = "imgs/noise2.gif";
+    noiseImage.src = "imgs/noise4.gif";
     
     noiseImage.onload = function () {
         console.log("Noise Loaded...");    
@@ -33,11 +33,15 @@ function loadNoiseVideo() {
 
 function noiseLoaded(noiseImage) {
     $('#container').append('<div id="video-container"></div>');
-    console.log(noiseImage);
     $('#video-container').append(noiseImage);
+    $(noiseImage).css("width","100%");
+    
+    //$('#video-container').css("height", noiseImage.height + "px");
+    //$('#video-container').css("width", noiseImage.width + "px");    
+    var verticalCenter = ($(window).height() / 2) - ($("#video-container").height()/2);
+    $("#video-container").css("top",verticalCenter + "px");
     $("#video-container").css("opacity","1");
     
-    $(noiseImage).css("width","100%");
     $("#loading").remove();
     loadPlayer(); // Start YT player
 }
@@ -183,7 +187,15 @@ function onytplayerStateChange(newState) {
 
 
 
+
 /* Utilities */
+
+$(window).resize(function () { 
+    var verticalCenter = ($(window).height() / 2) - ($("#video-container").height()/2);
+    $("#video-container").css("top",verticalCenter + "px");
+    //player.setSize($(window).height(),$(window).width());
+    /* do something */ 
+});
 
 $(window).focus(function() {
     console.log("Window has focus");
