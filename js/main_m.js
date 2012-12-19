@@ -33,7 +33,7 @@ function loadPlayer() {
 
 function onPlayerReady(event) {
     player.loadVideoById(videoId,0); // Load Video
-    event.target.playVideo();
+    player.playVideo();
 }
 
 function onYouTubeIframeAPIReady() {    
@@ -42,7 +42,8 @@ function onYouTubeIframeAPIReady() {
         width: viewportSize().w,
         events: {
             'onReady': onPlayerReady,
-            'onStateChange' : onytplayerStateChange
+            'onStateChange' : onytplayerStateChange,
+            'videoId' : 'u1zgFlCw8Aw'
         },    
         playerVars: {
             controls: '0',

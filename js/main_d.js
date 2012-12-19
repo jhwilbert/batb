@@ -23,18 +23,21 @@ $(document).ready(function() {
 function loadNoiseVideo() {
     console.log("Loading Noise...");
     var noiseImage = new Image(); 
-    noiseImage.src = "imgs/noise.gif";
+    noiseImage.src = "imgs/noise2.gif";
     
     noiseImage.onload = function () {
         console.log("Noise Loaded...");    
-        noiseLoaded();
+        noiseLoaded(noiseImage);
     };
 }
 
-function noiseLoaded() {
-    $('#container').append('<div id="video-container"></div>')
-    $('#video-container').append('<img width="100%" src="imgs/noise.gif">');
+function noiseLoaded(noiseImage) {
+    $('#container').append('<div id="video-container"></div>');
+    console.log(noiseImage);
+    $('#video-container').append(noiseImage);
     $("#video-container").css("opacity","1");
+    
+    $(noiseImage).css("width","100%");
     $("#loading").remove();
     loadPlayer(); // Start YT player
 }
