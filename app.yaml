@@ -19,7 +19,7 @@ handlers:
 - url: /videos_mp4/(.*\.mp4)
   static_files: videos_mp4/\1
   mime_type: video/mp4
-  upload: /videos_mp4/(.*\.mp4)        
+  upload: videos_mp4/(.*\.mp4)        
 
 - url: /css
   static_dir: css

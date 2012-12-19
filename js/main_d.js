@@ -1,9 +1,11 @@
 var player;
-var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0','qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
+var fullPlaylist = ['qRBrptVex2I','6BOHpjIZyx0','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0','iCkYw3cRwLo'];
+var cardIndex = [1,6];
 var selectedRefereers = ["facebook","blogger","localhost"];
 var videoElement;
 var videoStatus = {}
 var threshold = 50;
+var counter = 0;
 
 /***************/
 /*  StartPage  */
@@ -19,27 +21,33 @@ $(document).ready(function() {
 /***************/
 /* Video Loader */
 /***************/
+
                                                                                                                                                                                                                                                                                            
 function loadNoiseVideo() {
     console.debug("Loading Video...");
     
-    $('#container').append('<div id="video-container"></div>');
+    $('#container').append('<div id="video-container"></div>')
+    $('#video-container').append('<video id="static" class="video-js vjs-default-skin" width="100%" autoplay preload="auto" loop data-setup="{}">'+
+                                 '<source type="video/ogg" src="videos_ogg/static5_low.ogg"><source type="video/mp4" src="videos_mp4/static5.mp4"></video>');
+    
+    
+    /*
     
     if (Modernizr.video) {
         $("#video-container").append('<video id="static" width="100%" loop="loop" autobuffer="true">Your browser does not support the video tag.</video>');
         
         if (Modernizr.video.h264) {
-            $("#static").append('<source src="../videos_mp4/static5.mp4" type="video/mp4">') ; 
+            $("#static").append('<source src="../videos_mp4/static5.mp4" type="video/mp4">'); 
         } else if (Modernizr.video.ogg){
               $("#static").append('<source src="../videos_ogg/static5_low.ogg" type="video/ogg">');           
         }
     } else {
         alert("This browser doensn't support HTML5 video");
     }
-    
+    */
     videoElement = document.getElementById("static");
     videoElement.addEventListener('canplaythrough',playVideo,false);
-    
+
 }
 
 
@@ -129,8 +137,19 @@ function checkWatched() {
         
     } else {
         console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"Emergency, we need a barbican card");
-        displayMessage("Play Barbican Card Next");
+        player.playVideoAt(nextCard());
+        console.debug("Play Barbican Card Next");
     }
+}
+
+function nextCard() {
+    counter++;
+    
+    if(counter== cardIndex.length) {
+        counter=0;
+    }
+    console.debug("Play card in position",cardIndex[counter]);
+    return cardIndex[counter];
 }
 
 function updateTotalPercent() {
