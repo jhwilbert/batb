@@ -1,10 +1,8 @@
 var player;
-var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','A1oqJiMczCg','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0','A1oqJiMczCg','A1oqJiMczCg','A1oqJiMczCg'];
-var selectedRefereers = ["facebook","blogger","localhost"];
+var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var videoElement;
 var videoStatus = {}
 var threshold = 50;
-var counter = 0;
 var keysEnabled = true;
 
 /***************/
@@ -14,7 +12,6 @@ var keysEnabled = true;
 $(document).ready(function() {
     console.log("Page ready...");
     $('#container').append('<div id="loading" class="pages">Loading<img src="imgs/loader.gif"></div>');
-    
     loadPlayer(); // Start YT player
 });
 
@@ -23,60 +20,26 @@ $(document).ready(function() {
 /***************/
                                                                                                                                                                                                                                                                                        
 function loadNoiseVideo() {
+    console.log("Loading Noise...");
+    var noiseImage = new Image(); 
+    noiseImage.src = "imgs/noise.gif";
     
-    console.debug("Loading Video...");
-    
+    noiseImage.onload = function () {
+        console.log("Noise Loaded...");    
+        noiseLoaded();
+    };
+}
+
+function noiseLoaded() {
     $('#container').append('<div id="video-container"></div>')
-    $('#video-container').append('<video id="static" class="video-js vjs-default-skin" width="100%" autoplay preload="auto" loop data-setup="{}">'+
-                                 '<source type="video/ogg" src="videos_ogg/static5_low.ogg"><source type="video/mp4" src="videos_mp4/static5.mp4"></video>');
+    $('#video-container').append('<img width="100%" src="imgs/noise.gif">');
     
-    player.loadPlaylist(fullPlaylist,0);
+    player.loadPlaylist(fullPlaylist,0); // Load playlist
     
-    videoElement = document.getElementById("static");
-    videoElement.addEventListener('canplaythrough',playVideo,false);
-}
-
-
-function playVideo() {
-    console.debug("Video Loaded....",videoElement);
-    
-    videoElement.removeEventListener('canplaythrough',playVideo);
-    $("#loading").remove();
     $("#video-container").css("opacity","1");
-    
-    // Load Playlist tart Playing videos
     $("#player").css("opacity","1");
+    $("#loading").remove();
 }
-
-/***********************/
-/*  Refereer Deection  */
-/***********************/
-
-function checkRefereer() {
-    if(document.referrer != "" && refereerListed()) {
-        console.log("Page has refeer and is listed - return...");
-        displayMessage("The user is coming from a listed refereer");
-        return 1;
-    } else if (document.referrer != "" && !refereerListed()) {
-        console.log("Page has refeer and is not listed...",document.referrer);
-    } else {
-        console.log("Page has no refreeer...");
-    }    
-    return 0;
-}
-
-function refereerListed() {
-    var foundReferee;
-    for(var i=0; i< selectedRefereers.length; i++) {
-        if(document.referrer.indexOf(selectedRefereers[i]) != -1) {
-            foundReferee =  selectedRefereers[i];
-            return true
-            break;
-        }
-    }
-    return false;
-}
-
 /***********************/
 /* Playback Detection */
 /***********************/
@@ -115,15 +78,13 @@ function storeStatusPlayed() {
 
 function checkWatched() {
     var percentWatched = Math.round(updateTotalPercent());
-    
     if ( percentWatched > threshold) {
         console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"All Good, let's keep playing videos");
-        
     } else {
-        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** EMERGENCY ** Play Barbican Card Next");
+        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** EMERGENCY ** Play Barbican Card Next", fullPlaylist.length-1);
         keysEnabled = false;
-
-        player.playVideoAt(fullPlaylist.length);
+        player.playVideoAt(fullPlaylist.length-1);
+    
     }
 }
 
@@ -203,11 +164,13 @@ function onytplayerStateChange(newState) {
             console.log("------------------------------Playing Video-------------------------------",player.getPlaylistIndex());
             console.log("onytplayerStateChange() :: Hiding static");
             storeStatusPlayed();
-            $("#video-container").hide();
+            
+            setTimeout(function() {
+                $("#video-container").hide();
+            },200);
             window.focus();
             break;
         case -1:
-             console.log("-- Unstarted --");
             console.log("onytplayerStateChange() :: Showing static");
             $("#video-container").show();
             window.focus();
