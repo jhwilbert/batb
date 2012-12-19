@@ -7,12 +7,20 @@ threadsafe: yes
 handlers:
 - url: /js
   static_dir: js
-  
+
+- url: /imgs
+  static_dir: imgs
+      
 - url: /videos/(.*\.ogg)
   static_files: videos/\1
   mime_type: video/ogg
   upload: videos/(.*\.ogg)
-        
+
+- url: /videos/(.*\.mp4)
+  static_files: videos/\1
+  mime_type: video/mp4
+  upload: videos/(.*\.mp4)        
+
 - url: /css
   static_dir: css
     

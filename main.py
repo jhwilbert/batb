@@ -67,26 +67,12 @@ class AddVideo(webapp2.RequestHandler):
         
 
 class MainHandler(webapp2.RequestHandler):
-    def detectDevice(self,ua):
-        b = reg_b.search(ua)
-        v = reg_v.search(ua[0:4])
-        if b or v:
-            return 'mobile'
-        else:
-            return 'desktop'
-              
-    def get(self,arg):
-        ua = self.request.headers.get('user_agent')
-        playlist = {
-            "ua" : self.detectDevice(ua),
-            "video" : arg
-        }
+    def get(self):
         path = os.path.join(os.path.dirname(__file__), 'index.html')
-        self.response.out.write(template.render(path, playlist))
+        self.response.out.write(template.render(path, {}))
         
 
-app = webapp2.WSGIApplication([('/v/([^/]+)', MainHandler),
-                               ('/', NotAuthorized),
+app = webapp2.WSGIApplication([('/', MainHandler),
                                ('/admin', Admin),
                                ('/a/addvideo', AddVideo)],
                               debug=True)
