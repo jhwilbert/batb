@@ -2,16 +2,13 @@
 /*          Desktop Version           */
 /**************************************/
 
-var player;
-var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
-var videoElement;
-var videoStatus = {}
+var player,videoElement;
 var threshold = 50;
 var keysEnabled = true;
+var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
+var videoStatus = {}
 
-/***************/
 /*  StartPage  */
-/***************/
 
 $(document).ready(function() {
     console.log("Page ready...");
@@ -19,10 +16,10 @@ $(document).ready(function() {
     loadNoiseVideo(); // Load Noise Video
 });
 
-/***************/
-/* Noise Loader */
-/***************/
-                                                                                                                                                                                                                                                                                       
+
+
+/* Noise Loader */                                                                                                                                                                                                                                                                                       
+
 function loadNoiseVideo() {
     console.log("Loading Noise...");
     var noiseImage = new Image(); 
@@ -41,9 +38,10 @@ function noiseLoaded() {
     $("#loading").remove();
     loadPlayer(); // Start YT player
 }
-/***********************/
+
+
+
 /* Playback Detection */
-/***********************/
 
 function videoInterrupted(duration,currentTime) {
     if(duration != 0 && currentTime !=0) {
@@ -110,9 +108,9 @@ function detectKey(e) {
     }
 }
 
-/***************/
+
+
 /*  YT Player  */
-/***************/
 
 function loadPlayer() {
     console.log("loadPlayer() :: Loading Player...");
@@ -180,9 +178,9 @@ function onytplayerStateChange(newState) {
    }
 }
 
-/************/
-/* UTILS    */
-/************/
+
+
+/* Utilities */
 
 $(window).focus(function() {
     console.log("Window has focus");
