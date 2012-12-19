@@ -1,3 +1,7 @@
+/**************************************/
+/*          Desktop Version           */
+/**************************************/
+
 var player;
 var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var videoElement;
@@ -12,11 +16,11 @@ var keysEnabled = true;
 $(document).ready(function() {
     console.log("Page ready...");
     $('#container').append('<div id="loading" class="pages">Loading<img src="imgs/loader.gif"></div>');
-    loadPlayer(); // Start YT player
+    loadNoiseVideo(); // Load Noise Video
 });
 
 /***************/
-/* Video Loader */
+/* Noise Loader */
 /***************/
                                                                                                                                                                                                                                                                                        
 function loadNoiseVideo() {
@@ -33,12 +37,9 @@ function loadNoiseVideo() {
 function noiseLoaded() {
     $('#container').append('<div id="video-container"></div>')
     $('#video-container').append('<img width="100%" src="imgs/noise.gif">');
-    
-    player.loadPlaylist(fullPlaylist,0); // Load playlist
-    
     $("#video-container").css("opacity","1");
-    $("#player").css("opacity","1");
     $("#loading").remove();
+    loadPlayer(); // Start YT player
 }
 /***********************/
 /* Playback Detection */
@@ -84,7 +85,6 @@ function checkWatched() {
         console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** EMERGENCY ** Play Barbican Card Next", fullPlaylist.length-1);
         keysEnabled = false;
         player.playVideoAt(fullPlaylist.length-1);
-    
     }
 }
 
@@ -100,7 +100,6 @@ function updateTotalPercent() {
 
 function detectKey(e) {
     e.preventDefault();
-    
     if(keysEnabled) {
         if(e.charCode == 32) {
             player.nextVideo();
@@ -117,7 +116,6 @@ function detectKey(e) {
 
 function loadPlayer() {
     console.log("loadPlayer() :: Loading Player...");
-    
     $("#container").append('<div id="player"></div>');
     
     var tag = document.createElement('script');
@@ -127,14 +125,14 @@ function loadPlayer() {
 }
 
 function onPlayerReady(event) {
-    console.log("onPlayerReady(e) :: Player ready...");
-    loadNoiseVideo(); // Load Noise Video
+    console.log("onPlayerReady(e) :: Loading PLaylist...");
+    player.loadPlaylist(fullPlaylist,0); // Load playlist
 }
 
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
-        height: viewportSize().h,
-        width: viewportSize().w,
+        height: $(window).height(),
+        width: $(window).width(),
         events: {
             'onReady': onPlayerReady,
             'onStateChange' : onytplayerStateChange
@@ -151,7 +149,7 @@ function onYouTubeIframeAPIReady() {
 
 function onytplayerStateChange(newState) {
    var state = newState.data;
-
+   console.debug(newState.data);
    switch (newState.data) {
         case 0:
             console.log("-------------------------------End of playlist-------------------------------");
@@ -164,20 +162,20 @@ function onytplayerStateChange(newState) {
             console.log("------------------------------Playing Video-------------------------------",player.getPlaylistIndex());
             console.log("onytplayerStateChange() :: Hiding static");
             storeStatusPlayed();
-            
-            setTimeout(function() {
-                $("#video-container").hide();
-            },200);
+            $("#video-container").fadeOut();
             window.focus();
             break;
         case -1:
             console.log("onytplayerStateChange() :: Showing static");
-            $("#video-container").show();
+            $("#video-container").fadeIn();
             window.focus();
             break;
         case 2:
             console.log("onytplayerStateChange() :: Paused");
             window.focus();
+            break;
+        case 3:
+            console.log("Youtube Player :: Buffering...")
             break;
    }
 }
@@ -189,24 +187,3 @@ function onytplayerStateChange(newState) {
 $(window).focus(function() {
     console.log("Window has focus");
 });
-
-function viewportSize() {
-     var viewportwidth;
-     var viewportheight;
-
-     if (typeof window.innerWidth != 'undefined') {
-          viewportwidth = window.innerWidth,
-          viewportheight = window.innerHeight
-     } else if (typeof document.documentElement != 'undefined'
-         && typeof document.documentElement.clientWidth !=
-         'undefined' && document.documentElement.clientWidth != 0)
-     {
-           viewportwidth = document.documentElement.clientWidth,
-           viewportheight = document.documentElement.clientHeight
-     } else {
-           viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-           viewportheight = document.getElementsByTagName('body')[0].clientHeight
-     }
-    
-    return { w : viewportwidth, h : viewportheight }
-}
