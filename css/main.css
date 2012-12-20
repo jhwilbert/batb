@@ -211,9 +211,13 @@ nav a:hover {
    top:0;
 }
 
-#video-container {
-    opacity:0;
+#container {
     position:absolute;
+}
+
+#video-container {
+    position:absolute;
+    opacity:0;
     top:0;
     left:0;
     width:100%;
@@ -224,7 +228,7 @@ nav a:hover {
     position:absolute;
     top:0;
     left:0;
-    width:100%;
+    /*width:100%;*/
     z-index:0;
 }
 

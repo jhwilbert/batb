@@ -7,16 +7,54 @@ var threshold = 50;
 var keysEnabled = true;
 var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var videoStatus = {}
+var vWidth,vHeight,nWidth,nHeight;
+
+var noiseH = 305;
+var noiseW = 540;
 
 /*  StartPage  */
 
 $(document).ready(function() {
+    
     console.log("Page ready...");
+    
     $('#container').append('<div id="loading" class="pages">Loading<img src="imgs/loader.gif"></div>');
+
+    positionElements();
     loadPlayer(); // Start YT player
 });
 
 
+function positionElements() {
+    
+    
+    // Resizing
+    var windowW = $(window).width();
+    var windowH = $(window).height();
+    
+    
+    vWidth = windowW;
+    vHeight = windowH;
+
+    if(windowW > windowH) {
+        console.debug("Window Width is bigger","width:",windowW,"height:",windowH);
+        nHeight = windowH;
+        nWidth = nHeight * 1.77;
+        console.debug(nHeight,nWidth);
+                  
+    } else if (windowH > windowW) {
+        console.debug("Window Height is bigger","width:",windowW,"height:",windowH);
+        nWidth = windowW;
+        nHeight = nWidth / 1.77;
+    }
+     
+    // Positioning
+    var vCenter = ($(window).height() / 2) - vHeight/2;
+    var hCenter = ($(window).width() / 2) - vWidth/2;
+    
+    $("#container").css("top",vCenter + "px");
+    $("#container").css("left",hCenter + "px");
+}
 
 /* Noise Loader */                                                                                                                                                                                                                                                                                       
 
@@ -31,27 +69,27 @@ function loadNoiseVideo() {
 }
 
 function noiseLoaded(noiseImage) {
+    
     $('#container').append('<div id="video-container"></div>');
     $('#video-container').append(noiseImage);
-    $(noiseImage).css("width","100%");
     
-    //$('#video-container').css("height", noiseImage.height + "px");
-    //$('#video-container').css("width", noiseImage.width + "px");    
-    var verticalCenter = ($(window).height() / 2) - ($("#video-container").height()/2);
-    $("#video-container").css("top",verticalCenter + "px");
+    $(noiseImage).css("width",nWidth + "px");
+    $(noiseImage).css("height",nHeight + "px");
+    
+    var noiseVCenter = ($(window).height() / 2) - nHeight/2;
+    var noiseHCenter = ($(window).width() / 2) - nWidth/2;
+    
+    $("#video-container").css("top",noiseVCenter + "px");
+    $("#video-container").css("left",noiseHCenter + "px");
+
     $("#video-container").css("opacity","1");
     
     $("#loading").remove();
-    
-    $("#player").css("opacity","1");
+    $("#player").css("opacity","1");      
     
     console.log("noiseLoaded() :: Starting to play...");
     player.playVideo();
-
-    
 }
-
-
 
 /* Playback Detection */
 
@@ -121,7 +159,6 @@ function detectKey(e) {
 }
 
 
-
 /*  YT Player  */
 
 function loadPlayer() {
@@ -142,8 +179,8 @@ function onPlayerReady(event) {
 
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
-        height: $(window).height(),
-        width: $(window).width(),
+        height: vHeight,
+        width: vWidth,
         events: {
             'onReady': onPlayerReady,
             'onStateChange' : onytplayerStateChange
@@ -186,10 +223,10 @@ function onytplayerStateChange(newState) {
             window.focus();
             break;
         case 3:
-            console.log("Youtube Player :: Buffering...")
+            console.log("onytplayerStateChange() :: Youtube Player :: Buffering...")
             break;
         case 5:
-            console.log("Playlist ready");
+            console.log("onytplayerStateChange() :: Playlist ready...");
             loadNoiseVideo(); // Load Noise Video
             break;
    }
