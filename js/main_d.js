@@ -27,8 +27,10 @@ $(document).ready(function() {
     }
     
     console.log("Page ready...");
-    $('#container').append('<div id="loading" class="pages">Loading<img src="imgs/loader.gif"></div>');
-
+    $('#container').append('<div id="loader"><img src="imgs/loader.gif">Loading TV</div>');
+    var loader = $("#loader");
+    centerElement(loader);
+    
     positionElements();
     loadPlayer(); // Start YT player
 });
@@ -60,7 +62,7 @@ function noiseLoaded(noiseImage) {
 
     $("#video-container").css("opacity","1");
     
-    $("#loading").remove();
+    $("#loader").remove();
     $("#player").css("opacity","1");      
     
     console.log("noiseLoaded() :: Starting to play...");
@@ -151,6 +153,17 @@ function onPlayerReady(event) {
     player.cuePlaylist(fullPlaylist,0); // Load playlist
 }
 
+function endofPlaylist() {
+    console.log("endofPlaylist() :: Started Fade...");
+    $("#player").remove();
+    
+    // Add post player and center
+    $("#container").append('<div id="post-player">POST PLAYER</div>');
+    var postplayer = $("#post-player");
+    centerElement(postplayer);
+    $("#post-player").fadeIn();
+    
+}
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
         height: vHeight,
@@ -175,9 +188,7 @@ function onytplayerStateChange(newState) {
    switch (newState.data) {
         case 0:
             console.log("-------------------------------End of playlist-------------------------------");
-            $("#player").remove();
-            $("#container").append('<div id="post-layer" class="pages">POST PLAYER</div>');
-            $("#post-player").show();
+            endofPlaylist();
             window.focus();
             break;
         case 1:
@@ -208,11 +219,28 @@ function onytplayerStateChange(newState) {
 
 /* Utilities */
 $(window).resize(function () { 
+
     //var verticalCenter = ($(window).height() / 2) - ($("#video-container").height()/2);
     //$("#video-container").css("top",verticalCenter + "px");
     //player.setSize($(window).height(),$(window).width());
 });
 
+function centerElement(element) {
+    var windowW = $(window).width();
+    var windowH = $(window).height();
+    
+    var elementW = $(element).width();
+    var elementH = $(element).height();
+    
+    var centerW = $(window).width()/2 - $(element).width()/2;
+    var centerH = $(window).height()/2 - $(element).height()/2;
+     
+    console.debug(centerW,centerH);
+    $(element).css("top",centerH + "px");
+    $(element).css("left",centerW + "px");
+    
+    
+}
 function positionElements() {
     // Resizing
     var windowW = $(window).width();
