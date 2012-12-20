@@ -1,0 +1,5 @@
+$(".reorderBtn").click(function() {
+    console.log("Reorder",this.id);
+    var order = 10;
+    $.post( '/a/reorder', { p_id : this.id, p_order : order }, function(data) {});
+});

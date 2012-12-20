@@ -17,7 +17,6 @@ body {
     font-size: 1em;
     line-height: 1.4;
     background:white;
-    overflow:hidden;
 }
 
 ::-moz-selection {
@@ -79,18 +78,18 @@ body {
    =================== */
 
 .header-container {
-    border-bottom: 20px solid #e44d26;
+    border-bottom: 20px solid #444444;
 }
 
 .footer-container,
 .main aside {
-    border-top: 20px solid #e44d26;
+    border-top: 20px solid #444444;
 }
 
 .header-container,
 .footer-container,
 .main aside {
-    background: #f16529;
+    background: #202020;
 }
 
 .title {
@@ -116,7 +115,7 @@ nav a {
     font-weight: bold;
 
     color: white;
-    background: #e44d26;
+    background: #444444;
 }
 
 nav a:hover,
@@ -166,6 +165,7 @@ nav a:hover {
     background:grey;
     float:left;
     margin-bottom:10px;
+    padding:20px;
 }
 .btn {
    cursor:pointer;
@@ -175,6 +175,14 @@ nav a:hover {
    margin-right:5px;
    margin-top:5px;
    margin-bottom:5px;
+}
+
+#clips-list {
+    
+}
+
+#replyMsg {
+    font-size:14px;
 }
 #overlay {
    position:absolute;
@@ -316,6 +324,7 @@ nav a:hover {
    ============ */
 
     .main article {
+        margin-top:-15px;
         float: left;
         width: 57%;
     }

@@ -23,7 +23,7 @@ handlers:
 
 - url: /css
   static_dir: css
-    
+
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
