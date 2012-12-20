@@ -8,7 +8,7 @@ var keysEnabled = true;
 var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var videoStatus = {}
 var vWidth,vHeight,nWidth,nHeight;
-
+var loader, postplayer;
 var noiseH = 305;
 var noiseW = 540;
 
@@ -28,7 +28,7 @@ $(document).ready(function() {
     
     console.log("Page ready...");
     $('#container').append('<div id="loader"><img src="imgs/loader.gif">Loading TV</div>');
-    var loader = $("#loader");
+    loader = $("#loader");
     centerElement(loader);
     
     positionElements();
@@ -159,7 +159,7 @@ function endofPlaylist() {
     
     // Add post player and center
     $("#container").append('<div id="post-player">POST PLAYER</div>');
-    var postplayer = $("#post-player");
+    postplayer = $("#post-player");
     centerElement(postplayer);
     $("#post-player").fadeIn();
     
@@ -221,7 +221,8 @@ function onytplayerStateChange(newState) {
 
 /* Utilities */
 $(window).resize(function () { 
-
+    centerElement(postplayer);
+    centerElement(loader);
     //var verticalCenter = ($(window).height() / 2) - ($("#video-container").height()/2);
     //$("#video-container").css("top",verticalCenter + "px");
     //player.setSize($(window).height(),$(window).width());
@@ -237,7 +238,6 @@ function centerElement(element) {
     var centerW = $(window).width()/2 - $(element).width()/2;
     var centerH = $(window).height()/2 - $(element).height()/2;
      
-    console.debug(centerW,centerH);
     $(element).css("top",centerH + "px");
     $(element).css("left",centerW + "px");
     
