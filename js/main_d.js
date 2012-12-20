@@ -195,6 +195,7 @@ function onytplayerStateChange(newState) {
             console.log("------------------------------Playing Video-------------------------------",player.getPlaylistIndex());
             console.log("onytplayerStateChange() :: Hiding static");
             storeStatusPlayed();
+            keysEnabled = true; // enable keys back
             $("#video-container").fadeOut();
             window.focus();
             break;
@@ -202,6 +203,7 @@ function onytplayerStateChange(newState) {
             console.log("onytplayerStateChange() :: Showing static");
             $("#video-container").fadeIn();
             window.focus();
+            keysEnabled = false; // disable ketys on static noise
             break;
         case 2:
             console.log("onytplayerStateChange() :: Paused");

@@ -252,6 +252,8 @@ nav a:hover {
 
 #post-player {
    position:absolute;
+   padding:20px;
+   text-align:center;
    font-size:30px;
    font-weight:bold;
    width:300px;
