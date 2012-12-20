@@ -15,7 +15,7 @@ var noiseW = 540;
 /*  StartPage  */
 
 $(document).ready(function() {
-    
+    console.debug(videos);
     console.log("Page ready...");
     
     $('#container').append('<div id="loading" class="pages">Loading<img src="imgs/loader.gif"></div>');
@@ -23,38 +23,6 @@ $(document).ready(function() {
     positionElements();
     loadPlayer(); // Start YT player
 });
-
-
-function positionElements() {
-    
-    
-    // Resizing
-    var windowW = $(window).width();
-    var windowH = $(window).height();
-    
-    
-    vWidth = windowW;
-    vHeight = windowH;
-
-    if(windowW > windowH) {
-        console.debug("Window Width is bigger","width:",windowW,"height:",windowH);
-        nHeight = windowH;
-        nWidth = nHeight * 1.77;
-        console.debug(nHeight,nWidth);
-                  
-    } else if (windowH > windowW) {
-        console.debug("Window Height is bigger","width:",windowW,"height:",windowH);
-        nWidth = windowW;
-        nHeight = nWidth / 1.77;
-    }
-     
-    // Positioning
-    var vCenter = ($(window).height() / 2) - vHeight/2;
-    var hCenter = ($(window).width() / 2) - vWidth/2;
-    
-    $("#container").css("top",vCenter + "px");
-    $("#container").css("left",hCenter + "px");
-}
 
 /* Noise Loader */                                                                                                                                                                                                                                                                                       
 
@@ -243,6 +211,39 @@ $(window).resize(function () {
     //player.setSize($(window).height(),$(window).width());
     /* do something */ 
 });
+
+
+
+function positionElements() {
+    
+    // Resizing
+    var windowW = $(window).width();
+    var windowH = $(window).height();
+    
+    
+    vWidth = windowW;
+    vHeight = windowH;
+
+    if(windowW > windowH) {
+        console.debug("Window Width is bigger","width:",windowW,"height:",windowH);
+        nHeight = windowH;
+        nWidth = nHeight * 1.77;
+        console.debug(nHeight,nWidth);
+                  
+    } else if (windowH > windowW) {
+        console.debug("Window Height is bigger","width:",windowW,"height:",windowH);
+        nWidth = windowW;
+        nHeight = nWidth / 1.77;
+    }
+     
+    // Positioning
+    var vCenter = ($(window).height() / 2) - vHeight/2;
+    var hCenter = ($(window).width() / 2) - vWidth/2;
+    
+    $("#container").css("top",vCenter + "px");
+    $("#container").css("left",hCenter + "px");
+}
+
 
 $(window).focus(function() {
     console.log("Window has focus");

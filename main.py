@@ -18,6 +18,7 @@ import webapp2
 import os
 import re
 import models
+from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 
 
@@ -27,44 +28,90 @@ from google.appengine.ext.webapp import template
 
 class Admin(webapp2.RequestHandler):
     def get(self):
+        
         videos = models.VideoEntity().all().order("order")
+        
+        if videos.count() > 0:
+            lastofplaylist = models.VideoEntity().all().order('-order').get().order
+        else:
+            lastofplaylist = 0
+
         template_values = {
-            'videos' : videos
+            'videos' : videos,
+            'lastofplaylist' : lastofplaylist
         }
-        print ""
-        print videos
         path = os.path.join(os.path.dirname(__file__), 'admin.html')
         self.response.out.write(template.render(path, template_values))
 
-class AddVideo(webapp2.RequestHandler):
-    
-    """Resource that saves video entries on datastore """
-    
+class Add(webapp2.RequestHandler):
+    """Saves video entries on datastore """
     def post(self):
         
         # Get post data
         videourl = self.request.get('p_videourl')
-        order = self.request.get('p_order')
+        order = int(self.request.get('p_order'))
         
+        #Instantiate Model
+        videoModel = models.VideoEntity()
+        videos = models.VideoEntity().all().order("order")
+        
+        if videos.count() > 0:
+            # Caclulate what's the last of the playlist
+            lastofplaylist = models.VideoEntity().all().order('-order').get().order
+            
+            # Add to end of the playlist if user doesn't change number
+            if order == lastofplaylist:
+                order = lastofplaylist + 1
+            
+        else:
+            # No videos have been stored
+            lastofplaylist = 0
+
         # Update Datastore  
-        videoModel = models.VideoEntity()                   
         videoModel.url = videourl
-        videoModel.order = int(order)
+        videoModel.order = order
         
         key = videoModel.put()
+        self.response.out.write('Video Stored')
 
+class Remove(webapp2.RequestHandler):
+    """ Removes video entries on datastore """
+    def post(self):
+        videoid = self.request.get('p_id')
+        video = models.VideoEntity.get_by_id(int(videoid))
+        video.delete()
+        self.response.out.write('Video Deleted')
 
+class Reorder(webapp2.RequestHandler):
+    """ Changes order of video on datastore """
+    def post(self):
+        videoid = self.request.get('p_id')
+        videoorder = self.request.get('p_order')
+        video = models.VideoEntity.get_by_id(int(videoid))
+        video.order = int(videoorder)
+        video.put()
+        self.response.out.write('Video Reordered')
+
+                
 ###############################################################################################
 # ADMIN
 ###############################################################################################
         
 class MainHandler(webapp2.RequestHandler):
     def get(self):
+        
+        videos = models.VideoEntity().all().order("order")
+        template_values = {
+            'videos' : videos
+        }
+        
         path = os.path.join(os.path.dirname(__file__), 'index.html')
-        self.response.out.write(template.render(path, {}))
+        self.response.out.write(template.render(path, template_values))
         
 
 app = webapp2.WSGIApplication([('/', MainHandler),
                                ('/admin', Admin),
-                               ('/a/addvideo', AddVideo)],
+                               ('/a/add', Add),
+                               ('/a/remove', Remove),
+                               ('/a/reorder', Reorder)],
                               debug=True)
