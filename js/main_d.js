@@ -15,10 +15,17 @@ var noiseW = 540;
 /*  StartPage  */
 
 $(document).ready(function() {
-    console.debug();
+    
+    // Darken Background
+    $('body').css("background","black");
+    
+    // Check if backend provides list otherwise revert to fallback
+    if(videosDesktop.length > 0) {
+        console.debug("Got data from backend...");
+        fullPlaylist = videosDesktop;
+    }
     
     console.log("Page ready...");
-    
     $('#container').append('<div id="loading" class="pages">Loading<img src="imgs/loader.gif"></div>');
 
     positionElements();

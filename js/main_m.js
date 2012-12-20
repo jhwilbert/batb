@@ -21,6 +21,12 @@ $(document).ready(function() {
 /***************/
 
 function loadPlayer() {
+    
+    if(videosMobile.length > 0) {
+        console.debug("Got data from backend");
+        fullPlaylist = videosMobile;
+    }
+    
     console.log("loadPlayer() :: Loading Player...");
     
     $("#container").append('<div id="player"></div>');
