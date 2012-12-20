@@ -13,7 +13,8 @@ var videoStatus = {}
 $(document).ready(function() {
     console.log("Page ready...");
     $('#container').append('<div id="loading" class="pages">Loading<img src="imgs/loader.gif"></div>');
-    loadNoiseVideo(); // Load Noise Video
+    
+    loadPlayer(); // Start YT player
 });
 
 
@@ -43,7 +44,12 @@ function noiseLoaded(noiseImage) {
     $("#video-container").css("opacity","1");
     
     $("#loading").remove();
-    loadPlayer(); // Start YT player
+    
+    $("#player").css("display","block");
+    
+    console.log("noiseLoaded() :: Loading Playlist...");
+    player.loadPlaylist(fullPlaylist,0); // Load playlist
+    
 }
 
 
@@ -130,8 +136,8 @@ function loadPlayer() {
 }
 
 function onPlayerReady(event) {
-    console.log("onPlayerReady(e) :: Loading PLaylist...");
-    player.loadPlaylist(fullPlaylist,0); // Load playlist
+    console.log("onPlayerReady(e) :: Loading Noise...");
+    loadNoiseVideo(); // Load Noise Video
 }
 
 function onYouTubeIframeAPIReady() {    
