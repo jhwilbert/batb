@@ -18,10 +18,11 @@ $(document).ready(function() {
     
     // Darken Background
     $('body').css("background","black");
+    $('body').css("overflow","hidden");
     
     // Check if backend provides list otherwise revert to fallback
     if(videosDesktop.length > 0) {
-        console.debug("Got data from backend...");
+        console.log("Got data from backend...");
         fullPlaylist = videosDesktop;
     }
     
@@ -33,7 +34,6 @@ $(document).ready(function() {
 });
 
 /* Noise Loader */                                                                                                                                                                                                                                                                                       
-
 function loadNoiseVideo() {
     console.log("Loading Noise...");
     var noiseImage = new Image(); 
@@ -68,7 +68,6 @@ function noiseLoaded(noiseImage) {
 }
 
 /* Playback Detection */
-
 function videoInterrupted(duration,currentTime) {
     if(duration != 0 && currentTime !=0) {
         var percentPlayed = Math.round((currentTime/duration) * 100);
@@ -130,13 +129,12 @@ function detectKey(e) {
             videoInterrupted(player.getDuration(),player.getCurrentTime())
         }
     } else {
-        console.debug("detectKey(e) :: keys are disabled at this point");
+        console.log("detectKey(e) :: keys are disabled at this point");
     }
 }
 
 
 /*  YT Player  */
-
 function loadPlayer() {
     console.log("loadPlayer() :: Loading Player...");
     $("#container").append('<div id="player"></div>');
@@ -173,7 +171,7 @@ function onYouTubeIframeAPIReady() {
 
 function onytplayerStateChange(newState) {
    var state = newState.data;
-   console.debug(newState.data);
+   console.log(newState.data);
    switch (newState.data) {
         case 0:
             console.log("-------------------------------End of playlist-------------------------------");
@@ -208,38 +206,29 @@ function onytplayerStateChange(newState) {
    }
 }
 
-
-
-
 /* Utilities */
-
 $(window).resize(function () { 
-    var verticalCenter = ($(window).height() / 2) - ($("#video-container").height()/2);
-    $("#video-container").css("top",verticalCenter + "px");
+    //var verticalCenter = ($(window).height() / 2) - ($("#video-container").height()/2);
+    //$("#video-container").css("top",verticalCenter + "px");
     //player.setSize($(window).height(),$(window).width());
-    /* do something */ 
 });
 
-
-
 function positionElements() {
-    
     // Resizing
     var windowW = $(window).width();
     var windowH = $(window).height();
-    
     
     vWidth = windowW;
     vHeight = windowH;
 
     if(windowW > windowH) {
-        console.debug("Window Width is bigger","width:",windowW,"height:",windowH);
+        console.log("Window Width is bigger","width:",windowW,"height:",windowH);
         nHeight = windowH;
         nWidth = nHeight * 1.77;
-        console.debug(nHeight,nWidth);
+        console.log(nHeight,nWidth);
                   
     } else if (windowH > windowW) {
-        console.debug("Window Height is bigger","width:",windowW,"height:",windowH);
+        console.log("Window Height is bigger","width:",windowW,"height:",windowH);
         nWidth = windowW;
         nHeight = nWidth / 1.77;
     }
@@ -251,7 +240,6 @@ function positionElements() {
     $("#container").css("top",vCenter + "px");
     $("#container").css("left",hCenter + "px");
 }
-
 
 $(window).focus(function() {
     console.log("Window has focus");
