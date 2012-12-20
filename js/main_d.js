@@ -13,7 +13,6 @@ var videoStatus = {}
 $(document).ready(function() {
     console.log("Page ready...");
     $('#container').append('<div id="loading" class="pages">Loading<img src="imgs/loader.gif"></div>');
-    
     loadPlayer(); // Start YT player
 });
 
@@ -26,8 +25,7 @@ function loadNoiseVideo() {
     var noiseImage = new Image(); 
     noiseImage.src = "imgs/noise4.gif";
     
-    noiseImage.onload = function () {
-        console.log("Noise Loaded...");    
+    noiseImage.onload = function () { 
         noiseLoaded(noiseImage);
     };
 }
@@ -45,10 +43,11 @@ function noiseLoaded(noiseImage) {
     
     $("#loading").remove();
     
-    $("#player").css("display","block");
+    $("#player").css("opacity","1");
     
-    console.log("noiseLoaded() :: Loading Playlist...");
-    player.loadPlaylist(fullPlaylist,0); // Load playlist
+    console.log("noiseLoaded() :: Starting to play...");
+    player.playVideo();
+
     
 }
 
@@ -128,7 +127,8 @@ function detectKey(e) {
 function loadPlayer() {
     console.log("loadPlayer() :: Loading Player...");
     $("#container").append('<div id="player"></div>');
-    
+    $("#player").css("opacity","0");
+        
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -137,7 +137,7 @@ function loadPlayer() {
 
 function onPlayerReady(event) {
     console.log("onPlayerReady(e) :: Loading Noise...");
-    loadNoiseVideo(); // Load Noise Video
+    player.cuePlaylist(fullPlaylist,0); // Load playlist
 }
 
 function onYouTubeIframeAPIReady() {    
@@ -187,6 +187,10 @@ function onytplayerStateChange(newState) {
             break;
         case 3:
             console.log("Youtube Player :: Buffering...")
+            break;
+        case 5:
+            console.log("Playlist ready");
+            loadNoiseVideo(); // Load Noise Video
             break;
    }
 }
