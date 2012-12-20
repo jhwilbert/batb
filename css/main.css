@@ -184,10 +184,12 @@ nav a:hover {
     font-size:12px;
     color:#c0c0c0;
 }
+
 .btn {
    cursor:pointer;
-   background:red;
-   width:60px;
+   background:url("/imgs/btn-remove.png");
+   width:30px;
+   height:30px;
    float:right;
    margin-right:5px;
    margin-top:5px;
@@ -205,6 +207,11 @@ nav a:hover {
     color:white;
 }
 
+.status {
+    float:right;
+    font-size:12px;
+    font-style:italic;
+}
 #clips-list {
     list-style-type: none;
     margin-left: 0;

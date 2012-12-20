@@ -25,30 +25,29 @@
       <![endif]-->
         <div class="header-container">
             <header class="wrapper clearfix">
-                <h1 class="title">Batb Admin</h1>
+                <h1 class="title">Batb Administration</h1>
             </header>
         </div>
         <div class="main-container">
             <div class="main wrapper clearfix">
                 <article>
-                    <h1>DESKTOP VIDEOS </h1>
+                    <h1>Desktop Playlist </h1>
                     <ul id="clips-list">
                         {% for video in videos_desktop %}
                             <li id="item_{{ video.key.id }}" class="clip">
                                 <div class="order-digit">{{ video.order }} </div>
                                 <script>displayInfo('item_{{ video.key.id }}','{{ video.url }}')</script>
-                                <div class="removeBtn btn" id='{{ video.key.id }}'>Remove</div>
+                                <div class="removeBtn btn" id='{{ video.key.id }}'></div>
                             </li> 
                         {% endfor %}
                     </ul>
                     
-                    <h1>MOBILE VIDEOS </h1>
+                    <h1> Mobile Playlist </h1>
                     <ul id="clips-list">
                         {% for video in videos_mobile %}
                             <li id="item_{{ video.key.id }}" class="clip">
                                 <script>displayInfo('item_{{ video.key.id }}','{{ video.url }}')</script>
-                                <strong>Video ID:</strong> {{ video.key.id }}
-                                <strong>URL:</strong> {{ video.url }}
+
                             </li> 
                         {% endfor %}
                     </ul>
@@ -62,7 +61,7 @@
                         <br><br>
                         <input type="submit" style="float:left" value="Add Video" />
                     </form>
-                    <div id="statusDesktop">Status</div>
+                    <div id="statusDesktop" class="status"></div>
                 </aside>
                 <aside>
                     <h3>Update Mobile Video</h3>
@@ -71,7 +70,7 @@
                         <br><br>
                         <input type="submit" style="float:left" value="Update Video" />
                     </form>
-                       <div id="statusMobile">Status</div>                
+                       <div id="statusMobile" class="status"></div>                
                 </aside>
 
             </div> <!-- #main -->
