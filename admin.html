@@ -27,8 +27,9 @@
         <div class="main-container">
             <div class="main wrapper clearfix">
                 <article>
+                    <h1>DESKTOP VIDEOS </h1>
                     <ul id="clips-list">
-                        {% for video in videos %}
+                        {% for video in videos_desktop %}
                             <li id="item_{{ video.key.id }}" class="clip">
                                 <strong>Video ID:</strong> {{ video.key.id }}
                                 <strong> Order:</strong> {{ video.order }} 
@@ -37,19 +38,36 @@
                             </li> 
                         {% endfor %}
                     </ul>
+                    
+                    <h1>MOBILE VIDEOS </h1>
+                    <ul id="clips-list">
+                        {% for video in videos_mobile %}
+                            <li id="item_{{ video.key.id }}" class="clip">
+                                <strong>Video ID:</strong> {{ video.key.id }}
+                                <strong>URL:</strong> {{ video.url }}
+                            </li> 
+                        {% endfor %}
+                    </ul>
                 </article>
                 
                 <aside>
-                    <h3>Add Video</h3>
+                    <h3>Add Desktop Video</h3>
                     <form action="/a/addvideo" id="addForm">
-                        <input type="text" name="order" value='{{ lastofplaylist }}' size="1"/>
-                        <input type="text" style="float:right" name="url" placeholder="IvmIk3LCmwc" />
+                        <input type="text" name="order" style="float:right"  value='{{ lastofplaylist }}' size="1"/>
+                        <input type="text" style="float:left" name="url" placeholder="IvmIk3LCmwc" />
                         <br><br>
-                        <input type="submit" style="float:right" value="Add Video" />
+                        <input type="submit" style="float:left" value="Add Video" />
                     </form>
-                    
-                    <div id="replyMsg">Status</div>
-                    <br>
+                    <div id="statusDesktop">Status</div>
+                </aside>
+                <aside>
+                    <h3>Update Mobile Video</h3>
+                    <form action="/a/updatevideo" id="updateForm">
+                        <input type="text" style="float:left" name="url" placeholder="IvmIk3LCmwc" />
+                        <br><br>
+                        <input type="submit" style="float:left" value="Update Video" />
+                    </form>
+                       <div id="statusMobile">Status</div>                
                 </aside>
 
             </div> <!-- #main -->

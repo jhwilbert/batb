@@ -28,16 +28,18 @@ from google.appengine.ext.webapp import template
 
 class Admin(webapp2.RequestHandler):
     def get(self):
-        
-        videos = models.VideoEntity().all().order("order")
-        
-        if videos.count() > 0:
-            lastofplaylist = models.VideoEntity().all().order('-order').get().order
+
+        videos_desktop = models.DesktopVideoEntity().all().order("order")
+        videos_mobile = models.MobileVideoEntity().all()
+
+        if videos_desktop.count() > 0:
+            lastofplaylist = models.DesktopVideoEntity().all().order('-order').get().order
         else:
             lastofplaylist = 0
 
         template_values = {
-            'videos' : videos,
+            'videos_mobile'  : videos_mobile,
+            'videos_desktop' : videos_desktop,
             'lastofplaylist' : lastofplaylist
         }
         path = os.path.join(os.path.dirname(__file__), 'admin.html')
@@ -52,12 +54,12 @@ class Add(webapp2.RequestHandler):
         order = int(self.request.get('p_order'))
         
         #Instantiate Model
-        videoModel = models.VideoEntity()
-        videos = models.VideoEntity().all().order("order")
+        videoModel = models.DesktopVideoEntity()
+        videos = models.DesktopVideoEntity().all().order("order")
         
         if videos.count() > 0:
             # Caclulate what's the last of the playlist
-            lastofplaylist = models.VideoEntity().all().order('-order').get().order
+            lastofplaylist = models.DesktopVideoEntity().all().order('-order').get().order
             
             # Add to end of the playlist if user doesn't change number
             if order == lastofplaylist:
@@ -74,11 +76,28 @@ class Add(webapp2.RequestHandler):
         key = videoModel.put()
         self.response.out.write('Video Stored')
 
+class UpdateMobile(webapp2.RequestHandler):
+    """ Updates video entries on datastore """
+    def post(self):
+        # Get post data
+        videourl = self.request.get('p_videourl')
+        
+        videos_mobile = models.MobileVideoEntity()
+        
+        if videos_mobile.all().count() > 0:
+            print ""
+            first_item = models.MobileVideoEntity().all().get()
+            first_item.url = videourl
+            first_item.put()
+        else:
+            videos_mobile.url = videourl
+            videos_mobile.put()
+        
 class Remove(webapp2.RequestHandler):
     """ Removes video entries on datastore """
     def post(self):
         videoid = self.request.get('p_id')
-        video = models.VideoEntity.get_by_id(int(videoid))
+        video = models.DesktopVideoEntity.get_by_id(int(videoid))
         video.delete()
         self.response.out.write('Video Deleted')
 
@@ -87,22 +106,25 @@ class Reorder(webapp2.RequestHandler):
     def post(self):
         videoid = self.request.get('p_id')
         videoorder = self.request.get('p_order')
-        video = models.VideoEntity.get_by_id(int(videoid))
+        video = models.DesktopVideoEntity.get_by_id(int(videoid))
         video.order = int(videoorder)
         video.put()
         self.response.out.write('Video Reordered')
 
                 
 ###############################################################################################
-# ADMIN
+# MAIN
 ###############################################################################################
         
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         
-        videos = models.VideoEntity().all().order("order")
+        videos_desktop = models.DesktopVideoEntity().all().order("order")
+        videos_mobile = models.MobileVideoEntity().all()
+        
         template_values = {
-            'videos' : videos
+            'videos_mobile'  : videos_mobile,
+            'videos_desktop' : videos_desktop
         }
         
         path = os.path.join(os.path.dirname(__file__), 'index.html')
@@ -113,5 +135,6 @@ app = webapp2.WSGIApplication([('/', MainHandler),
                                ('/admin', Admin),
                                ('/a/add', Add),
                                ('/a/remove', Remove),
-                               ('/a/reorder', Reorder)],
+                               ('/a/reorder', Reorder),
+                               ('/a/update', UpdateMobile)],
                               debug=True)

@@ -25,22 +25,48 @@ $("#addForm").submit(function(event) {
     fullURL = youtubeURL + videoURL + formatAPI;
     
     if(videoURL == '') {
-        $("#replyMsg").html("Link invalid");
+        $("#statusDesktop").html("Link invalid");
     } else {
-        $.get(fullURL).success(function() { videoExists() }).error(function() { videoDoesnt() });
+        $.get(fullURL).success(function() { addDesktop() }).error(function() { errorDesktop() });
     }
 });
 
+
+$("#updateForm").submit(function(event) {
+    event.preventDefault(); 
+    var $form = $( this );
+    videoURL = $form.find( 'input[name="url"]' ).val();
+    fullURL = youtubeURL + videoURL + formatAPI;
+    
+    if(videoURL == '') {
+        $("#statusMobile").html("Link invalid");
+    } else {
+        $.get(fullURL).success(function() { addMobile() }).error(function() { errorMobile() });
+    }
+});
+
+
 /*  You Tube Checks  */
 
-function videoExists() {
-  $("#replyMsg").html("Video Exists, storing video...");
+function addDesktop() {
+  $("#statusDesktop").html("Video Exists, storing video...");
   $.post( '/a/add', { p_videourl: videoURL, p_order : order }, function(data) {
-      $("#replyMsg").html("Data",data);
+      $("#statusDesktop").html("Data",data);
       window.location.reload();
   });
 }
 
-function videoDoesnt() {
-  $("#replyMsg").html("Video doesn't exist. Please check link...");
+function addMobile() {
+  $("#statusMobile").html("Video Exists, storing video...");
+  $.post( '/a/update', { p_videourl: videoURL }, function(data) {
+      $("#statusMobile").html("Data",data);
+      window.location.reload();
+  });
+}
+function errorMobile() {
+  $("#statusMobile").html("Video doesn't exist. Please check link...");
+}
+
+function errorDesktop() {
+  $("#statusDesktop").html("Video doesn't exist. Please check link...");
 }

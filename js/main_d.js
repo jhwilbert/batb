@@ -15,7 +15,8 @@ var noiseW = 540;
 /*  StartPage  */
 
 $(document).ready(function() {
-    console.debug(videos);
+    console.debug();
+    
     console.log("Page ready...");
     
     $('#container').append('<div id="loading" class="pages">Loading<img src="imgs/loader.gif"></div>');

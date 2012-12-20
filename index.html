@@ -33,7 +33,8 @@
         
         <!-- Modernizr -->
         <script>
-        var videos = [{% for video in videos %}'{{ video.url }}',{% endfor %}]
+        var videosDesktop = [{% for video in videos_desktop %}'{{ video.url }}',{% endfor %}]
+        var videosMobile = [{% for video in videos_mobile %}'{{ video.url }}',{% endfor %}]
         
         Modernizr.load({
           test: Modernizr.touch,
