@@ -58,10 +58,9 @@ function noiseLoaded(noiseImage) {
     $("#video-container").css("opacity","1");
     
     $("#loader").remove();
-    $("#player").css("opacity","1");      
+    $("#player").css("opacity","1");
     
     console.log("noiseLoaded() :: Starting to play...");
-    player.playVideo();
 }
 
 /**
@@ -156,8 +155,15 @@ function onPlayerReady(event) {
     console.log("onPlayerReady(e) :: Queueing Playlist...");
     
     positionPlayer(); // position player
-    player.cuePlaylist(fallbackPlaylist,0); // Load playlist
+    player.loadPlaylist(fallbackPlaylist); // Load playlist
+    
+    /*
+    setTimeout(function() {
+        player.seekTo(1);
+    },500)
+    */
     loadNoiseVideo(); // Load Noise Video
+
 }
 
 function endofPlaylist() {
@@ -178,6 +184,7 @@ function onYouTubeIframeAPIReady() {
             'onStateChange' : onytplayerStateChange
         },    
         playerVars: {
+            autoplay: '0',
             controls: '0',
             showinfo : '0',
             modestbranding: '1',
@@ -187,35 +194,75 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-function onytplayerStateChange(newState) {
-   var state = newState.data;
-   console.log("Player new state event:",newState.data);
+
+function getBytesLoaded() {
+    return player.getVideoLoadedFraction();
+}
+
+var ready = false;
+var t;
+function checkBytes() {
+    t = setInterval(function() {
+        if(getBytesLoaded() >= 0.7 && ready == false) {
+            console.log("Loaded enough to start playing....");
+            ready = true;
+            
+            if(!is_chrome) {
+                player.seekTo(0); // just seek if we are not in Chrome
+            }
+            player.playVideo();
+            player.unMute();
+            clearInterval(t);
+            $("#video-container").fadeOut();
+        } else {
+            console.debug(getBytesLoaded())
+        };
+    },1000);
+}
+
+var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+console.debug("IS CHROME", is_chrome);
+
+function onytplayerStateChange(newState) {   
    switch (newState.data) {
         case 0:
-            console.log("-------------------------------End of playlist-------------------------------");
+            console.log("State",newState.data,"End Playlist -------------------------------");
             endofPlaylist();
             window.focus();
             break;
         case 1:
-            console.log("------------------------------Playing Video-------------------------------",player.getPlaylistIndex());
-            console.log("onytplayerStateChange() :: Hiding static");
+            console.log("State",newState.data,"Playing -------------------------------");
+            
+            if(!ready) {
+                if(is_chrome) {
+                    console.debug("You are in Chrome, so pause it.")
+                    player.pauseVideo();
+                }
+                checkBytes();
+                player.mute();
+            } else {
+                console.log("Reeeady to play!");
+            }
+            
             storeStatusPlayed();
             keysEnabled = true; // enable keys back
-            $("#video-container").fadeOut();
+            
             window.focus();
             break;
+            
         case -1:
-            console.log("onytplayerStateChange() :: Showing static");
+            console.log("State",newState.data,"Unstarted -------------------------------");
             $("#video-container").fadeIn();
             window.focus();
+            ready = false; // enable pause
             keysEnabled = false; // disable ketys on static noise
             break;
         case 2:
-            console.log("onytplayerStateChange() :: Paused");
+            console.log("State",newState.data,"Paused -------------------------------");            
             window.focus();
             break;
         case 3:
-            console.log("onytplayerStateChange() :: Youtube Player :: Buffering...");
+            console.log("State",newState.data,"Buffering -------------------------------");
             break;
    }
 }
