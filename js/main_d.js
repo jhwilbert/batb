@@ -140,13 +140,13 @@ function detectKey(e) {
     }
 }
 
-
 /**
  * This set of functions load the player and inject it into the DOM
  */
  
 function loadPlayer() {
     console.log("loadPlayer() :: Loading Player...");
+    
     $("#container").append('<div id="player"></div>');
     $("#player").css("opacity","0");
     
@@ -159,6 +159,7 @@ function loadPlayer() {
 function onPlayerReady(event) {
     console.log("onPlayerReady(e) :: Loading Noise...");
     positionPlayer(); // position player
+    
     setTimeout(function(){
         player.cuePlaylist(fallbackPlaylist,0); // Load playlist
     },100);
@@ -233,7 +234,6 @@ function onytplayerStateChange(newState) {
 /**
  * Utility belt, all resizing functions.
  */
-
 
 $(window).resize(function () { 
     centerElement(postplayer);
