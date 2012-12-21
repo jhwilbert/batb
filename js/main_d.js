@@ -114,7 +114,7 @@ function checkWatched() {
     if ( percentWatched > threshold) {
         console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"All Good, let's keep playing videos");
     } else {
-        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** EMERGENCY ** Play Barbican Card Next", fallbackPlaylist.length-1);
+        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** SKIPPED TO MUCH ** Play Barbican Card Next", fallbackPlaylist.length-1);
         keysEnabled = false;
         player.playVideoAt(fallbackPlaylist.length-1);
     }
@@ -309,13 +309,6 @@ function positionNoise() {
     $("#video-container").css("top",Math.round(noiseVCenter) + "px");
     $("#video-container").css("left",Math.round(noiseHCenter) + "px");
     
-    /*
-    // Positioning
-    var vCenter = ($(window).height() / 2) - vHeight/2;
-    var hCenter = ($(window).width() / 2) - vWidth/2;
-    $("#container").css("top",Math.round(vCenter) + "px");
-    $("#container").css("left",Math.round(hCenter) + "px");
-    */
 }
 
 $(window).focus(function() {
