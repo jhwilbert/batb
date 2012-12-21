@@ -5,37 +5,44 @@
 var player,videoElement;
 var threshold = 50;
 var keysEnabled = true;
-var fullPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
+var fallbackPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var videoStatus = {}
 var vWidth,vHeight,nWidth,nHeight;
 var loader, postplayer;
-var noiseH = 305;
-var noiseW = 540;
 
-/*  StartPage  */
-
+/**
+ * Start page defines the start of the application. It gets the videos from
+ * the backend, creates the loader and starts the loader of the player.
+ */
+ 
 $(document).ready(function() {
     
-    // Darken Background
+    // Darken Background and hide scroll
     $('body').css("background","black");
     $('body').css("overflow","hidden");
     
     // Check if backend provides list otherwise revert to fallback
     if(videosDesktop.length > 0) {
         console.log("Got data from backend...");
-        fullPlaylist = videosDesktop;
+        fallbackPlaylist = videosDesktop;
     }
     
     console.log("Page ready...");
+    
     $('#container').append('<div id="loader"><img src="imgs/loader.gif">Loading TV</div>');
     loader = $("#loader");
     centerElement(loader);
     
-    positionElements();
     loadPlayer(); // Start YT player
 });
 
-/* Noise Loader */                                                                                                                                                                                                                                                                                       
+
+/**
+ * Called by the playlist ready function of the player.
+ * Loads the noise video, when it's loaded it adds it to the DOM
+ * positions and resizes the noise on the callback.
+ */
+                                                                                                                                                                                                                                                                                
 function loadNoiseVideo() {
     console.log("Loading Noise...");
     var noiseImage = new Image(); 
@@ -51,15 +58,8 @@ function noiseLoaded(noiseImage) {
     $('#container').append('<div id="video-container"></div>');
     $('#video-container').append(noiseImage);
     
-    $(noiseImage).css("width",nWidth + "px");
-    $(noiseImage).css("height",nHeight + "px");
+    positionNoise();
     
-    var noiseVCenter = ($(window).height() / 2) - nHeight/2;
-    var noiseHCenter = ($(window).width() / 2) - nWidth/2;
-    
-    $("#video-container").css("top",noiseVCenter + "px");
-    $("#video-container").css("left",noiseHCenter + "px");
-
     $("#video-container").css("opacity","1");
     
     $("#loader").remove();
@@ -69,7 +69,12 @@ function noiseLoaded(noiseImage) {
     player.playVideo();
 }
 
-/* Playback Detection */
+/**
+ * Detects the video when it's interrupted. And creates an object that stores 
+ * The percent watched by the user, if the percent is lower than set in the bar
+ * it will take the user to the last video.
+ */
+ 
 function videoInterrupted(duration,currentTime) {
     if(duration != 0 && currentTime !=0) {
         var percentPlayed = Math.round((currentTime/duration) * 100);
@@ -107,9 +112,9 @@ function checkWatched() {
     if ( percentWatched > threshold) {
         console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"All Good, let's keep playing videos");
     } else {
-        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** EMERGENCY ** Play Barbican Card Next", fullPlaylist.length-1);
+        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** EMERGENCY ** Play Barbican Card Next", fallbackPlaylist.length-1);
         keysEnabled = false;
-        player.playVideoAt(fullPlaylist.length-1);
+        player.playVideoAt(fallbackPlaylist.length-1);
     }
 }
 
@@ -136,12 +141,15 @@ function detectKey(e) {
 }
 
 
-/*  YT Player  */
+/**
+ * This set of functions load the player and inject it into the DOM
+ */
+ 
 function loadPlayer() {
     console.log("loadPlayer() :: Loading Player...");
     $("#container").append('<div id="player"></div>');
     $("#player").css("opacity","0");
-        
+    
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -150,7 +158,10 @@ function loadPlayer() {
 
 function onPlayerReady(event) {
     console.log("onPlayerReady(e) :: Loading Noise...");
-    player.cuePlaylist(fullPlaylist,0); // Load playlist
+    positionPlayer(); // position player
+    setTimeout(function(){
+        player.cuePlaylist(fallbackPlaylist,0); // Load playlist
+    },100);
 }
 
 function endofPlaylist() {
@@ -219,13 +230,16 @@ function onytplayerStateChange(newState) {
    }
 }
 
-/* Utilities */
+/**
+ * Utility belt, all resizing functions.
+ */
+
+
 $(window).resize(function () { 
     centerElement(postplayer);
     centerElement(loader);
-    //var verticalCenter = ($(window).height() / 2) - ($("#video-container").height()/2);
-    //$("#video-container").css("top",verticalCenter + "px");
-    //player.setSize($(window).height(),$(window).width());
+    positionPlayer();
+    positionNoise();
 });
 
 function centerElement(element) {
@@ -240,35 +254,68 @@ function centerElement(element) {
      
     $(element).css("top",centerH + "px");
     $(element).css("left",centerW + "px");
-    
-    
 }
-function positionElements() {
-    // Resizing
+
+function positionPlayer() {
+    // Window size
+    var windowW = $(window).width();
+    var windowH = $(window).height();
+    // Set Player Size
+    player.setSize(windowW,windowH); 
+}
+
+function positionNoise() {
     var windowW = $(window).width();
     var windowH = $(window).height();
     
-    vWidth = windowW;
-    vHeight = windowH;
-
+    var vWidth = windowW; // set video width
+    var vHeight = windowH; // set video height
+    
+    var baseW = 540; // set base noise width
+    var baseH = 305; // set base noise height
+    
+    
+    // Calculate Noise Size
     if(windowW > windowH) {
-        console.log("Window Width is bigger","width:",windowW,"height:",windowH);
-        nHeight = windowH;
-        nWidth = nHeight * 1.77;
-        console.log(nHeight,nWidth);
-                  
-    } else if (windowH > windowW) {
-        console.log("Window Height is bigger","width:",windowW,"height:",windowH);
-        nWidth = windowW;
+        console.log("Landscape View :: use width to measure");
+        var sizeFactor = windowW / baseW;
+        nWidth = baseW * sizeFactor;
         nHeight = nWidth / 1.77;
+        if(nHeight > windowH) {
+            console.log("Film won't fit vertically resize again",windowH/nHeight);
+            nWidth = nWidth * windowH/nHeight;        
+        }
+    } 
+    
+    if (windowW < windowH) {
+        console.log("Portrait View :: use height to measure");
+        var sizeFactor = windowH / baseH;
+        nHeight = baseH * sizeFactor;
+        nWidth = nHeight * 1.77;
+        if(nWidth > windowW) {
+            console.log("Film won't fit horizontally resize again",windowW/nWidth);
+            nHeight = nHeight * windowW/nWidth;
+        } 
     }
-     
+    
+    // Set Noise Size
+    var noiseImage = $("#video-container").find('img');
+    var noiseVCenter = ($(window).height() / 2) - nHeight/2;
+    var noiseHCenter = ($(window).width() / 2) - nWidth/2;
+    
+    $(noiseImage).css("width",Math.round(nWidth) + "px");
+    $(noiseImage).css("height",Math.round(nHeight) + "px");
+    
+    $("#video-container").css("top",Math.round(noiseVCenter) + "px");
+    $("#video-container").css("left",Math.round(noiseHCenter) + "px");
+    
+    /*
     // Positioning
     var vCenter = ($(window).height() / 2) - vHeight/2;
     var hCenter = ($(window).width() / 2) - vWidth/2;
-    
-    $("#container").css("top",vCenter + "px");
-    $("#container").css("left",hCenter + "px");
+    $("#container").css("top",Math.round(vCenter) + "px");
+    $("#container").css("left",Math.round(hCenter) + "px");
+    */
 }
 
 $(window).focus(function() {
