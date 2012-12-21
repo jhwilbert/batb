@@ -153,12 +153,11 @@ function loadPlayer() {
 }
 
 function onPlayerReady(event) {
-    console.log("onPlayerReady(e) :: Loading Noise...");
-    positionPlayer(); // position player
+    console.log("onPlayerReady(e) :: Queueing Playlist...");
     
-    setTimeout(function(){
-        player.cuePlaylist(fallbackPlaylist,0); // Load playlist
-    },100);
+    positionPlayer(); // position player
+    player.cuePlaylist(fallbackPlaylist,0); // Load playlist
+    loadNoiseVideo(); // Load Noise Video
 }
 
 function endofPlaylist() {
@@ -190,7 +189,7 @@ function onYouTubeIframeAPIReady() {
 
 function onytplayerStateChange(newState) {
    var state = newState.data;
-   console.log(newState.data);
+   console.log("Player new state event:",newState.data);
    switch (newState.data) {
         case 0:
             console.log("-------------------------------End of playlist-------------------------------");
@@ -216,11 +215,7 @@ function onytplayerStateChange(newState) {
             window.focus();
             break;
         case 3:
-            console.log("onytplayerStateChange() :: Youtube Player :: Buffering...")
-            break;
-        case 5:
-            console.log("onytplayerStateChange() :: Playlist ready...");
-            loadNoiseVideo(); // Load Noise Video
+            console.log("onytplayerStateChange() :: Youtube Player :: Buffering...");
             break;
    }
 }
@@ -238,8 +233,6 @@ $(window).resize(function () {
 });
 
 function centerElement(element) {
-    
-    console.debug("wwww",$("#loader").width());
     
     var windowW = $(window).width();
     var windowH = $(window).height();
