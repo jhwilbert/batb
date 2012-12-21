@@ -6,8 +6,7 @@ var player,videoElement;
 var threshold = 50;
 var keysEnabled = true;
 var fallbackPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
-var videoStatus = {}
-var vWidth,vHeight,nWidth,nHeight;
+var videoStatus = {};
 var loader, postplayer;
 
 /**
@@ -27,13 +26,16 @@ $(document).ready(function() {
         fallbackPlaylist = videosDesktop;
     }
     
-    console.log("Page ready...");
-    
+    // Add loader
     $('#container').append('<div id="loader"><img src="imgs/loader.gif">Loading TV</div>');
     loader = $("#loader");
     centerElement(loader);
     
-    loadPlayer(); // Start YT player
+    // Start YT player
+    loadPlayer(); 
+    
+    console.log("Page ready...");
+    
 });
 
 
@@ -178,8 +180,6 @@ function endofPlaylist() {
 }
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
-        height: vHeight,
-        width: vWidth,
         events: {
             'onReady': onPlayerReady,
             'onStateChange' : onytplayerStateChange
