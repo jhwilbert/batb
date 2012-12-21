@@ -1,35 +1,40 @@
-/**************************************/
-/*          Mobile Version            */
-/**************************************/
-
+/****************************************
+ *  MOBILE  main_m.js                   *
+ ****************************************/
 var player;
-var videoId = 'A0BzTZMFmT4';
-var videoElement;
 
-/***************/
-/*  StartPage  */
-/***************/
-
+/**
+ * Start page defines the start of the application. It gets the videos from
+ * the backend, creates the loader and starts the loader of the player.
+ */
+ 
 $(document).ready(function() {
     console.log("Page ready...");
-    loadPlayer(); // Load Player
+    //loadPlayer(); // Load Player
+    loadPrepage();
 });
 
+function loadPrepage() {
+    $("#container").append('<div id="pre-player" class="page">PRE PAGE</div>');
+    $("#pre-player").click(function() {
+        $("#pre-player").remove();
+        loadPlayer(); 
+    });
+}
 
-/***************/
-/*  YT Player  */
-/***************/
-
+/**
+ * Start page defines the start of the application. It gets the videos from
+ * the backend, creates the loader and starts the loader of the player.
+ */
+ 
 function loadPlayer() {
-    
     if(videosMobile.length > 0) {
         console.debug("Got data from backend");
         fullPlaylist = videosMobile;
     }
     
-    console.log("loadPlayer() :: Loading Player...");
-    
     $("#container").append('<div id="player"></div>');
+    $("#player").css("display","none");
     
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
@@ -38,18 +43,18 @@ function loadPlayer() {
 }
 
 function onPlayerReady(event) {
-    player.loadVideoById(videoId,0); // Load Video
+    $("#player").css("display","block");
+    player.loadVideoById(videosMobile[0],0); // Load Video
     player.playVideo();
 }
 
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
-        height: viewportSize().h,
-        width: viewportSize().w,
+        height: $(window).height(),
+        width: $(window).width(),
         events: {
             'onReady': onPlayerReady,
             'onStateChange' : onytplayerStateChange,
-            'videoId' : 'u1zgFlCw8Aw'
         },    
         playerVars: {
             controls: '0',
@@ -61,43 +66,15 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-
 function onytplayerStateChange(newState) {
    var state = newState.data;
    switch (newState.data) {
         case 0:
             console.log("-------------------------------End of playlist-------------------------------");
             $("#player").remove();
-            $("#container").append('<div id="post-layer" class="pages">POST PLAYER</div>');
+            $("#container").append('<div id="post-player" class="page">POST PLAYER</div>');
             $("#post-player").show();
             window.focus();
             break;
     }
-}
-
-
-/************/
-/* UTILS    */
-/************/
-
-
-function viewportSize() {
-     var viewportwidth;
-     var viewportheight;
-
-     if (typeof window.innerWidth != 'undefined') {
-          viewportwidth = window.innerWidth,
-          viewportheight = window.innerHeight
-     } else if (typeof document.documentElement != 'undefined'
-         && typeof document.documentElement.clientWidth !=
-         'undefined' && document.documentElement.clientWidth != 0)
-     {
-           viewportwidth = document.documentElement.clientWidth,
-           viewportheight = document.documentElement.clientHeight
-     } else {
-           viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-           viewportheight = document.getElementsByTagName('body')[0].clientHeight
-     }
-    
-    return { w : viewportwidth, h : viewportheight }
 }

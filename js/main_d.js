@@ -1,6 +1,6 @@
-/**************************************/
-/*          Desktop Version           */
-/**************************************/
+/****************************************
+ *  DESKTOP main_d.js                   *
+ ****************************************/
 
 var player,videoElement;
 var threshold = 50;
@@ -13,12 +13,7 @@ var loader, postplayer;
  * Start page defines the start of the application. It gets the videos from
  * the backend, creates the loader and starts the loader of the player.
  */
- 
 $(document).ready(function() {
-    
-    // Darken Background and hide scroll
-    $('body').css("background","black");
-    $('body').css("overflow","hidden");
     
     // Check if backend provides list otherwise revert to fallback
     if(videosDesktop.length > 0) {
@@ -38,13 +33,11 @@ $(document).ready(function() {
     
 });
 
-
 /**
  * Called by the playlist ready function of the player.
  * Loads the noise video, when it's loaded it adds it to the DOM
  * positions and resizes the noise on the callback.
- */
-                                                                                                                                                                                                                                                                                
+ */                                                                                                                                                                                                                                                                                
 function loadNoiseVideo() {
     console.log("Loading Noise...");
     var noiseImage = new Image(); 
@@ -76,7 +69,6 @@ function noiseLoaded(noiseImage) {
  * The percent watched by the user, if the percent is lower than set in the bar
  * it will take the user to the last video.
  */
- 
 function videoInterrupted(duration,currentTime) {
     if(duration != 0 && currentTime !=0) {
         var percentPlayed = Math.round((currentTime/duration) * 100);
@@ -102,7 +94,7 @@ function storeStatus(videoIndex,percentPlayed) {
 function storeStatusPlayed() {
     if(player.getPlaylistIndex() > 0) { 
         var prevVideo = player.getPlaylistIndex()-1;
-        if(videoStatus[prevVideo] == undefined) { // Update the video object 100% if it hasn't been interrupted
+        if(videoStatus[prevVideo] == undefined && player.getPlaylistIndex() != fallbackPlaylist.length-1) { // Update the video object 100% if it hasn't been interrupted
             console.log("storeStatusPlayed() :: Previous Played fully");
             storeStatus(prevVideo,100);
         }
@@ -143,7 +135,9 @@ function detectKey(e) {
 }
 
 /**
- * This set of functions load the player and inject it into the DOM
+ * This set of functions load the player and inject it into the DOM. Player
+ * is loaded by loadPlayer() function. With the callback onPlayerReady(). On player
+ * ready it positions and resizes the player to windowwith and waits 100ms to cue a playlist.
  */
  
 function loadPlayer() {
@@ -238,11 +232,15 @@ function onytplayerStateChange(newState) {
 $(window).resize(function () { 
     centerElement(postplayer);
     centerElement(loader);
+    
     positionPlayer();
     positionNoise();
 });
 
 function centerElement(element) {
+    
+    console.debug("wwww",$("#loader").width());
+    
     var windowW = $(window).width();
     var windowH = $(window).height();
     
@@ -273,7 +271,6 @@ function positionNoise() {
     
     var baseW = 540; // set base noise width
     var baseH = 305; // set base noise height
-    
     
     // Calculate Noise Size
     if(windowW > windowH) {
