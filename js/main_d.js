@@ -57,6 +57,8 @@ function noiseLoaded(noiseImage) {
     positionNoise();
     
     $("#video-container").css("opacity","1");
+    //$("#video-container").css("opacity","0"); // TESTING
+    
     
     $("#loader").remove();
     $("#player").css("opacity","1");
@@ -156,13 +158,7 @@ function onPlayerReady(event) {
     console.log("onPlayerReady(e) :: Queueing Playlist...");
     
     positionPlayer(); // position player
-    player.loadPlaylist(fallbackPlaylist); // Load playlist
-    
-    /*
-    setTimeout(function() {
-        player.seekTo(1);
-    },500)
-    */
+    player.loadPlaylist(fallbackPlaylist,0,0,'default'); // Load playlist
     loadNoiseVideo(); // Load Noise Video
 
 }
@@ -185,7 +181,7 @@ function onYouTubeIframeAPIReady() {
             'onStateChange' : onytplayerStateChange
         },    
         playerVars: {
-            autoplay: '0',
+            autoplay: '1',
             controls: '1',
             showinfo : '0',
             modestbranding: '1',
@@ -212,7 +208,6 @@ function onytplayerStateChange(newState) {
                 if(player.getCurrentTime() > 0.1) {
                     clearInterval(t);
                     $("#video-container").fadeOut();
-                    
                 }
             },100);
             
@@ -223,7 +218,10 @@ function onytplayerStateChange(newState) {
             
         case -1:
             console.log("State",newState.data,"Unstarted -------------------------------");
-            $("#video-container").fadeIn();
+            
+            $("#video-container").fadeIn(); // comment for testing
+            console.log("Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
+            
             window.focus();
             ready = false; // enable pause
             keysEnabled = false; // disable ketys on static noise
@@ -233,7 +231,6 @@ function onytplayerStateChange(newState) {
             window.focus();
             break;
         case 3:
-            //$("#video-container").fadeIn();
             console.log("State",newState.data,"Buffering -------------------------------");
             break;
    }
