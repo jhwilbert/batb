@@ -1,3 +1,4 @@
+
 /****************************************
  *  DESKTOP main_d.js                   *
  ****************************************/
@@ -185,7 +186,7 @@ function onYouTubeIframeAPIReady() {
         },    
         playerVars: {
             autoplay: '0',
-            controls: '0',
+            controls: '1',
             showinfo : '0',
             modestbranding: '1',
             wmode: 'opaque',
@@ -194,35 +195,8 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-
-function getBytesLoaded() {
-    return player.getVideoLoadedFraction();
-}
-
-var ready = false;
-var t;
-function checkBytes() {
-    t = setInterval(function() {
-        if(getBytesLoaded() >= 0.7 && ready == false) {
-            console.log("Loaded enough to start playing....");
-            ready = true;
-            
-            if(!is_chrome) {
-                player.seekTo(0); // just seek if we are not in Chrome
-            }
-            player.playVideo();
-            player.unMute();
-            clearInterval(t);
-            $("#video-container").fadeOut();
-        } else {
-            console.debug(getBytesLoaded())
-        };
-    },1000);
-}
-
 var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-console.debug("IS CHROME", is_chrome);
-
+var t;
 function onytplayerStateChange(newState) {   
    switch (newState.data) {
         case 0:
@@ -233,18 +207,15 @@ function onytplayerStateChange(newState) {
         case 1:
             console.log("State",newState.data,"Playing -------------------------------");
             
-            if(!ready) {
-                if(is_chrome) {
-                    console.debug("You are in Chrome, so pause it.")
-                    player.pauseVideo();
+            t = setInterval(function() {
+                console.debug(player.getCurrentTime());
+                if(player.getCurrentTime() > 0.1) {
+                    clearInterval(t);
+                    $("#video-container").fadeOut();
+                    
                 }
-                checkBytes();
-                player.mute();
-            } else {
-                console.log("Reeeady to play!");
-            }
+            },100);
             
-            storeStatusPlayed();
             keysEnabled = true; // enable keys back
             
             window.focus();
@@ -262,6 +233,7 @@ function onytplayerStateChange(newState) {
             window.focus();
             break;
         case 3:
+            //$("#video-container").fadeIn();
             console.log("State",newState.data,"Buffering -------------------------------");
             break;
    }
