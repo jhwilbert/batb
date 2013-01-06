@@ -6,10 +6,10 @@
 var player,videoElement;
 var threshold = 50;
 var keysEnabled = true;
-var fallbackPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var videoStatus = {};
 var loader, postplayer;
 var timer;  
+var timeron = false;
 
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -17,12 +17,8 @@ var timer;
  */
 $(window).load(function(){
     
-    // Check if backend provides list otherwise revert to fallback
-    if(videosDesktop.length > 0) {
-        console.log("Got data from backend...");
-        fallbackPlaylist = videosDesktop;
-    }
-    
+    console.log("Page ready...");
+        
     // Add loader
     $('#container').append('<div id="loader"><img src="imgs/loader.gif">Loading TV</div>');
     loader = $("#loader");
@@ -30,7 +26,6 @@ $(window).load(function(){
     
     // Start YT player
     loadPlayer(); 
-    console.log("Page ready...");
     
 });
 
@@ -40,7 +35,8 @@ $(window).load(function(){
  * positions and resizes the noise on the callback.
  */                                                                                                                                                                                                                                                                                
 function loadNoiseVideo() {
-    console.log("Loading Noise...");
+    console.log("loadNoiseVideo() :: Loading Noise...");
+    
     var noiseImage = new Image(); 
     noiseImage.src = "imgs/noise4.gif";
     
@@ -56,14 +52,12 @@ function noiseLoaded(noiseImage) {
     
     positionNoise();
     
-    //$("#video-container").css("opacity","1");
-    $("#video-container").css("opacity","1"); // TESTING
-    
-    
-    $("#loader").remove();
+    $("#loader").remove();    
+    $("#video-container").css("opacity","1");
     $("#player").css("opacity","1");
     
-    console.log("noiseLoaded() :: Starting to play...");
+    console.log("noiseLoaded() :: Noise Loaded! Loading playlist");
+    player.loadPlaylist(videosDesktop);
 }
 
 /**
@@ -155,11 +149,8 @@ function loadPlayer() {
 }
 
 function onPlayerReady(event) {
-    console.log("onPlayerReady(e) :: Queueing Playlist...");
-    console.debug(videosDesktop)
-    player.loadPlaylist(videosDesktop);
+    console.log("onPlayerReady(e) :: Calling noise and loading playlist...");
     loadNoiseVideo(); // Load Noise Video
-
 }
 
 function endofPlaylist() {
@@ -173,6 +164,7 @@ function endofPlaylist() {
     $("#post-player").fadeIn();
     
 }
+
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
         events: {
@@ -195,19 +187,15 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-
-var timeron = false;
-
 function checkPlay() {
-    console.debug("CurrentTime:",player.getCurrentTime());
+    console.debug("checkPlay() :: CurrentTime:",player.getCurrentTime());
     if(player.getCurrentTime() > 0.1) {
         stopCheck();
     }
 }
 
 function startCheck() {
-    console.debug("Starting Timer");
+    console.debug("startCheck() :: Starting Timer");
     if(!timeron) {
         timer = setInterval('checkPlay()',300);
     }
@@ -219,7 +207,7 @@ function stopCheck() {
         $("#video-container").fadeOut(); // fadeout noise
         clearInterval(timer);
         timeron = false;    
-        console.debug("Stopping Timer");
+        console.debug("stopCheck() :: Stopping Timer");
         
     }
 }
@@ -227,32 +215,32 @@ function stopCheck() {
 function onytplayerStateChange(newState) {   
    switch (newState.data) {
         case 0:
-            console.log("State",newState.data,"End Playlist -------------------------------");
+            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"End Playlist -------------------------------");
             endofPlaylist();
             window.focus();
             break;
         case 1:
-            console.log("State",newState.data,"Playing -------------------------------");
+            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Playing -------------------------------");
             keysEnabled = true; // enable keys back
             window.focus();
             break;
         case -1:
             startCheck(); // star timer to check it its really playing
-            console.log("State",newState.data,"Unstarted -------------------------------");
+            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
             
             $("#video-container").fadeIn(); // comment for testing
-            console.log("Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
+            console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             
             window.focus();
             paused = true; // enable pause
             keysEnabled = false; // disable ketys on static noise
             break;
         case 2:
-            console.log("State",newState.data,"Paused -------------------------------");            
+            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Paused -------------------------------");            
             window.focus();
             break;
         case 3:
-            console.log("State",newState.data,"Buffering -------------------------------");
+            console.log("------------------------------- onytplayerStateChange() :: State",newState.data, "Buffering -------------------------------");
             break;
    }
 }
@@ -305,23 +293,23 @@ function positionNoise() {
     
     // Calculate Noise Size
     if(windowW > windowH) {
-        console.log("Landscape View :: use width to measure");
+        //console.log("positionNoise() :: Landscape View :: use width to measure");
         var sizeFactor = windowW / baseW;
         nWidth = baseW * sizeFactor;
         nHeight = nWidth / 1.77;
         if(nHeight > windowH) {
-            console.log("Film won't fit vertically resize again",windowH/nHeight);
+            console.log("positionNoise() ::  won't fit vertically resize again",windowH/nHeight);
             nWidth = nWidth * windowH/nHeight;        
         }
     } 
     
     if (windowW < windowH) {
-        console.log("Portrait View :: use height to measure");
+        //console.log("Portrait View :: use height to measure");
         var sizeFactor = windowH / baseH;
         nHeight = baseH * sizeFactor;
         nWidth = nHeight * 1.77;
         if(nWidth > windowW) {
-            console.log("Film won't fit horizontally resize again",windowW/nWidth);
+            //console.log("positionNoise() :: Won't fit horizontally resize again",windowW/nWidth);
             nHeight = nHeight * windowW/nWidth;
         } 
     }
