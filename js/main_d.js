@@ -10,7 +10,7 @@ var videoStatus = {};
 var loader, postplayer;
 var timer;  
 var timeron = false;
-
+var noiseon = true;
 /**
  * Start page defines the start of the application. It gets the videos from
  * the backend, creates the loader and starts the loader of the player.
@@ -178,7 +178,7 @@ function onYouTubeIframeAPIReady() {
         },    
         playerVars: {
             'autoplay' : 1,
-            'controls': 0,
+            'controls': 1,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
@@ -191,8 +191,6 @@ function onYouTubeIframeAPIReady() {
         
   });
 }
-
-var noiseon = true;
 
 
 /**
