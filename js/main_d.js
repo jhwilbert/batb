@@ -9,6 +9,7 @@ var keysEnabled = true;
 var fallbackPlaylist = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
 var videoStatus = {};
 var loader, postplayer;
+var timer;  
 
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -56,8 +57,8 @@ function noiseLoaded(noiseImage) {
     
     positionNoise();
     
-    $("#video-container").css("opacity","1");
-    //$("#video-container").css("opacity","0"); // TESTING
+    //$("#video-container").css("opacity","1");
+    $("#video-container").css("opacity","1"); // TESTING
     
     
     $("#loader").remove();
@@ -156,9 +157,8 @@ function loadPlayer() {
 
 function onPlayerReady(event) {
     console.log("onPlayerReady(e) :: Queueing Playlist...");
-    
-    positionPlayer(); // position player
-    player.loadPlaylist(fallbackPlaylist,0,0,'default'); // Load playlist
+    console.debug(videosDesktop)
+    player.loadPlaylist(videosDesktop);
     loadNoiseVideo(); // Load Noise Video
 
 }
@@ -181,18 +181,51 @@ function onYouTubeIframeAPIReady() {
             'onStateChange' : onytplayerStateChange
         },    
         playerVars: {
-            autoplay: '1',
-            controls: '1',
-            showinfo : '0',
-            modestbranding: '1',
-            wmode: 'opaque',
-            disablekb: '1'
-        }
+            'autoplay' : 1,
+            'controls': 1,
+            'showinfo' : 0,
+            'modestbranding' : 1,
+            'wmode' : 'opaque',
+            'disablekb' : 1,
+            'enablejsapi': 1,
+            'html5': 1,
+            'origin': window.location.host,
+        },
+        width : '100%',
+        height : '100%',
+        
   });
 }
 
 var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-var t;
+
+var timeron = false;
+
+function checkPlay() {
+    console.debug("CurrentTime:",player.getCurrentTime());
+    if(player.getCurrentTime() > 0.1) {
+        stopCheck();
+    }
+}
+
+function startCheck() {
+    console.debug("Starting Timer");
+    if(!timeron) {
+        timer = setInterval('checkPlay()',300);
+    }
+    timeron = true;
+}
+
+function stopCheck() {
+    if(timeron) {
+        $("#video-container").fadeOut(); // fadeout noise
+        clearInterval(timer);
+        timeron = false;    
+        console.debug("Stopping Timer");
+        
+    }
+}
+
 function onytplayerStateChange(newState) {   
    switch (newState.data) {
         case 0:
@@ -202,28 +235,18 @@ function onytplayerStateChange(newState) {
             break;
         case 1:
             console.log("State",newState.data,"Playing -------------------------------");
-            
-            t = setInterval(function() {
-                console.debug(player.getCurrentTime());
-                if(player.getCurrentTime() > 0.1) {
-                    clearInterval(t);
-                    $("#video-container").fadeOut();
-                }
-            },100);
-            
             keysEnabled = true; // enable keys back
-            
             window.focus();
             break;
-            
         case -1:
+            startCheck(); // star timer to check it its really playing
             console.log("State",newState.data,"Unstarted -------------------------------");
             
             $("#video-container").fadeIn(); // comment for testing
             console.log("Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             
             window.focus();
-            ready = false; // enable pause
+            paused = true; // enable pause
             keysEnabled = false; // disable ketys on static noise
             break;
         case 2:
@@ -267,6 +290,7 @@ function positionPlayer() {
     // Window size
     var windowW = $(window).width();
     var windowH = $(window).height();
+    
     // Set Player Size
     player.setSize(windowW,windowH); 
 }

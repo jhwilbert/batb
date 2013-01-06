@@ -22,7 +22,6 @@
         <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p
         <![endif]-->
-        
         <div id="container"></div>
         
         <!-- Vendor -->
@@ -31,8 +30,8 @@
         
         <!-- Modernizr -->
         <script>
-        var videosDesktop = ['qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0',]
-        var videosMobile = ['A0BzTZMFmT4',]
+        var videosDesktop = [{% for video in videos_desktop %}'{{ video.url }}',{% endfor %}];
+        var videosMobile = [{% for video in videos_mobile %}'{{ video.url }}',{% endfor %}];
         
         Modernizr.load({
           test: Modernizr.touch,
@@ -41,12 +40,13 @@
         });
         </script>
         
-        <!-- GA -->
+        <!-- GA
         <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
         </script>
+         -->
     </body>
 </html>
