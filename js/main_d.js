@@ -15,7 +15,7 @@ var timeron = false;
  * Start page defines the start of the application. It gets the videos from
  * the backend, creates the loader and starts the loader of the player.
  */
-$(window).load(function(){
+$(document).ready(function(){
     
     console.log("Page ready...");
         
@@ -263,9 +263,8 @@ function onytplayerStateChange(newState) {
         case -1:
             startCheck(); // star timer to check it its really playing
             console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
+            showNoise();
             
-            $("#video-container").fadeIn();
-            noiseon = true;
             console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             
             window.focus();
