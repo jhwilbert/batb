@@ -80,17 +80,19 @@ function storeStatus(videoIndex,percentPlayed) {
     videoStatus[videoIndex] = percentPlayed;
     console.log("storeStatus() ::", videoStatus);
          
-    if(videoIndex > 1 ) {
+    if(videoIndex > 1 && videoIndex  < videosDesktop.length-1) {
         checkWatched(); //check if we need Barbican cards to appear
-    } else {
+    } else if (videoIndex < 1) {
         console.log("storeStatus() :: Still Gathering Data");
+    } else if (videoIndex == videosDesktop.length-1) {
+        console.log("storeStatus() :: Last Video No Storing")
     }
 }
 
 function storeStatusPlayed() {
     if(player.getPlaylistIndex() > 0) { 
         var prevVideo = player.getPlaylistIndex()-1;
-        if(videoStatus[prevVideo] == undefined && player.getPlaylistIndex() != fallbackPlaylist.length-1) { // Update the video object 100% if it hasn't been interrupted
+        if(videoStatus[prevVideo] == undefined && player.getPlaylistIndex() != videosDesktop.length-1) { // Update the video object 100% if it hasn't been interrupted
             console.log("storeStatusPlayed() :: Previous Played fully");
             storeStatus(prevVideo,100);
         }
@@ -102,9 +104,10 @@ function checkWatched() {
     if ( percentWatched > threshold) {
         console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"All Good, let's keep playing videos");
     } else {
-        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** SKIPPED TO MUCH ** Play Barbican Card Next", fallbackPlaylist.length-1);
+        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** SKIPPED TO MUCH ** Play Barbican Card Next", videosDesktop.length-1);
         keysEnabled = false;
-        player.playVideoAt(fallbackPlaylist.length-1);
+        console.debug("keysEnabled",keysEnabled)
+        player.playVideoAt(videosDesktop.length-1);
     }
 }
 
