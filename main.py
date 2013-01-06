@@ -17,6 +17,7 @@
 import webapp2
 import os
 import re
+import base64
 import models
 from google.appengine.ext import db
 from google.appengine.ext.webapp import template
@@ -26,9 +27,39 @@ from google.appengine.ext.webapp import template
 # ADMIN
 ###############################################################################################
 
-class Admin(webapp2.RequestHandler):
-    def get(self):
 
+    
+class Admin(webapp2.RequestHandler):
+    def doAuth(self):
+        auth = self.request.headers.get("Authorization")
+
+        if not auth:
+            self.response.headers['WWW-Authenticate'] = 'Basic realm="admin"'
+            self.response.set_status(401)
+            return False
+        auth = auth.split()[1]
+        try:
+            user, password = base64.b64decode(auth).split(":")
+        except TypeError:
+            try:
+                user, password = base64.b64decode(auth + "=").split(":")
+            except TypeError:
+                try:
+                    user, password = base64.b64decode(auth + "==").split(":")
+                except TypeError:
+                    return None        
+        if user == 'disarm' and password == 'batb':
+            return user
+        return None
+        
+    def get(self):
+        
+        user = self.doAuth()
+        
+        if not user:
+            self.response.out.write("Access Denied")
+            return
+          
         videos_desktop = models.DesktopVideoEntity().all().order("order")
         videos_mobile = models.MobileVideoEntity().all()
 

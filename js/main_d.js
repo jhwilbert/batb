@@ -60,11 +60,13 @@ function noiseLoaded(noiseImage) {
     player.loadPlaylist(videosDesktop);
 }
 
+
 /**
  * Detects the video when it's interrupted. And creates an object that stores 
  * The percent watched by the user, if the percent is lower than set in the bar
  * it will take the user to the last video.
  */
+ 
 function videoInterrupted(duration,currentTime) {
     if(duration != 0 && currentTime !=0) {
         var percentPlayed = Math.round((currentTime/duration) * 100);
@@ -131,6 +133,7 @@ function detectKey(e) {
     }
 }
 
+
 /**
  * This set of functions load the player and inject it into the DOM. Player
  * is loaded by loadPlayer() function. With the callback onPlayerReady(). On player
@@ -152,6 +155,7 @@ function loadPlayer() {
 function onPlayerReady(event) {
     console.log("onPlayerReady(e) :: Calling noise and loading playlist...");
     loadNoiseVideo(); // Load Noise Video
+    startCheck(); // start timer to check if it its really playing
 }
 
 function endofPlaylist() {
@@ -174,7 +178,7 @@ function onYouTubeIframeAPIReady() {
         },    
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
@@ -189,6 +193,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 var noiseon = true;
+
 
 /**
  * This set of functions control the noise in relation to the video.
@@ -242,10 +247,10 @@ function stopCheck() {
     }
 }
 
+
 /**
- * State change calls from YT Frame API
+ * State change calls from YT I Frame API
  */
- 
  
 function onytplayerStateChange(newState) {   
    switch (newState.data) {
@@ -261,7 +266,7 @@ function onytplayerStateChange(newState) {
             window.focus();
             break;
         case -1:
-            startCheck(); // star timer to check it its really playing
+            
             console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
             showNoise();
             
