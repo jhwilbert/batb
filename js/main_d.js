@@ -188,10 +188,39 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
+var noiseon = true;
+
+/**
+ * This set of functions control the noise in relation to the video.
+ * it activates the noise if the video starts playing and hasn't reached 1-2 seconds before end
+ * it deatctivates the noise once the video has reached 2 seconds prior to end ofthe film.
+ */
+ 
 function checkPlay() {
-    console.debug("checkPlay() :: CurrentTime:",player.getCurrentTime());
-    if(player.getCurrentTime() > 0.1) {
-        stopCheck();
+    
+    console.debug("checkPlay() :: CurrentTime:",player.getCurrentTime(),"Totaltime",player.getDuration());
+    
+    if(player.getCurrentTime() > 0 && player.getCurrentTime() < player.getDuration() - 0.5) {
+        hideNoise();
+    }
+    if(player.getCurrentTime() != 0 && player.getCurrentTime() > player.getDuration() - 0.5) {
+        showNoise();
+    }
+}
+
+function showNoise() {
+    if(!noiseon) {
+        console.debug("hidenoise() :: Noise fadein...");
+        $("#video-container").fadeIn(); // fadeout noise
+        noiseon = true;
+    }
+}
+
+function hideNoise() {
+    if(noiseon) {
+        console.debug("hidenoise() :: Noise fadeout...");
+        $("#video-container").fadeOut(); // fadeout noise
+        noiseon = false;
     }
 }
 
@@ -203,21 +232,27 @@ function startCheck() {
     timeron = true;
 }
 
+
 function stopCheck() {
     if(timeron) {
-        $("#video-container").fadeOut(); // fadeout noise
-        clearInterval(timer);
+        clearInterval(timer)
         timeron = false;    
         console.debug("stopCheck() :: Stopping Timer");
-        
+        $("#video-container").fadeOut(); // fadeout noise
     }
 }
 
+/**
+ * State change calls from YT Frame API
+ */
+ 
+ 
 function onytplayerStateChange(newState) {   
    switch (newState.data) {
         case 0:
             console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"End Playlist -----------------------------");
             endofPlaylist();
+            stopCheck();
             window.focus();
             break;
         case 1:
@@ -229,7 +264,8 @@ function onytplayerStateChange(newState) {
             startCheck(); // star timer to check it its really playing
             console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
             
-            $("#video-container").fadeIn(); // comment for testing
+            $("#video-container").fadeIn();
+            noiseon = true;
             console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             
             window.focus();
