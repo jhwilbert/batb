@@ -15,7 +15,7 @@ var timer;
  * Start page defines the start of the application. It gets the videos from
  * the backend, creates the loader and starts the loader of the player.
  */
-$(document).ready(function() {
+$(window).load(function(){
     
     // Check if backend provides list otherwise revert to fallback
     if(videosDesktop.length > 0) {
@@ -30,7 +30,6 @@ $(document).ready(function() {
     
     // Start YT player
     loadPlayer(); 
-    
     console.log("Page ready...");
     
 });
@@ -188,7 +187,6 @@ function onYouTubeIframeAPIReady() {
             'wmode' : 'opaque',
             'disablekb' : 1,
             'enablejsapi': 1,
-            'html5': 1,
             'origin': window.location.host,
         },
         width : '100%',
