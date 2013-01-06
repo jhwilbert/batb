@@ -105,8 +105,6 @@ function checkWatched() {
         console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"All Good, let's keep playing videos");
     } else {
         console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** SKIPPED TO MUCH ** Play Barbican Card Next", videosDesktop.length-1);
-        keysEnabled = false;
-        console.debug("keysEnabled",keysEnabled)
         player.playVideoAt(videosDesktop.length-1);
     }
 }
@@ -218,12 +216,12 @@ function stopCheck() {
 function onytplayerStateChange(newState) {   
    switch (newState.data) {
         case 0:
-            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"End Playlist -------------------------------");
+            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"End Playlist -----------------------------");
             endofPlaylist();
             window.focus();
             break;
         case 1:
-            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Playing -------------------------------");
+            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Playing ----------------------------------");
             keysEnabled = true; // enable keys back
             window.focus();
             break;
@@ -239,7 +237,7 @@ function onytplayerStateChange(newState) {
             keysEnabled = false; // disable ketys on static noise
             break;
         case 2:
-            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Paused -------------------------------");            
+            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Paused ----------------------------------");            
             window.focus();
             break;
         case 3:
