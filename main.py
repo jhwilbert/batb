@@ -47,15 +47,15 @@ class Admin(webapp2.RequestHandler):
                 try:
                     user, password = base64.b64decode(auth + "==").split(":")
                 except TypeError:
-                    return None        
+                    return None 
+                           
         if user == 'disarm' and password == 'batb':
             return user
-        return None
+        return user
         
     def get(self):
         
         user = self.doAuth()
-        
         if not user:
             self.response.out.write("Access Denied")
             return
