@@ -69,11 +69,16 @@ function noiseLoaded(noiseImage) {
     // Loading Link
     $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
     positionLink();
+    
+    // Link Handle
     $("#link-container").click(function() {
+        player.pauseVideo();
+        
+        // Open link in new window
         $(this).target = "_blank";
         window.open(ticketsLink);
         return false;
-        player.pauseVideo();
+        
     });
     
     
