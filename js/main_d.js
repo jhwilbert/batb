@@ -182,7 +182,7 @@ function onYouTubeIframeAPIReady() {
         },    
         playerVars: {
             'autoplay' : 1,
-            'controls': 0,
+            'controls': 1,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
@@ -249,6 +249,11 @@ function stopCheck() {
     }
 }
 
+function restartPlaylist() {
+    console.log("restartPlaylist() :: restarting playlist ...")
+    player.playVideoAt(0);
+    videoStatus = {};
+}
 
 /**
  * State change calls from YT I Frame API
@@ -258,8 +263,9 @@ function onytplayerStateChange(newState) {
    switch (newState.data) {
         case 0:
             console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"End Playlist -----------------------------");
-            endofPlaylist();
-            stopCheck();
+            //endofPlaylist();
+            //stopCheck();
+            restartPlaylist();
             window.focus();
             break;
         case 1:
