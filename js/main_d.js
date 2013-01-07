@@ -238,7 +238,7 @@ function startCheck() {
 
 function stopCheck() {
     if(timeron) {
-        clearInterval(timer)
+        clearInterval(timer);
         timeron = false;    
         console.debug("stopCheck() :: Stopping Timer");
         $("#video-container").fadeOut(); // fadeout noise

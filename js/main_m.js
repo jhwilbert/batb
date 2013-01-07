@@ -45,24 +45,24 @@ function loadPlayer() {
 
 function onPlayerReady(event) {
     $("#player").css("display","block");
-    player.loadVideoById(videosMobile[0],0); // Load Video
-    player.playVideo();
 }
 
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
         height: $(window).height(),
         width: $(window).width(),
+        videoId : videosMobile[0],
         events: {
             'onReady': onPlayerReady,
             'onStateChange' : onytplayerStateChange,
         },    
         playerVars: {
-            controls: '0',
-            showinfo : '0',
-            modestbranding: '1',
-            wmode: 'opaque',
-            disablekb: '1'
+            'autoplay' : 1,
+            'controls' : 0,
+            'showinfo' : 0,
+            'modestbranding' : 0,
+            'wmode': 'opaque',
+            'disablekb': 1
         }
   });
 }
