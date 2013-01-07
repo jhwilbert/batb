@@ -80,10 +80,8 @@ function noiseLoaded(noiseImage) {
         return false;
         
     });
-    
-    
-}
 
+}
 
 /**
  * Detects the video when it's interrupted. And creates an object that stores 
@@ -208,7 +206,7 @@ function onYouTubeIframeAPIReady() {
         },    
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
