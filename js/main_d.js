@@ -11,10 +11,14 @@ var loader, postplayer;
 var timer;  
 var timeron = false;
 var noiseon = true;
+var ticketsLink = "http://www.barbican.org.uk/artgallery/series.asp?id=1142&utm_campaign=CCOHPF131112B&utm_source=Barbican_Homepage&"
+                   + "utm_medium=Flash_Small&utm_content=Flash_on-homepage_%20CCOHPF131112B&utm_nooverride=1"
+
 /**
  * Start page defines the start of the application. It gets the videos from
  * the backend, creates the loader and starts the loader of the player.
  */
+
 $(document).ready(function(){
     
     console.log("Page ready...");
@@ -28,8 +32,8 @@ $(document).ready(function(){
     loadPlayer(); 
     
     
-    
 });
+
 
 /**
  * Called by the playlist ready function of the player.
@@ -58,9 +62,21 @@ function noiseLoaded(noiseImage) {
     $("#video-container").css("opacity","1");
     $("#player").css("opacity","1");
     
-    console.log("noiseLoaded() :: Noise Loaded! Loading playlist");
+    // Loading Playlist
+    console.log("noiseLoaded() :: Noise Loaded! Loading playlist",videosDesktop);
     player.loadPlaylist(videosDesktop);
-    console.log("noiseLoaded() :: Videos from backend:",videosDesktop);
+    
+    // Loading Link
+    $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
+    positionLink();
+    $("#link-container").click(function() {
+        $(this).target = "_blank";
+        window.open(ticketsLink);
+        return false;
+        player.pauseVideo();
+    });
+    
+    
 }
 
 
@@ -125,6 +141,10 @@ function updateTotalPercent() {
     return totalPercent/numItems;
 }
 
+/**
+ * Interaction Handles
+ */
+
 function detectKey(e) {
     e.preventDefault();
     if(keysEnabled) {
@@ -136,6 +156,7 @@ function detectKey(e) {
         console.log("detectKey(e) :: keys are disabled at this point");
     }
 }
+
 
 
 /**
@@ -250,7 +271,7 @@ function stopCheck() {
 }
 
 function restartPlaylist() {
-    console.log("restartPlaylist() :: restarting playlist ...")
+    console.log("restartPlaylist() :: restarting playlist ...");
     player.playVideoAt(0);
     videoStatus = {};
 }
@@ -302,6 +323,7 @@ $(window).resize(function () {
     centerElement(postplayer);
     centerElement(loader);
     
+    positionLink();
     positionPlayer();
     positionNoise();
 });
@@ -328,6 +350,16 @@ function positionPlayer() {
     
     // Set Player Size
     player.setSize(windowW,windowH); 
+}
+
+function positionLink() {
+    var windowW = $(window).width();
+    
+    var elementW = $("#link-container").width();
+    
+    var centerW = $(window).width()/2 - $("#link-container").width()/2;
+     
+    $("#link-container").css("left",centerW + "px");
 }
 
 function positionNoise() {
