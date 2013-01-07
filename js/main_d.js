@@ -64,6 +64,7 @@ function noiseLoaded(noiseImage) {
     // Loading Playlist
     console.log("noiseLoaded() :: Noise Loaded! Loading playlist",videosDesktop);
     player.loadPlaylist(videosDesktop);
+    player.playVideoAt(0);
     
     // Loading Link
     $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
@@ -281,6 +282,7 @@ function onytplayerStateChange(newState) {
         case 1:
             console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Playing ----------------------------------");
             keysEnabled = true; // enable keys back
+            console.debug("Playing........",player.getPlaylistIndex());
             window.focus();
             break;
         case -1:
@@ -343,11 +345,21 @@ function positionPlayer() {
 
 function positionLink() {
     var windowW = $(window).width();
+    var noiseH = $("#video-container").height();
+    var noiseX = $("#video-container").position();
     
     var elementW = $("#link-container").width();
-    
     var centerW = $(window).width()/2 - $("#link-container").width()/2;
-     
+    
+    // Disappear if window is small
+    if(windowW < 600) {
+        $("#link-container").css("opacity","0");
+    } else {
+        $("#link-container").css("opacity","1");
+    }
+    
+    
+    $("#link-container").css("top", ((noiseH + noiseX.top) - 50) + "px");     
     $("#link-container").css("left",centerW + "px");
 }
 
