@@ -27,6 +27,8 @@ $(document).ready(function(){
     // Start YT player
     loadPlayer(); 
     
+    
+    
 });
 
 /**
@@ -58,6 +60,7 @@ function noiseLoaded(noiseImage) {
     
     console.log("noiseLoaded() :: Noise Loaded! Loading playlist");
     player.loadPlaylist(videosDesktop);
+    console.log("videos from backend",videosDesktop);
 }
 
 
@@ -108,6 +111,7 @@ function checkWatched() {
     } else {
         console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** SKIPPED TO MUCH ** Play Barbican Card Next", videosDesktop.length-1);
         player.playVideoAt(videosDesktop.length-1);
+        
     }
 }
 
