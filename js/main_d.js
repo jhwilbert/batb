@@ -64,7 +64,12 @@ function noiseLoaded(noiseImage) {
     // Loading Playlist
     console.log("noiseLoaded() :: Noise Loaded! Loading playlist",videosDesktop);
     player.loadPlaylist(videosDesktop);
-    player.playVideoAt(0);
+    
+    // Fix bug on chrome not playing the first video
+    if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+        player.playVideoAt(0);
+    }
+    
     
     // Loading Link
     $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
