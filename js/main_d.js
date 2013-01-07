@@ -30,8 +30,7 @@ $(document).ready(function(){
     
     // Start YT player
     loadPlayer(); 
-    
-    
+     
 });
 
 
@@ -186,18 +185,6 @@ function onPlayerReady(event) {
     startCheck(); // start timer to check if it its really playing
 }
 
-function endofPlaylist() {
-    console.log("endofPlaylist() :: Started Fade...");
-    $("#player").remove();
-    
-    // Add post player and center
-    $("#container").append('<div id="post-player">POST PLAYER</div>');
-    postplayer = $("#post-player");
-    centerElement(postplayer);
-    $("#post-player").fadeIn();
-    
-}
-
 function onYouTubeIframeAPIReady() {    
     player = new YT.Player('player', {  
         events: {
@@ -287,7 +274,6 @@ function onytplayerStateChange(newState) {
    switch (newState.data) {
         case 0:
             console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"End Playlist -----------------------------");
-            //endofPlaylist();
             //stopCheck();
             restartPlaylist();
             window.focus();
