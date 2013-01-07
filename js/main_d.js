@@ -60,7 +60,7 @@ function noiseLoaded(noiseImage) {
     
     console.log("noiseLoaded() :: Noise Loaded! Loading playlist");
     player.loadPlaylist(videosDesktop);
-    console.log("videos from backend",videosDesktop);
+    console.log("noiseLoaded() :: Videos from backend:",videosDesktop);
 }
 
 
@@ -182,7 +182,7 @@ function onYouTubeIframeAPIReady() {
         },    
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
