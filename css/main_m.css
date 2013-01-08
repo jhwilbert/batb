@@ -24,26 +24,30 @@ body {
 
 #header {
     position:absolute;
+    border:1px solid red;
     top:0px;
     left:0px;
     padding:0px;
+    width:100%
 }
+
 #content img {
     position:absolute;
-    width:400px;
-    bottom:60px;
+    width:60%;
+    border:1px solid red;
+    bottom:10%;
 }
 
 
 #player {
-    
+    border:1px solid yellow;
     position:absolute;
     top:0px;
 }
 #header img {
-    width:200px;
+    width:30%;
 }
 
-#container {
-    width:100%;
+#content {
+
 }
