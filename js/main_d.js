@@ -213,6 +213,7 @@ function onPlayerReady(event) {
     if(DEBUG) {
         console.log("onPlayerReady(e) :: Calling noise and loading playlist...");
     }
+
     loadNoiseVideo(); // Load Noise Video
     
     startCheck(); // start timer to check if it its really playing
