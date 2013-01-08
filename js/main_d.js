@@ -174,7 +174,7 @@ function updateTotalPercent() {
  */
 
 function detectKey(e) {
-    e.preventDefault();
+    //e.preventDefault();
     if(keysEnabled) {
         if(e.charCode == 32) {
             player.nextVideo();
@@ -414,7 +414,7 @@ function positionLink() {
     }
     
     
-    $("#link-container").css("top", ((noiseH + noiseX.top) - 50) + "px");     
+    //$("#link-container").css("top", ((noiseH + noiseX.top) - 50) + "px");     
     $("#link-container").css("left",centerW + "px");
 }
 
