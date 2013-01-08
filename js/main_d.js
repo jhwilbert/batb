@@ -188,6 +188,7 @@ function loadPlayer() {
 function onPlayerReady(event) {
     console.log("onPlayerReady(e) :: Calling noise and loading playlist...");
     loadNoiseVideo(); // Load Noise Video
+    
     startCheck(); // start timer to check if it its really playing
 }
 
@@ -199,7 +200,7 @@ function onYouTubeIframeAPIReady() {
         },    
         playerVars: {
             'autoplay' : 1,
-            'controls': 0,
+            'controls': 1,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
@@ -295,7 +296,7 @@ function onytplayerStateChange(newState) {
             
             console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
             showNoise();
-            
+            player.setPlaybackQuality('hd720');
             console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             
             window.focus();
