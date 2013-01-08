@@ -11,6 +11,7 @@ var loader, postplayer;
 var timer;  
 var timeron = false;
 var noiseon = true;
+var DEBUG = false;
 var ticketsLink = "http://www.barbican.org.uk/artgallery/series.asp?id=1142&utm_campaign=CCOHPF131112B&utm_source=Barbican_Homepage&"
                    + "utm_medium=Flash_Small&utm_content=Flash_on-homepage_%20CCOHPF131112B&utm_nooverride=1"
 
@@ -21,8 +22,9 @@ var ticketsLink = "http://www.barbican.org.uk/artgallery/series.asp?id=1142&utm_
 
 $(document).ready(function(){
     
-    console.log("Page ready...");
-        
+    if(DEBUG) {
+        console.log("Page ready...");
+    }
     // Add loader
     $('#container').append('<div id="loader"><img src="imgs/loader.gif">Loading TV</div>');
     loader = $("#loader");
@@ -40,8 +42,9 @@ $(document).ready(function(){
  * positions and resizes the noise on the callback.
  */                                                                                                                                                                                                                                                                                
 function loadNoiseVideo() {
-    console.log("loadNoiseVideo() :: Loading Noise...");
-    
+    if(DEBUG) {
+        console.log("loadNoiseVideo() :: Loading Noise...");
+    }
     var noiseImage = new Image(); 
     noiseImage.src = "imgs/noise4.gif";
     
@@ -62,7 +65,9 @@ function noiseLoaded(noiseImage) {
     $("#player").css("opacity","1");
     
     // Loading Playlist
-    console.log("noiseLoaded() :: Noise Loaded! Loading playlist",videosDesktop);
+    if(DEBUG) {
+        console.log("noiseLoaded() :: Noise Loaded! Loading playlist",videosDesktop);
+    }
     player.loadPlaylist(videosDesktop);
     
     // Fix bug on chrome not playing the first video
@@ -98,23 +103,32 @@ function videoInterrupted(duration,currentTime) {
     if(duration != 0 && currentTime !=0) {
         var percentPlayed = Math.round((currentTime/duration) * 100);
         var videoIndex = player.getPlaylistIndex();
-        console.log("videoInterrupted() :: Duration:",duration,"CurrentTime:",currentTime,"PercentPlayed",percentPlayed + "%","video index",player.getPlaylistIndex());
+        if(DEBUG) {
+            console.log("videoInterrupted() :: Duration:",duration,"CurrentTime:",currentTime,"PercentPlayed",percentPlayed + "%","video index",player.getPlaylistIndex());
+        }
         storeStatus(videoIndex,percentPlayed)
     } else {
-        console.log("videoInterrupted() :: Film hasn't started",duration,currentTime);
+        if(DEBUG) {
+            console.log("videoInterrupted() :: Film hasn't started",duration,currentTime);
+        }
     }
 }
 
 function storeStatus(videoIndex,percentPlayed) {
     videoStatus[videoIndex] = percentPlayed;
-    console.log("storeStatus() ::", videoStatus);
-         
+    if(DEBUG) {
+        console.log("storeStatus() ::", videoStatus);
+    }
     if(videoIndex > 1 && videoIndex  < videosDesktop.length-1) {
         checkWatched(); //check if we need Barbican cards to appear
     } else if (videoIndex < 1) {
-        console.log("storeStatus() :: Still Gathering Data");
+        if(DEBUG) {
+            console.log("storeStatus() :: Still Gathering Data");
+        }
     } else if (videoIndex == videosDesktop.length-1) {
-        console.log("storeStatus() :: Last Video No Storing")
+        if(DEBUG) {
+            console.log("storeStatus() :: Last Video No Storing")
+        }
     }
 }
 
@@ -122,7 +136,9 @@ function storeStatusPlayed() {
     if(player.getPlaylistIndex() > 0) { 
         var prevVideo = player.getPlaylistIndex()-1;
         if(videoStatus[prevVideo] == undefined && player.getPlaylistIndex() != videosDesktop.length-1) { // Update the video object 100% if it hasn't been interrupted
-            console.log("storeStatusPlayed() :: Previous Played fully");
+            if(DEBUG) {
+                console.log("storeStatusPlayed() :: Previous Played fully");
+            }
             storeStatus(prevVideo,100);
         }
     }
@@ -131,9 +147,13 @@ function storeStatusPlayed() {
 function checkWatched() {
     var percentWatched = Math.round(updateTotalPercent());
     if ( percentWatched > threshold) {
-        console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"All Good, let's keep playing videos");
+        if(DEBUG) {
+            console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"All Good, let's keep playing videos");
+        }
     } else {
-        console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** SKIPPED TO MUCH ** Play Barbican Card Next", videosDesktop.length-1);
+        if(DEBUG) {
+            console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** SKIPPED TO MUCH ** Play Barbican Card Next", videosDesktop.length-1);
+        }
         player.playVideoAt(videosDesktop.length-1);
         
     }
@@ -161,7 +181,9 @@ function detectKey(e) {
             videoInterrupted(player.getDuration(),player.getCurrentTime())
         }
     } else {
-        console.log("detectKey(e) :: keys are disabled at this point");
+        if(DEBUG){
+            console.log("detectKey(e) :: keys are disabled at this point");
+        }
     }
 }
 
@@ -174,8 +196,9 @@ function detectKey(e) {
  */
  
 function loadPlayer() {
-    console.log("loadPlayer() :: Loading Player...");
-    
+    if(DEBUG){
+        console.log("loadPlayer() :: Loading Player...");
+    }
     $("#container").append('<div id="player"></div>');
     $("#player").css("opacity","0");
     
@@ -186,7 +209,9 @@ function loadPlayer() {
 }
 
 function onPlayerReady(event) {
-    console.log("onPlayerReady(e) :: Calling noise and loading playlist...");
+    if(DEBUG) {
+        console.log("onPlayerReady(e) :: Calling noise and loading playlist...");
+    }
     loadNoiseVideo(); // Load Noise Video
     
     startCheck(); // start timer to check if it its really playing
@@ -224,8 +249,9 @@ function onYouTubeIframeAPIReady() {
  
 function checkPlay() {
     
-    console.debug("checkPlay() :: CurrentTime:",player.getCurrentTime(),"Totaltime",player.getDuration());
-    
+    if(DEBUG) {
+        console.log("checkPlay() :: CurrentTime:",player.getCurrentTime(),"Totaltime",player.getDuration());
+    }
     if(player.getCurrentTime() > 0 && player.getCurrentTime() < player.getDuration() - 0.5) {
         hideNoise();
     }
@@ -236,7 +262,9 @@ function checkPlay() {
 
 function showNoise() {
     if(!noiseon) {
-        console.debug("hidenoise() :: Noise fadein...");
+        if(DEBUG) {
+            console.log("hidenoise() :: Noise fadein...");
+        }
         $("#video-container").fadeIn(); // fadeout noise
         noiseon = true;
     }
@@ -244,14 +272,18 @@ function showNoise() {
 
 function hideNoise() {
     if(noiseon) {
-        console.debug("hidenoise() :: Noise fadeout...");
+        if(DEBUG) {
+            console.log("hidenoise() :: Noise fadeout...");
+        }
         $("#video-container").fadeOut(); // fadeout noise
         noiseon = false;
     }
 }
 
 function startCheck() {
-    console.debug("startCheck() :: Starting Timer");
+    if(DEBUG) {
+        console.log("startCheck() :: Starting Timer");
+    }
     if(!timeron) {
         timer = setInterval('checkPlay()',300);
     }
@@ -262,14 +294,19 @@ function startCheck() {
 function stopCheck() {
     if(timeron) {
         clearInterval(timer);
-        timeron = false;    
-        console.debug("stopCheck() :: Stopping Timer");
+        timeron = false;   
+        
+        if(DEBUG) { 
+            console.log("stopCheck() :: Stopping Timer");
+        }
         $("#video-container").fadeOut(); // fadeout noise
     }
 }
 
 function restartPlaylist() {
-    console.log("restartPlaylist() :: restarting playlist ...");
+    if(DEBUG) {
+        console.log("restartPlaylist() :: restarting playlist ...");
+    }
     player.playVideoAt(0);
     videoStatus = {};
 }
@@ -281,34 +318,45 @@ function restartPlaylist() {
 function onytplayerStateChange(newState) {   
    switch (newState.data) {
         case 0:
-            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"End Playlist -----------------------------");
+            if(DEBUG) {
+                console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"End Playlist -----------------------------");
+            }
             //stopCheck();
             restartPlaylist();
             window.focus();
             break;
         case 1:
-            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Playing ----------------------------------");
+            if(DEBUG) {
+                console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Playing ----------------------------------");
+                console.log("Playing........",player.getPlaylistIndex());
+            }
+            
             keysEnabled = true; // enable keys back
-            console.debug("Playing........",player.getPlaylistIndex());
             window.focus();
             break;
         case -1:
-            
-            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
+            if(DEBUG) {
+                console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
+                console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
+            }
             showNoise();
             player.setPlaybackQuality('hd720');
-            console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
+            
             
             window.focus();
             paused = true; // enable pause
             keysEnabled = false; // disable ketys on static noise
             break;
         case 2:
-            console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Paused ----------------------------------");            
+            if(DEBUG) {
+                console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Paused ----------------------------------");            
+            }
             window.focus();
             break;
         case 3:
-            console.log("------------------------------- onytplayerStateChange() :: State",newState.data, "Buffering -------------------------------");
+            if(DEBUG) {
+                console.log("------------------------------- onytplayerStateChange() :: State",newState.data, "Buffering -------------------------------");
+            }
             break;
    }
 }
@@ -382,23 +430,22 @@ function positionNoise() {
     
     // Calculate Noise Size
     if(windowW > windowH) {
-        //console.log("positionNoise() :: Landscape View :: use width to measure");
         var sizeFactor = windowW / baseW;
         nWidth = baseW * sizeFactor;
         nHeight = nWidth / 1.77;
         if(nHeight > windowH) {
-            console.log("positionNoise() ::  won't fit vertically resize again",windowH/nHeight);
+            if(DEBUG) {
+                console.log("positionNoise() ::  won't fit vertically resize again",windowH/nHeight);
+            }
             nWidth = nWidth * windowH/nHeight;        
         }
     } 
     
     if (windowW < windowH) {
-        //console.log("Portrait View :: use height to measure");
         var sizeFactor = windowH / baseH;
         nHeight = baseH * sizeFactor;
         nWidth = nHeight * 1.77;
         if(nWidth > windowW) {
-            //console.log("positionNoise() :: Won't fit horizontally resize again",windowW/nWidth);
             nHeight = nHeight * windowW/nWidth;
         } 
     }
@@ -417,5 +464,7 @@ function positionNoise() {
 }
 
 $(window).focus(function() {
-    console.log("Window has focus");
+    if(DEBUG) {
+        console.log("Window has focus");
+    }
 });

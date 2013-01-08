@@ -146,7 +146,11 @@ class Reorder(webapp2.RequestHandler):
 ###############################################################################################
 # MAIN
 ###############################################################################################
-        
+
+class Redirect(webapp2.RequestHandler):
+    def get(self):
+        self.redirect("http://www.barbican.org.uk/duchamp")
+                
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         
@@ -163,6 +167,7 @@ class MainHandler(webapp2.RequestHandler):
         
 
 app = webapp2.WSGIApplication([('/prsnt', MainHandler),
+                               ('/', Redirect),
                                ('/admin', Admin),
                                ('/a/add', Add),
                                ('/a/remove', Remove),
