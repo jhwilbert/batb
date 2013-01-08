@@ -48,12 +48,10 @@ function loadNoiseVideo() {
     var noiseImage = new Image(); 
     noiseImage.src = "imgs/noise4.gif";
     
-    noiseLoaded(noiseImage);
-    /*
     noiseImage.onload = function () { 
         noiseLoaded(noiseImage);
     };
-    */
+    
 }
 
 function noiseLoaded(noiseImage) {
@@ -238,7 +236,7 @@ function onYouTubeIframeAPIReady() {
             'rel' : 0
         },
         width : '100%',
-        height : '100%',
+        height : '100%'
         
   });
 }
