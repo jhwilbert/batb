@@ -11,7 +11,7 @@ var loader, postplayer;
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = true;
+var DEBUG = false;
 var ticketsLink = "http://www.barbican.org.uk/artgallery/series.asp?id=1142&utm_campaign=CCOHPF131112B&utm_source=Barbican_Homepage&"
                    + "utm_medium=Flash_Small&utm_content=Flash_on-homepage_%20CCOHPF131112B&utm_nooverride=1"
 
@@ -198,8 +198,9 @@ function detectKey(e) {
  
 function loadPlayer() {
     if(DEBUG){
-        console.log("loadPlayer() :: Loading Player...");
+        console.log("loadPlayer() :: Loading Player 4...");
     }
+    
     $("#container").append('<div id="player"></div>');
     $("#player").css("opacity","0");
     
@@ -207,6 +208,7 @@ function loadPlayer() {
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    
 }
 
 function onPlayerReady(event) {
@@ -215,11 +217,15 @@ function onPlayerReady(event) {
     }
 
     loadNoiseVideo(); // Load Noise Video
-    
     startCheck(); // start timer to check if it its really playing
 }
 
 function onYouTubeIframeAPIReady() {    
+    
+    if(DEBUG) {
+        console.log("onYouTubeIframeAPIReady() :: IframeAPIReady...");
+    }
+    
     player = new YT.Player('player', {  
         events: {
             'onReady': onPlayerReady,
@@ -227,7 +233,7 @@ function onYouTubeIframeAPIReady() {
         },    
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
