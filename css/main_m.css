@@ -4,7 +4,7 @@
    ==================*/
 
 body {
-    background:white;
+    background:#1c1b1a;
     margin:0px;
     padding:0px;
 }
@@ -20,6 +20,28 @@ body {
     font-size:50px;
     height:100px;
     width:100%;
+}
+
+#header {
+    position:absolute;
+    top:0px;
+    left:0px;
+    padding:0px;
+}
+#content img {
+    position:absolute;
+    width:400px;
+    bottom:60px;
+}
+
+
+#player {
+    
+    position:absolute;
+    top:0px;
+}
+#header img {
+    width:200px;
 }
 
 #container {

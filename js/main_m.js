@@ -16,11 +16,17 @@ $(document).ready(function() {
 });
 
 function loadPrepage() {
-    $("#container").append('<div id="pre-player" class="page">PRE PAGE</div>');
+    
+    $("#container").append('<div id="header"><img src="../imgs/logo.png"></div>"');
+    $("#container").append('<div id="content"><img src="../imgs/text.png"></div>"');
+    loadPlayer();
+    /*
     $("#pre-player").click(function() {
         $("#pre-player").remove();
-        loadPlayer(); 
+        
     });
+    
+    */
 }
 
 /**
@@ -29,13 +35,16 @@ function loadPrepage() {
  */
  
 function loadPlayer() {
+        console.log(videosMobile)
+    
     if(videosMobile.length > 0) {
         console.debug("Got data from backend");
         fullPlaylist = videosMobile;
     }
     
     $("#container").append('<div id="player"></div>');
-    $("#player").css("display","none");
+    //$("#player").css("display","none");
+    $("#player").css("top","240px");
     
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
@@ -58,12 +67,16 @@ function onYouTubeIframeAPIReady() {
         },    
         playerVars: {
             'autoplay' : 1,
-            'controls' : 0,
+            'controls' : 1,
             'showinfo' : 0,
             'modestbranding' : 0,
             'wmode': 'opaque',
-            'disablekb': 1
-        }
+            'disablekb': 1,
+            'rel' : 0
+        },
+        width: '100%',
+        height: '300'
+        
   });
 }
 
@@ -72,9 +85,9 @@ function onytplayerStateChange(newState) {
    switch (newState.data) {
         case 0:
             console.log("-------------------------------End of playlist-------------------------------");
-            $("#player").remove();
-            $("#container").append('<div id="post-player" class="page">POST PLAYER</div>');
-            $("#post-player").show();
+            //$("#player").remove();
+            //$("#container").append('<div id="post-player" class="page">POST PLAYER</div>');
+            //$("#post-player").show();
             window.focus();
             break;
     }
