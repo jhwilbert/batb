@@ -73,7 +73,6 @@ function noiseLoaded(noiseImage) {
     //  Load Player
     loadPlayer(); 
     
-    
     // Loading Link
     $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
     positionLink();
@@ -199,6 +198,7 @@ function loadPlayer() {
     }
     
     $("#container").append('<div id="player"></div>');
+    $("#player").css("opacity","0");
     
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
@@ -209,11 +209,13 @@ function loadPlayer() {
 
 function onPlayerReady(event) {
     if(DEBUG) {
-        console.log("onPlayerReady(e) :: Calling noise and loading playlist...",videosDesktop);
+        console.log("onPlayerReady(e) :: Calling noise and cueing playlist...",videosDesktop);
     }
 
-    player.loadPlaylist(videosDesktop);
-    event.target.playVideo();
+    $("#player").css("opacity","1");
+    
+    player.cuePlaylist(videosDesktop);
+    
     startCheck(); // start timer to check if it its really playing
 }
 
@@ -227,7 +229,7 @@ function onYouTubeIframeAPIReady() {
         events: {
             'onReady': onPlayerReady,
             'onStateChange' : onytplayerStateChange
-        },    
+        },  
         playerVars: {
             'autoplay' : 1,
             'controls': 1,
@@ -237,8 +239,9 @@ function onYouTubeIframeAPIReady() {
             'disablekb' : 1,
             'enablejsapi': 1,
             'origin': window.location.host,
-            'rel' : 0
+            'rel' : 0,
         },
+        
         width : '100%',
         height : '100%'
         
@@ -344,10 +347,7 @@ function onytplayerStateChange(newState) {
                 console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
                 console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             }
-            showNoise();
-            player.setPlaybackQuality('hd720');
-            
-            
+            showNoise();  
             window.focus();
             paused = true; // enable pause
             keysEnabled = false; // disable ketys on static noise
