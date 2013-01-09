@@ -11,7 +11,7 @@ var loader, postplayer;
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = false;
+var DEBUG = true;
 var ticketsLink = "http://www.barbican.org.uk/artgallery/series.asp?id=1142&utm_campaign=CCOHPF131112B&utm_source=Barbican_Homepage&"
                    + "utm_medium=Flash_Small&utm_content=Flash_on-homepage_%20CCOHPF131112B&utm_nooverride=1"
 
@@ -69,13 +69,16 @@ function noiseLoaded(noiseImage) {
     if(DEBUG) {
         console.log("noiseLoaded() :: Noise Loaded! Loading playlist",videosDesktop);
     }
+    
     player.loadPlaylist(videosDesktop);
+    event.target.playVideo(); 
     
     // Fix bug on chrome not playing the first video
+    /*
     if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
         player.playVideoAt(0);
     }
-    
+    */
     
     // Loading Link
     $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
