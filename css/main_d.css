@@ -21,6 +21,7 @@ body {
     font-family: 'FuturaSB-Book';
     position:absolute;
     color:white;
+    bottom:30px;
     font-weight:bold;
     cursor:pointer;
 }
