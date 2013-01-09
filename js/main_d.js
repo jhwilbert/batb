@@ -30,8 +30,8 @@ $(document).ready(function(){
     loader = $("#loader");
     centerElement(loader);
     
-    // Start YT player
-    loadPlayer(); 
+    // Start Noise
+    loadNoiseVideo(); // Load Noise Video
      
 });
 
@@ -63,22 +63,16 @@ function noiseLoaded(noiseImage) {
     
     $("#loader").remove();    
     $("#video-container").css("opacity","1");
-    $("#player").css("opacity","1");
     
     // Loading Playlist
     if(DEBUG) {
-        console.log("noiseLoaded() :: Noise Loaded! Loading playlist",videosDesktop);
+        console.log("noiseLoaded() :: Noise Loaded! Loading playlist");
     }
     
-    player.loadPlaylist(videosDesktop);
-    event.target.playVideo(); 
     
-    // Fix bug on chrome not playing the first video
-    /*
-    if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
-        player.playVideoAt(0);
-    }
-    */
+    //  Load Player
+    loadPlayer(); 
+    
     
     // Loading Link
     $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
@@ -201,11 +195,10 @@ function detectKey(e) {
  
 function loadPlayer() {
     if(DEBUG){
-        console.log("loadPlayer() :: Loading Player 4...");
+        console.log("loadPlayer() :: Loading Player ...");
     }
     
     $("#container").append('<div id="player"></div>');
-    $("#player").css("opacity","0");
     
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
@@ -216,10 +209,11 @@ function loadPlayer() {
 
 function onPlayerReady(event) {
     if(DEBUG) {
-        console.log("onPlayerReady(e) :: Calling noise and loading playlist...");
+        console.log("onPlayerReady(e) :: Calling noise and loading playlist...",videosDesktop);
     }
 
-    loadNoiseVideo(); // Load Noise Video
+    player.loadPlaylist(videosDesktop);
+    event.target.playVideo();
     startCheck(); // start timer to check if it its really playing
 }
 
