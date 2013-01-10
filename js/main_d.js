@@ -65,7 +65,6 @@ function noiseLoaded(noiseImage) {
     
     $('#container').append('<div id="video-container"></div>');
     $('#video-container').append(noiseImage);
-    
     positionNoise();
     
     $("#loader").remove();    
@@ -76,12 +75,12 @@ function noiseLoaded(noiseImage) {
         console.log("noiseLoaded() :: Noise Loaded! Loading playlist");
     }
     
-    
     //  Load Player
     loadPlayer(); 
     
     // Loading Link
     $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
+    $("#container").append('<div id="test"></div>');
     positionLink();
     
     // Link Handle
@@ -91,8 +90,7 @@ function noiseLoaded(noiseImage) {
         // Open link in new window
         $(this).target = "_blank";
         window.open(ticketsLink);
-        return false;
-        
+        return false; 
     });
 
 }
@@ -245,7 +243,7 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
@@ -287,6 +285,7 @@ function showNoise() {
         if(DEBUG) {
             console.log("hidenoise() :: Noise fadein...");
         }
+        $("#link-container").hide();
         $("#video-container").fadeIn(); // fadeout noise
         noiseon = true;
     }
@@ -297,6 +296,7 @@ function hideNoise() {
         if(DEBUG) {
             console.log("hidenoise() :: Noise fadeout...");
         }
+        $("#link-container").show();
         $("#video-container").fadeOut(); // fadeout noise
         noiseon = false;
     }
@@ -400,23 +400,21 @@ function centerElement(element) {
 }
 
 function positionLink() {
-    var windowW = $(window).width();
-    var noiseH = $("#video-container").height();
-    var noiseX = $("#video-container").position();
-    
-    var elementW = $("#link-container").width();
-    var centerW = $(window).width()/2 - $("#link-container").width()/2;
+    var posX = $(window).width()/2 - $("#test").width()/2;
+    var posY = $(window).height()/2 - $("#test").height()/2;
     
     // Disappear if window is small
-    if(windowW < 600) {
+    if($(window).width() < 600) {
         $("#link-container").css("opacity","0");
     } else {
         $("#link-container").css("opacity","1");
     }
     
+    console.debug(posX,posY);
     
-    //$("#link-container").css("top", ((noiseH + noiseX.top) - 50) + "px");     
-    $("#link-container").css("left",centerW + "px");
+    $("#test").css("top",(posY*2) -50 + "px");
+    $("#test").css("left",posX + "px");
+    
 }
 
 function positionNoise() {
