@@ -12,7 +12,7 @@ var player;
 function startApp() {
     
     $("#container").append('<div id="header"><img src="../imgs/logo.png"></div>');
-    $("#container").append('<div id="content"><img src="../imgs/text.png"></div>');
+    $("#container").append('<div id="content"> <div id="videoHolder">Video</div> <img src="../imgs/text.png"></div>');
     
     loadPlayer();
 
@@ -45,30 +45,29 @@ function onPlayerReady(event) {
     $("#player").css("display","block");
 }
 
-function onYouTubeIframeAPIReady() {    
-    player = new YT.Player('player', {  
-        height: $(window).height(),
-        width: $(window).width(),
-        videoId : videosMobile[0],
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange' : onytplayerStateChange
-        },    
-        playerVars: {
-            'autoplay' : 1,
-            'controls' : 1,
-            'showinfo' : 0,
-            'modestbranding' : 0,
-            'wmode': 'opaque',
-            'disablekb': 1,
-            'rel' : 0
-        },
-        width: '100%',
-        height: '300'
-        
-  });
-}
+function onYouTubeIframeAPIReady() {
+player = new YT.Player('player', {
+height: $(window).height(),
+width: $(window).width(),
+videoId : 'qRBrptVex2I',
+events: {
+'onReady': onPlayerReady,
+'onStateChange' : onytplayerStateChange
+},
+playerVars: {
+'autoplay' : 1,
+'controls' : 1,
+'showinfo' : 0,
+'modestbranding' : 0,
+'wmode': 'opaque',
+'disablekb': 1,
+'rel' : 0
+},
+width: '100%',
+height: '300'
 
+});
+}
 function onytplayerStateChange(newState) {
    var state = newState.data;
    switch (newState.data) {
