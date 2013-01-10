@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = true;
+var DEBUG = false;
 var ticketsLink = "http://www.barbican.org.uk/artgallery/series.asp?id=1142&utm_campaign=CCOHPF131112B&utm_source=Barbican_Homepage&"
                    + "utm_medium=Flash_Small&utm_content=Flash_on-homepage_%20CCOHPF131112B&utm_nooverride=1"
 
