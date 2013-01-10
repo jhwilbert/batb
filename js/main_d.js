@@ -7,7 +7,6 @@ var player,videoElement;
 var threshold = 50;
 var keysEnabled = true;
 var videoStatus = {};
-var loader, postplayer;
 var timer;  
 var timeron = false;
 var noiseon = true;
@@ -35,11 +34,7 @@ function startApp() {
     });
     
     $(window).resize(function () { 
-        centerElement(postplayer);
-        centerElement(loader);
-
         positionLink();
-        positionPlayer();
         positionNoise();
     });
     
@@ -47,7 +42,6 @@ function startApp() {
     loadNoiseVideo(); // Load Noise Video
     
 }
-/*
 
 /**
  * Called by the playlist ready function of the player.
@@ -403,15 +397,6 @@ function centerElement(element) {
      
     $(element).css("top",centerH + "px");
     $(element).css("left",centerW + "px");
-}
-
-function positionPlayer() {
-    // Window size
-    var windowW = $(window).width();
-    var windowH = $(window).height();
-    
-    // Set Player Size
-    player.setSize(windowW,windowH); 
 }
 
 function positionLink() {
