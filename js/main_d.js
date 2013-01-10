@@ -11,8 +11,7 @@ var timer;
 var timeron = false;
 var noiseon = true;
 var DEBUG = false;
-var ticketsLink = "http://www.barbican.org.uk/artgallery/series.asp?id=1142&utm_campaign=CCOHPF131112B&utm_source=Barbican_Homepage&"
-                   + "utm_medium=Flash_Small&utm_content=Flash_on-homepage_%20CCOHPF131112B&utm_nooverride=1"
+var ticketsLink = "http://www.barbican.org.uk/duchamp/"
 
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -327,7 +326,7 @@ function restartPlaylist() {
     if(DEBUG) {
         console.log("restartPlaylist() :: restarting playlist ...");
     }
-    player.playVideoAt(0);
+    player.playVideoAt(1);
     videoStatus = {};
 }
 
