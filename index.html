@@ -21,14 +21,13 @@
         <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p
         <![endif]-->
-        
         <div id="container"></div>
     
         <!-- Modernizr -->
         <script>
         // var videosDesktop = [{% for video in videos_desktop %}'{{ video.url }}',{% endfor %}];
         var videosDesktop = ['B9wj8rQ-SwM','qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
-        var videosMobile = [{% for video in videos_mobile %}'{{ video.url }}',{% endfor %}];
+        //var videosMobile = [{% for video in videos_mobile %}'{{ video.url }}',{% endfor %}];
         
         Modernizr.load({
           test: Modernizr.touch,
@@ -37,6 +36,7 @@
           nope: ['css/main_d.css','js/main_d.js'],
           
           complete : function () {
+            
             startApp();
           }
           

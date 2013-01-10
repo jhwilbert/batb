@@ -65,6 +65,7 @@ function noiseLoaded(noiseImage) {
     
     $('#container').append('<div id="video-container"></div>');
     $('#video-container').append(noiseImage);
+    
     positionNoise();
     
     $("#loader").remove();    
@@ -80,9 +81,7 @@ function noiseLoaded(noiseImage) {
     
     // Loading Link
     $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
-    $("#container").append('<div id="test"></div>');
-    positionLink();
-    
+
     // Link Handle
     $("#link-container").click(function() {
         player.pauseVideo();
@@ -218,7 +217,6 @@ function onPlayerReady(event) {
     }
 
     $("#player").css("opacity","1");
-    
     player.cuePlaylist(videosDesktop);
     startCheck(); // start timer to check if it its really playing
 }
@@ -361,6 +359,7 @@ function onytplayerStateChange(newState) {
                 console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
                 console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             }
+            player.setPlaybackQuality('hd720');
             showNoise();  
             window.focus();
             paused = true; // enable pause
@@ -399,25 +398,25 @@ function centerElement(element) {
     $(element).css("left",centerW + "px");
 }
 
-function positionLink() {
-    var posX = $(window).width()/2 - $("#test").width()/2;
-    var posY = $(window).height()/2 - $("#test").height()/2;
+function positionLink(posy) {
     
-    // Disappear if window is small
+    var posX = $(window).width()/2 - $("#link-container").width()/2;
+
+   // Disappear if window is small
     if($(window).width() < 600) {
         $("#link-container").css("opacity","0");
     } else {
         $("#link-container").css("opacity","1");
     }
     
-    console.debug(posX,posY);
-    
-    $("#test").css("top",(posY*2) -50 + "px");
-    $("#test").css("left",posX + "px");
+    $("#link-container").css("top", posy - 40 + "px");
+    $("#link-container").css("left",posX + "px");
+        
     
 }
 
 function positionNoise() {
+    
     var windowW = $(window).width();
     var windowH = $(window).height();
     
@@ -460,5 +459,8 @@ function positionNoise() {
     $("#video-container").css("top",Math.round(noiseVCenter) + "px");
     $("#video-container").css("left",Math.round(noiseHCenter) + "px");
     
+    setTimeout(function() {
+        positionLink(nHeight+Math.round(noiseVCenter));
+    },10); // don't know why but needs a bit of time
 }
 
