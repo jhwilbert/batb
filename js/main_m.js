@@ -8,26 +8,14 @@ var player;
  * Start page defines the start of the application. It gets the videos from
  * the backend, creates the loader and starts the loader of the player.
  */
- 
-$(document).ready(function() {
-    console.log("Page ready...");
-    //loadPlayer(); // Load Player
-    loadPrepage();
-});
 
-function loadPrepage() {
+function startApp() {
     
     $("#container").append('<div id="header"><img src="../imgs/logo.png"></div>"');
     $("#container").append('<div id="content"><img src="../imgs/text.png"></div>"');
     
     loadPlayer();
-    /*
-    $("#pre-player").click(function() {
-        $("#pre-player").remove();
-        
-    });
-    
-    */
+
 }
 
 /**
