@@ -359,7 +359,7 @@ function onytplayerStateChange(newState) {
                 console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
                 console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             }
-            player.setPlaybackQuality('hd720');
+            player.setPlaybackQuality('medium');
             showNoise();  
             window.focus();
             paused = true; // enable pause
