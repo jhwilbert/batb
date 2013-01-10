@@ -25,21 +25,17 @@
     
         <!-- Modernizr -->
         <script>
-        // var videosDesktop = [{% for video in videos_desktop %}'{{ video.url }}',{% endfor %}];
-        var videosDesktop = ['B9wj8rQ-SwM','qRBrptVex2I','A1oqJiMczCg','G9aDzKZHRxU','P2uMQOBlk60','IvmIk3LCmwc','mYqAzPs6Lx0'];
-        //var videosMobile = [{% for video in videos_mobile %}'{{ video.url }}',{% endfor %}];
+        var videosDesktop = [{% for video in videos_desktop %}'{{ video.url }}',{% endfor %}];
+        var videosMobile = [{% for video in videos_mobile %}'{{ video.url }}',{% endfor %}];
         
         Modernizr.load({
           test: Modernizr.touch,
           both: ["/js/vendor/jquery-1.8.3.min.js"],
           yep : ['css/main_m.css','js/main_m.js'],
           nope: ['css/main_d.css','js/main_d.js'],
-          
           complete : function () {
-            
             startApp();
           }
-          
         });
         
         /*
