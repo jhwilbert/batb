@@ -11,8 +11,8 @@ var player;
 
 function startApp() {
     
-    $("#container").append('<div id="header"><img src="../imgs/logo.png"></div>"');
-    $("#container").append('<div id="content"><img src="../imgs/text.png"></div>"');
+    $("#container").append('<div id="header"><img src="../imgs/logo.png"></div>');
+    $("#container").append('<div id="content"><img src="../imgs/text.png"></div>');
     
     loadPlayer();
 
@@ -52,7 +52,7 @@ function onYouTubeIframeAPIReady() {
         videoId : videosMobile[0],
         events: {
             'onReady': onPlayerReady,
-            'onStateChange' : onytplayerStateChange,
+            'onStateChange' : onytplayerStateChange
         },    
         playerVars: {
             'autoplay' : 1,
