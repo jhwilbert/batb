@@ -20,21 +20,34 @@ var ticketsLink = "http://www.barbican.org.uk/artgallery/series.asp?id=1142&utm_
  * the backend, creates the loader and starts the loader of the player.
  */
 
-$(document).ready(function(){
-    
+function startApp() {
     if(DEBUG) {
         console.log("Page ready...");
     }
     // Add loader
     $('#container').append('<div id="loader"><img src="imgs/loader.gif">Loading TV</div>');
-    loader = $("#loader");
-    centerElement(loader);
+
+    // Add Event Handlers
+    $(window).focus(function() {
+        if(DEBUG) {
+            console.log("Window has focus");
+        }
+    });
+    
+    $(window).resize(function () { 
+        centerElement(postplayer);
+        centerElement(loader);
+
+        positionLink();
+        positionPlayer();
+        positionNoise();
+    });
     
     // Start Noise
     loadNoiseVideo(); // Load Noise Video
-     
-});
-
+    
+}
+/*
 
 /**
  * Called by the playlist ready function of the player.
@@ -215,8 +228,13 @@ function onPlayerReady(event) {
     $("#player").css("opacity","1");
     
     player.cuePlaylist(videosDesktop);
-    
     startCheck(); // start timer to check if it its really playing
+}
+
+function onPlayerError(event) {
+    if(DEBUG) {
+        console.log("onPlayerError() :: Error",event);
+    }
 }
 
 function onYouTubeIframeAPIReady() {    
@@ -228,7 +246,8 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {  
         events: {
             'onReady': onPlayerReady,
-            'onStateChange' : onytplayerStateChange
+            'onStateChange' : onytplayerStateChange,
+            'onError' : onPlayerError
         },  
         playerVars: {
             'autoplay' : 1,
@@ -260,6 +279,7 @@ function checkPlay() {
     if(DEBUG) {
         console.log("checkPlay() :: CurrentTime:",player.getCurrentTime(),"Totaltime",player.getDuration());
     }
+    
     if(player.getCurrentTime() > 0 && player.getCurrentTime() < player.getDuration() - 0.5) {
         hideNoise();
     }
@@ -369,16 +389,7 @@ function onytplayerStateChange(newState) {
 /**
  * Utility belt, all resizing functions.
  */
-
-$(window).resize(function () { 
-    centerElement(postplayer);
-    centerElement(loader);
-    
-    positionLink();
-    positionPlayer();
-    positionNoise();
-});
-
+ 
 function centerElement(element) {
     
     var windowW = $(window).width();
@@ -468,8 +479,3 @@ function positionNoise() {
     
 }
 
-$(window).focus(function() {
-    if(DEBUG) {
-        console.log("Window has focus");
-    }
-});

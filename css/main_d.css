@@ -41,10 +41,15 @@ body {
 #loader {
     font-weight:bold;
     font-size:11px;
-    width:80px;
     text-align:center;
     color:#525252;
-    position:absolute;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    left: 50%;
+    top: 50%; 
+    margin-left: -40px;
+    margin-top: -40px;
 }
 
 #video-container {

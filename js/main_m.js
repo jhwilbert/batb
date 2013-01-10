@@ -19,6 +19,7 @@ function loadPrepage() {
     
     $("#container").append('<div id="header"><img src="../imgs/logo.png"></div>"');
     $("#container").append('<div id="content"><img src="../imgs/text.png"></div>"');
+    
     loadPlayer();
     /*
     $("#pre-player").click(function() {
