@@ -216,7 +216,14 @@ function onPlayerReady(event) {
     }
 
     $("#player").css("opacity","1");
-    player.cuePlaylist(videosDesktop);
+    
+    // Cue playlist and play first video
+    player.cuePlaylist(videosDesktop,0,0,'medium');
+    
+    if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+        player.playVideoAt(0); // fix for Chrome to start on first video
+    }
+    
     startCheck(); // start timer to check if it its really playing
 }
 
@@ -240,7 +247,7 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 0,
+            'controls': 1,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
@@ -326,7 +333,7 @@ function restartPlaylist() {
     if(DEBUG) {
         console.log("restartPlaylist() :: restarting playlist ...");
     }
-    player.playVideoAt(1);
+    player.playVideoAt(0);
     videoStatus = {};
 }
 

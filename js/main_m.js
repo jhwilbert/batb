@@ -46,25 +46,26 @@ function onPlayerReady(event) {
 }
 
 function onYouTubeIframeAPIReady() {
-player = new YT.Player('player', {
-height: $(window).height(),
-width: $(window).width(),
-videoId : 'qRBrptVex2I',
-events: {
-'onReady': onPlayerReady,
-'onStateChange' : onytplayerStateChange
-},
-playerVars: {
-'autoplay' : 1,
-'controls' : 1,
-'showinfo' : 0,
-'modestbranding' : 0,
-'wmode': 'opaque',
-'disablekb': 1,
-'rel' : 0
-},
-width: '100%',
-height: '300'
+        player = new YT.Player('player', {
+            height: $(window).height(),
+            width: $(window).width(),
+            videoId : 'qRBrptVex2I',
+            
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange' : onytplayerStateChange
+    },
+    playerVars: {
+    'autoplay' : 1,
+    'controls' : 1,
+    'showinfo' : 0,
+    'modestbranding' : 0,
+    'wmode': 'opaque',
+    'disablekb': 1,
+    'rel' : 0
+    },
+    width: '100%',
+    height: '300'
 
 });
 }
