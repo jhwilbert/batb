@@ -12,7 +12,7 @@ var player;
 function startApp() {
     
     $("#container").append('<div id="header"><img src="../imgs/logo.png"></div>');
-    $("#container").append('<div id="content"> <div id="videoHolder">Video</div> <img src="../imgs/text.png"></div>');
+    $("#container").append('<div id="content"><div id="player">Video</div><a href="http://www.barbican.org.uk/duchamp/"><img src="../imgs/text.png"></div></a>');
     
     loadPlayer();
 
@@ -31,10 +31,6 @@ function loadPlayer() {
         fullPlaylist = videosMobile;
     }
     
-    $("#container").append('<div id="player"></div>');
-    //$("#player").css("display","none");
-    $("#player").css("top","240px");
-    
     var tag = document.createElement('script');
     tag.src = "//www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -46,29 +42,26 @@ function onPlayerReady(event) {
 }
 
 function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: $(window).height(),
-            width: $(window).width(),
-            videoId : 'qRBrptVex2I',
+    player = new YT.Player('player', {
+        height: $(window).height(),
+        width: $(window).width(),
+        videoId : videosMobile[0],
             
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange' : onytplayerStateChange
-    },
-    playerVars: {
-    'autoplay' : 1,
-    'controls' : 1,
-    'showinfo' : 0,
-    'modestbranding' : 0,
-    'wmode': 'opaque',
-    'disablekb': 1,
-    'rel' : 0
-    },
-    width: '100%',
-    height: '300'
-
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange' : onytplayerStateChange
+        },
+        
+        playerVars: {  
+            'autoplay' : 1,
+            'controls' : 0,
+            'showinfo' : 0,
+            'modestbranding' : 0,
+            'rel' : 0
+    }
 });
 }
+
 function onytplayerStateChange(newState) {
    var state = newState.data;
    switch (newState.data) {

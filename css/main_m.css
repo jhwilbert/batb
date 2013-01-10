@@ -56,8 +56,7 @@ body {
 	clear: both;
 }
 
-#videoHolder{
-	background: red;
+#player {
 	height: 160px;
 	width: 100%;
 	position: absolute;
