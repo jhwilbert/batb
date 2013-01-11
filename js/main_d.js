@@ -220,7 +220,7 @@ function onPlayerReady(event) {
     // Cue playlist and play first video
     player.cuePlaylist(videosDesktop,0,0,'medium');
     
-    if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+    if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1 || $.browser.msie == true ) {
         player.playVideoAt(0); // fix for Chrome to start on first video
     }
     
