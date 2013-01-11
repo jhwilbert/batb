@@ -37,6 +37,20 @@ function startApp() {
         positionNoise();
     });
     
+    $(document).keypress(function (e){ 
+        if(keysEnabled) {
+            if(e.charCode == 32) {
+                player.nextVideo();
+                videoInterrupted(player.getDuration(),player.getCurrentTime())
+            }
+        } else {
+            if(DEBUG){
+                console.log("detectKey(e) :: keys are disabled at this point");
+            }
+        }
+        
+    });
+    
     // Start Noise
     loadNoiseVideo(); // Load Noise Video
     
@@ -175,6 +189,7 @@ function updateTotalPercent() {
 
 function detectKey(e) {
     //e.preventDefault();
+    /*
     if(keysEnabled) {
         if(e.charCode == 32) {
             player.nextVideo();
@@ -185,6 +200,7 @@ function detectKey(e) {
             console.log("detectKey(e) :: keys are disabled at this point");
         }
     }
+    */
 }
 
 
