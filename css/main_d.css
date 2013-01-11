@@ -28,9 +28,12 @@ body {
     text-shadow: 1px 1px #000000;
     font-family: 'FuturaSB-Book';
     position:absolute;
+    width:400px;
+    text-align:center;
     color:white;
     font-weight:bold;
     cursor:pointer;
+    z-index:10000;
 }
 
 #link-container:hover {

@@ -33,7 +33,6 @@ function startApp() {
     });
     
     $(window).resize(function () { 
-        positionLink();
         positionNoise();
     });
     
@@ -79,10 +78,22 @@ function loadNoiseVideo() {
 
 function noiseLoaded(noiseImage) {
     
+    // Add Noise & Link
     $('#container').append('<div id="video-container"></div>');
+    $("#container").append('<div id="link-container">'+copyLink+'</div>');
     $('#video-container').append(noiseImage);
-    
     positionNoise();
+    
+    // Adding Link Handle
+    $("#link-container").click(function() {
+        player.pauseVideo();
+        
+        // Open link in new window
+        $(this).target = "_blank";
+        window.open("/r");
+        return false; 
+    });
+    
     
     $("#loader").remove();    
     $("#video-container").css("opacity","1");
@@ -94,20 +105,6 @@ function noiseLoaded(noiseImage) {
     
     //  Load Player
     loadPlayer(); 
-    
-    // Loading Link
-    $("#container").append('<div id="link-container">'+copyLink+'</div>');
-
-    // Link Handle
-    $("#link-container").click(function() {
-        player.pauseVideo();
-        
-        // Open link in new window
-        $(this).target = "_blank";
-        window.open("/r");
-        return false; 
-    });
-
 }
 
 /**
@@ -284,7 +281,7 @@ function showNoise() {
         if(DEBUG) {
             console.log("hidenoise() :: Noise fadein...");
         }
-        $("#link-container").hide();
+        //$("#link-container").hide();
         $("#video-container").fadeIn(); // fadeout noise
         noiseon = true;
     }
@@ -399,23 +396,6 @@ function centerElement(element) {
     $(element).css("left",centerW + "px");
 }
 
-function positionLink(posy) {
-    
-    var posX = $(window).width()/2 - $("#link-container").width()/2;
-
-   // Disappear if window is small
-    if($(window).width() < 600) {
-        $("#link-container").css("opacity","0");
-    } else {
-        $("#link-container").css("opacity","1");
-    }
-    
-    $("#link-container").css("top", posy - 40 + "px");
-    $("#link-container").css("left",posX + "px");
-        
-    
-}
-
 function positionNoise() {
     
     var windowW = $(window).width();
@@ -456,8 +436,19 @@ function positionNoise() {
     $("#video-container").css("top",Math.round(noiseVCenter) + "px");
     $("#video-container").css("left",Math.round(noiseHCenter) + "px");
     
-    setTimeout(function() {
-        positionLink(nHeight+Math.round(noiseVCenter));
-    },10); // don't know why but needs a bit of time
+    
+    // Position Link
+    var l_posX = $(window).width()/2 - $("#link-container").width()/2;
+    var l_posY = Math.round(noiseVCenter) + Math.round(nHeight) - 50;    
+    $("#link-container").css("top", l_posY + "px");
+    $("#link-container").css("left",l_posX + "px");
+    
+    // Disappear if window is small
+     if($(window).width() < 600) {
+         $("#link-container").css("opacity","0");
+     } else {
+         $("#link-container").css("opacity","1");
+     }
+    
 }
 
