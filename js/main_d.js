@@ -39,10 +39,10 @@ function startApp() {
     
     $(document).keypress(function (e){ 
         var key;
-        if ( $.browser.msie ) { 
+        if ( $.browser.msie ) {  // if IE it uses keyCode instead of charcode
             key = e.keyCode;
         } else {
-            key = e.charCode;
+            key = e.charCode; // all other (Safari, Chrome, Firefox) use charCode
         }
         if(keysEnabled) {
             if(key == 32) {
@@ -188,28 +188,6 @@ function updateTotalPercent() {
     });
     return totalPercent/numItems;
 }
-
-/**
- * Interaction Handles
- */
-
-function detectKey(e) {
-    //e.preventDefault();
-    /*
-    if(keysEnabled) {
-        if(e.charCode == 32) {
-            player.nextVideo();
-            videoInterrupted(player.getDuration(),player.getCurrentTime())
-        }
-    } else {
-        if(DEBUG){
-            console.log("detectKey(e) :: keys are disabled at this point");
-        }
-    }
-    */
-}
-
-
 
 /**
  * This set of functions load the player and inject it into the DOM. Player
