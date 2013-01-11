@@ -25,7 +25,7 @@ body {
 
 #link-container {
     font-size:16px;
-    text-shadow: 1px 1px #000000;;
+    text-shadow: 1px 1px #000000;
     font-family: 'FuturaSB-Book';
     position:absolute;
     color:white;
@@ -33,6 +33,14 @@ body {
     cursor:pointer;
 }
 
+#link-container:hover {
+    color:#e4e4e4;
+}
+
+#link-container:active {
+    color:white;
+    text-shadow: 0px 0px #000000;
+}
 #post-player {
    position:absolute;
    padding:20px;

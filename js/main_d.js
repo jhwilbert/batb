@@ -11,7 +11,7 @@ var timer;
 var timeron = false;
 var noiseon = true;
 var DEBUG = true;
-var ticketsLink = "http://www.barbican.org.uk/duchamp/"
+var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -53,13 +53,10 @@ function startApp() {
             if(DEBUG){
                 console.log("detectKey(e) :: keys are disabled at this point");
             }
-        }
-        
+        } 
     });
-    
     // Start Noise
     loadNoiseVideo(); // Load Noise Video
-    
 }
 
 /**
@@ -72,7 +69,7 @@ function loadNoiseVideo() {
         console.log("loadNoiseVideo() :: Loading Noise...");
     }
     var noiseImage = new Image(); 
-    noiseImage.src = "imgs/noise4.gif";
+    noiseImage.src = "imgs/noise.gif";
     
     noiseImage.onload = function () { 
         noiseLoaded(noiseImage);
@@ -99,7 +96,7 @@ function noiseLoaded(noiseImage) {
     loadPlayer(); 
     
     // Loading Link
-    $("#container").append('<div id="link-container">CLICK HERE FOR MORE INFORMATION AND TICKETS</div>');
+    $("#container").append('<div id="link-container">'+copyLink+'</div>');
 
     // Link Handle
     $("#link-container").click(function() {
@@ -107,7 +104,7 @@ function noiseLoaded(noiseImage) {
         
         // Open link in new window
         $(this).target = "_blank";
-        window.open(ticketsLink);
+        window.open("/r");
         return false; 
     });
 
@@ -247,19 +244,17 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
             'disablekb' : 1,
             'enablejsapi': 1,
             'origin': window.location.host,
-            'rel' : 0,
-        },
-        
+            'rel' : 0
+        },    
         width : '100%',
         height : '100%'
-        
   });
 }
 

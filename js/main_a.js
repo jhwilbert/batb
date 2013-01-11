@@ -11,7 +11,6 @@ $(document).ready(function() {
     
     /*  Button Functionallity  */
     $(".removeBtn").click(function() {
-        console.log("Remove",this.id);
         var elid = this.id;
         $.post( '/a/remove', { p_id: this.id }).success(function() { 
             $("#item_"+elid).remove();
@@ -54,7 +53,6 @@ $(document).ready(function() {
 function addDesktop() {
   $("#statusDesktop").html("Video Exists, storing video...");
   $.post( '/a/add', { p_videourl: videoURL, p_order : order }, function(data) {
-      $("#statusDesktop").html("Data",data);
       window.location.reload();
   });
 }
@@ -62,7 +60,6 @@ function addDesktop() {
 function addMobile() {
   $("#statusMobile").html("Video Exists, storing video...");
   $.post( '/a/update', { p_videourl: videoURL }, function(data) {
-      $("#statusMobile").html("Data",data);
       window.location.reload();
   });
 }
@@ -82,8 +79,6 @@ function displayInfo(id,url) {
     $.getJSON(videoInfoUrl, function(data) {
         title = data.entry.title.$t;
         thumb = data.entry.media$group.media$thumbnail[0].url;
-        console.debug(title,thumb)
-        console.debug()
         $("#"+id).append("<img class='v-thumb' src='"+thumb+"'>");
         $("#"+id).append("<div class='v-title'>"+title+"</div>");
         $("#"+id).append("<div class='v-url'><a href='http://www.youtube.com/watch?v="+url+"' target='_blank'>http://www.youtube.com/watch?v="+url+"</a></div>");
