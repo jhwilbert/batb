@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = true;
+var DEBUG = false;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 
 /**
@@ -420,23 +420,18 @@ function positionNoise() {
     
     var windowW = $(window).width();
     var windowH = $(window).height();
-    
-    var vWidth = windowW; // set video width
-    var vHeight = windowH; // set video height
-    
+
     var baseW = 540; // set base noise width
     var baseH = 305; // set base noise height
     
     // Calculate Noise Size
-    if(windowW > windowH) {
+    if(windowW > windowH) { // if window is landscape
         var sizeFactor = windowW / baseW;
         nWidth = baseW * sizeFactor;
         nHeight = nWidth / 1.77;
         if(nHeight > windowH) {
-            if(DEBUG) {
-                console.log("positionNoise() ::  won't fit vertically resize again",windowH/nHeight);
-            }
-            nWidth = nWidth * windowH/nHeight;        
+            nWidth = nWidth * windowH/nHeight;
+            nHeight = nWidth / 1.77;  
         }
     } 
     
@@ -446,6 +441,7 @@ function positionNoise() {
         nWidth = nHeight * 1.77;
         if(nWidth > windowW) {
             nHeight = nHeight * windowW/nWidth;
+            nWidth = nHeight * 1.77;
         } 
     }
     
