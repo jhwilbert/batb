@@ -7,9 +7,10 @@ body {
 
 @font-face {
     font-family: 'FuturaSB-Book';
-    src: url('../fonts/FuturaSB-Book.eot?') format('eot'), url('../fonts/FuturaSB-Book.woff') format('woff'), url('../fonts/FuturaSB-Book.ttf') format('truetype');
+    src: url('../fonts/FuturaSB-Book.eot?') format('eot'), 
+         url('../fonts/FuturaSB-Book.woff') format('woff'), 
+         url('../fonts/FuturaSB-Book.ttf') format('truetype');
 }
-
 
 #container {
     float:left;
@@ -18,7 +19,6 @@ body {
 #button a {
     color:white;
     text-decoration:none;
-
 }
 .clear{
 	clear: both;
@@ -30,22 +30,23 @@ body {
 
 /* Smartphones (landscape) ----------- */
 
-@media only screen and (min-width : 321px) {
+@media only screen and (min-width : 321px) and (max-device-width : 480px) {
     body {
         overflow:hidden;
+        background:white;
     }
     #container {
         width:100%;
         height:100%;
     }
     #button {
-
+        display:none;
     }
     #content {
-
+        display:none;
     }
     #header {
-
+        display:none;
     }
     #player {
         display:block;
@@ -53,8 +54,6 @@ body {
         height:100%;
     }
 }
-
-
 
 /* Smartphones (portrait) ----------- */
 
@@ -120,6 +119,7 @@ body {
         margin-left:auto;
         margin-right:auto;
         margin-top:60px;
+        margin-bottom:60px;
     }
     #header {
         float:left;
@@ -133,8 +133,7 @@ body {
         margin-top:-25px;
 	    width:20%;
 	}
-    #container {
-    }
+    
 	#content {
         font-family:'FuturaSB-Book';
         font-size:1.8em;

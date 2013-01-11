@@ -4,7 +4,9 @@
 
 @font-face {
  font-family: 'FuturaSB-Book';
- src: url('../fonts/FuturaSB-Book.eot?') format('eot'), url('../fonts/FuturaSB-Book.woff') format('woff'), url('../fonts/FuturaSB-Book.ttf') format('truetype');
+ src: url('../fonts/FuturaSB-Book.eot?') format('eot'), 
+      url('../fonts/FuturaSB-Book.woff') format('woff'), 
+      url('../fonts/FuturaSB-Book.ttf') format('truetype');
 }
    
 body {
