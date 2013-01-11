@@ -436,7 +436,6 @@ function positionNoise() {
     $("#video-container").css("top",Math.round(noiseVCenter) + "px");
     $("#video-container").css("left",Math.round(noiseHCenter) + "px");
     
-    
     // Position Link
     var l_posX = $(window).width()/2 - $("#link-container").width()/2;
     var l_posY = Math.round(noiseVCenter) + Math.round(nHeight) - 50;    
@@ -449,6 +448,5 @@ function positionNoise() {
      } else {
          $("#link-container").css("opacity","1");
      }
-    
 }
 

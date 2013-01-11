@@ -2,89 +2,156 @@ body {
     background:#1c1b1a;
     margin:0px;
     padding:0px;
+    background:url("../imgs/bg_m.png");
 }
 
-#header {
-    float:left;
-    left:0px;
-    padding:0px;
-    max-width:100%;
-    margin-bottom:20px;
+@font-face {
+    font-family: 'FuturaSB-Book';
+    src: url('../fonts/FuturaSB-Book.eot?') format('eot'), url('../fonts/FuturaSB-Book.woff') format('woff'), url('../fonts/FuturaSB-Book.ttf') format('truetype');
 }
 
-#content img {
-    float:left;
-    max-width: 80%;
-    margin-top:30px;
-    margin-bottom:20px;
-
-}
-
-#header img {
-    width:30%;
-}
 
 #container {
-    float:left;	
+    float:left;
 }
 
+#button a {
+    color:white;
+    text-decoration:none;
+
+}
 .clear{
 	clear: both;
 }
 
-#player {
-	width: 640px;
-	height:380px;
-	float:left;
-}
-
-
-
-
 /* ====================
-   Mobile View CSS
+   Mobile Only CSS
    ==================*/
-/* Smartphones (portrait and landscape) ----------- */
-@media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 480px) {
-/* Styles */
-}
 
 /* Smartphones (landscape) ----------- */
-@media only screen 
-and (min-width : 321px) {
-    /* Styles */
+
+@media only screen and (min-width : 321px) {
     body {
-        overflow:auto;
+        overflow:hidden;
+    }
+    #container {
+        width:100%;
+        height:100%;
+    }
+    #button {
+
     }
     #content {
-        display:block;
+
     }
     #header {
+
+    }
+    #player {
         display:block;
+        width:100%;
+        height:100%;
     }
 }
 
+
+
 /* Smartphones (portrait) ----------- */
-@media only screen 
-and (max-width : 320px) {
+
+@media only screen and (max-width : 320px) {
 	body{
 		width: 320px;
-		overflow: hidden;
 	}
-	
-	#content img{
-		left: 30px;
-		border: 0;
+    #button {
+        font-family: 'FuturaSB-Book';
+        padding:15px;
+        width:70%;
+        font-size:1.4em;
+        text-shadow: 1px 1px #000000;
+        text-align:center;
+        background: #343231;
+        margin-left:auto;
+        margin-right:auto;
+        margin-bottom:30px;
+    }	
+    #header {
+        float:left;
+        left:0px;
+        margin-top:-25px;
+        padding:0px;
+        max-width:100%;
+        margin-bottom:20px;
+    }
+	#header img{
+	    width:35%;
 	}
-/* Styles */
+	#content {
+        font-family:'FuturaSB-Book';
+        font-size:1.4em;
+        width:90%;
+        color:white;
+        padding-top:20px;
+        padding-bottom:20px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    #player {
+    	width: 100%;
+    	height:180px;
+    	margin-left:auto;
+        margin-right:auto;
+
+    }
+
 }
 
 /* iPads (portrait and landscape) ----------- */
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) {
-/* Styles */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    body { 
+	}
+	#button {
+        font-family: 'FuturaSB-Book';
+        padding:35px;
+        width:30%;
+        font-size:1.4em;
+        text-shadow: 1px 1px #000000;
+        text-align:center;
+        background: #343231;
+        margin-left:auto;
+        margin-right:auto;
+        margin-top:60px;
+    }
+    #header {
+        float:left;
+                display:block;
+        padding:0px;
+        width:100%;
+        margin-bottom:20px;
+    }
+    #header img{
+        
+        margin-top:-25px;
+	    width:20%;
+	}
+    #container {
+    }
+	#content {
+        font-family:'FuturaSB-Book';
+        font-size:1.8em;
+        width:80%;
+        color:white;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    #player {
+        display:block;
+    	width: 80%;
+    	height:40%;
+    	margin-left:auto;
+        margin-right:auto;
+        margin-bottom:20px;
+
+    }
+    
 }
 
