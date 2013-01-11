@@ -38,8 +38,14 @@ function startApp() {
     });
     
     $(document).keypress(function (e){ 
+        var key;
+        if ( $.browser.msie ) { 
+            key = e.keyCode;
+        } else {
+            key = e.charCode;
+        }
         if(keysEnabled) {
-            if(e.charCode == 32) {
+            if(key == 32) {
                 player.nextVideo();
                 videoInterrupted(player.getDuration(),player.getCurrentTime())
             }
