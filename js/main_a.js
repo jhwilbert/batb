@@ -7,7 +7,6 @@ var youtubeURL = "https://gdata.youtube.com/feeds/api/videos/"
 var formatAPI = "?v=2&alt=json";
 var videoURL,order,fullURL;
 
-
 $(document).ready(function() {
     
     /*  Button Functionallity  */
@@ -49,6 +48,7 @@ $(document).ready(function() {
     });
     
 }); /* End of jQuery Ready */
+
 
 /*  Form & YouTube Checks  */
 function addDesktop() {

@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = false;
+var DEBUG = true;
 var ticketsLink = "http://www.barbican.org.uk/duchamp/"
 
 /**
@@ -247,7 +247,7 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 0,
+            'controls': 1,
             'showinfo' : 0,
             'modestbranding' : 1,
             'wmode' : 'opaque',
