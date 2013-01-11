@@ -4,52 +4,26 @@ body {
     padding:0px;
 }
 
-.page {
-    font-weight:bold;
-    color:white;
-    text-align:center;
-    cursor:pointer;
-    margin-top:100px;
-    background:#252525;
-    font-family:Arial;
-    font-size:50px;
-    height:100px;
-    width:100%;
-}
-
 #header {
-    position:absolute;
-
-    top:-25px;
+    float:left;
     left:0px;
     padding:0px;
-    max-width:100%
+    max-width:100%;
+    margin-bottom:20px;
 }
 
 #content img {
-    position:absolute;
+    float:left;
     max-width: 80%;
-    
-    bottom:10%;
+    margin-top:40px;
 }
 
-
-#player {
-    
-    position:absolute;
-    top:0px;
-}
 #header img {
     width:30%;
 }
 
-#content {
-	background: red;
-	
-}
-
-#container{
-	
+#container {
+    float:left;	
 }
 
 .clear{
@@ -57,10 +31,8 @@ body {
 }
 
 #player {
-	height: 160px;
 	width: 100%;
-	position: absolute;
-	top: 100px;
+	float:left;
 }
 
 
@@ -79,7 +51,20 @@ and (max-device-width : 480px) {
 /* Smartphones (landscape) ----------- */
 @media only screen 
 and (min-width : 321px) {
-/* Styles */
+    /* Styles */
+    body {
+        overflow:auto;
+    }
+    #content {
+        display:block;
+    }
+    #header {
+        display:block;
+    }
+    #player {
+        width:100%;
+        height:100%;
+    }
 }
 
 /* Smartphones (portrait) ----------- */
