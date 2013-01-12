@@ -281,7 +281,7 @@ function showNoise() {
         if(DEBUG) {
             console.log("hidenoise() :: Noise fadein...");
         }
-        //$("#link-container").hide();
+        $("#link-container").hide();
         $("#video-container").fadeIn(); // fadeout noise
         noiseon = true;
     }
