@@ -77,5 +77,21 @@ body {
     position:absolute;
     top:0;
     left:0;
-    z-index:-1000;
+    z-index:0;
+}
+
+#oldBrowser a{
+    color: #fff !important;
+}
+
+#oldBrowser{
+    position: absolute;
+    text-align: center;
+    background: red;
+    top: 43%;
+    left: 15%;
+    color: #fff;
+    width: 66%;
+    margin: 0 auto;
+    padding: 2%;
 }
