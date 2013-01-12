@@ -328,7 +328,7 @@ function restartPlaylist() {
     if(DEBUG) {
         console.log("restartPlaylist() :: restarting playlist ...");
     }
-    player.playVideoAt(0);
+    player.playVideoAt(1); // play second video on restart playlist
     videoStatus = {};
 }
 
