@@ -214,7 +214,7 @@ function onPlayerReady(event) {
     $("#player").css("opacity","1");
     
     // Cue playlist and play first video
-    player.cuePlaylist(videosDesktop,0,0,'medium');
+    player.cuePlaylist(videosDesktop,0,0,'hd720');
     
     if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1 || $.browser.msie == true ) {
         player.playVideoAt(0); // fix for Chrome to start on first video
@@ -243,7 +243,7 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 0,
+            'controls': 1,
             'showinfo' : 0,
             'wmode' : 'opaque',
             'modestbranding' : 1,
@@ -360,7 +360,7 @@ function onytplayerStateChange(newState) {
                 console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
                 console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             }
-            player.setPlaybackQuality('medium');
+            player.setPlaybackQuality('hd720');
             showNoise();  
             window.focus();
             keysEnabled = false; // disable ketys on static noise
