@@ -12,9 +12,6 @@ body {
          url('../fonts/FuturaSB-Book.ttf') format('truetype');
 }
 
-#container {
-    float:left;
-}
 
 #button a {
     color:white;
@@ -33,7 +30,6 @@ body {
 @media only screen and (min-width : 321px) and (max-device-width : 480px) {
     body {
         overflow:hidden;
-        background:white;
     }
     #container {
         width:100%;
@@ -123,7 +119,8 @@ body {
     }
     #header {
         float:left;
-                display:block;
+        display:block;
+        top: -60px;
         padding:0px;
         width:100%;
         margin-bottom:20px;
@@ -154,3 +151,108 @@ body {
     
 }
 
+
+
+/** 480PX IPHONE LANDSCAPE **/
+@media screen and (max-width: 480px) {
+    #player{
+        
+    }
+}
+
+
+@media only screen  and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 2){
+    #player {
+        height: 460px;
+    }
+    
+    #container{
+        width:100%;
+    }
+    
+    #content{
+        height: 300px;
+    }
+    
+    #header{
+        margin-top: -60px;
+    }
+    
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        padding-top: 30px; height: 0; overflow: hidden;
+        height: 430px;
+    }
+
+    .video-container iframe,
+    .video-container object,
+    .video-container embed {
+        height: 100%;
+    }
+    
+    
+	#button {
+	    position: relative;
+	    top: -170px;
+	}
+}
+
+@media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+    #player {
+        height: 340px;
+    }
+    
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        padding-top: 30px; height: 0;
+        width: 100%;
+    }
+    
+    
+    #header{
+        margin-top: -40px;
+        display: block;
+    }
+    
+}
+
+
+/** 480PX IPHONE LANDSCAPE **/
+@media screen and (max-width: 480px) {
+    #player{
+        height: 270px;
+        width: 100%;
+    }
+    
+    #header{
+        display: none;
+    }
+    
+    #container{
+    }
+    
+    .video-container{
+        padding-top: 0;
+    }
+    
+}
+
+/** 320PX IPHONE LANDSCAPE **/
+@media screen and (max-width: 320px) {
+    #player{
+        height: 180px;
+        width: 100%;
+    }
+    
+    #header{
+        margin-top: -60px;
+        display: block;
+    }
+    
+    #container{
+        padding-bottom: 20px;
+    }
+    
+}
