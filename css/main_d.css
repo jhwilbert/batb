@@ -87,10 +87,11 @@ body {
 #oldBrowser{
     position: absolute;
     text-align: center;
-    background: red;
+    background: #ab3636;
     top: 43%;
     left: 15%;
     color: #fff;
+    border:3px solid #a01a1a;
     width: 66%;
     margin: 0 auto;
     padding: 2%;
