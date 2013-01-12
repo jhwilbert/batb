@@ -82,6 +82,7 @@ function noiseLoaded(noiseImage) {
     $('#container').append('<div id="video-container"></div>');
     $("#container").append('<div id="link-container">'+copyLink+'</div>');
     $('#video-container').append(noiseImage);
+    
     positionNoise();
     
     // Adding Link Handle
