@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = true;
+var DEBUG = false;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 
 /**
@@ -328,7 +328,7 @@ function restartPlaylist() {
     if(DEBUG) {
         console.log("restartPlaylist() :: restarting playlist ...");
     }
-    player.playVideoAt(0);
+    player.playVideoAt(1); // play second video on restart playlist
     videoStatus = {};
 }
 
