@@ -14,7 +14,6 @@ body {
     padding:0px;
     margin:0px;
     background:black;
-    font-family:Arial,Helvetica;
 }
 
 
@@ -52,8 +51,9 @@ body {
 }
 
 #loader {
+    font-family: 'FuturaSB-Book';
     font-weight:bold;
-    font-size:11px;
+    font-size:15px;
     text-align:center;
     color:#525252;
     width: 80px;

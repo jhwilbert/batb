@@ -23,7 +23,7 @@ function startApp() {
         console.log("Page ready...");
     }
     // Add loader
-    $('#container').append('<div id="loader"><img src="imgs/loader.gif">Loading TV</div>');
+    $('#container').append('<div id="loader"><img src="imgs/loader.gif">LOADING</div>');
 
     // Add Event Handlers
     $(window).focus(function() {
@@ -54,6 +54,7 @@ function startApp() {
             }
         } 
     });
+    
     // Start Noise
     loadNoiseVideo(); // Load Noise Video
 }
@@ -245,9 +246,9 @@ function onYouTubeIframeAPIReady() {
             'controls': 0,
             'showinfo' : 0,
             'modestbranding' : 1,
-            'wmode' : 'opaque',
             'disablekb' : 1,
             'enablejsapi': 1,
+            'iv_load_policy' : 3,
             'origin': window.location.host,
             'rel' : 0
         },    
