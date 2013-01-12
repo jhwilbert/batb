@@ -34,7 +34,8 @@ function onYouTubeIframeAPIReady() {
             'showinfo' : 0,
             'modestbranding' : 0,
             'rel' : 0
-        }
+        }, 
+        width: "100%"
     
     });
 }
