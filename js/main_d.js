@@ -243,8 +243,9 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
+            'wmode' : 'opaque',
             'modestbranding' : 1,
             'disablekb' : 1,
             'enablejsapi': 1,
