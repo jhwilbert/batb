@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = false;
+var DEBUG = true;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 
 /**
@@ -243,7 +243,7 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 0,
+            'controls': 1,
             'showinfo' : 0,
             'modestbranding' : 1,
             'disablekb' : 1,
@@ -362,7 +362,6 @@ function onytplayerStateChange(newState) {
             player.setPlaybackQuality('medium');
             showNoise();  
             window.focus();
-            paused = true; // enable pause
             keysEnabled = false; // disable ketys on static noise
             break;
         case 2:
