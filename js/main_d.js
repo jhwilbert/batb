@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = false;
+var DEBUG = true;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 
 /**
