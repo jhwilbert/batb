@@ -3,7 +3,6 @@ body {
     margin:0px;
     padding:0px;
     background:url("../imgs/bg_m.jpg");
-    background-width:100%;
 }
 
 @font-face {
@@ -147,6 +146,7 @@ body {
 @media only screen and (min-width : 321px) and (max-device-width : 480px) {
     body {
         height:100%;
+        background-size:100%;
     }
     
     #button{
@@ -172,6 +172,7 @@ body {
     
     #header{
         display: block;
+        margin-left:-10px;
     }
     
     #header img{
@@ -252,6 +253,7 @@ body {
         margin-bottom:40px;
         display: block;
         margin-top:-30px;
+        margin-left:-10px;
 
     }
 

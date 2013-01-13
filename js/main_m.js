@@ -43,7 +43,7 @@ function onPlayerReady(event) {
 function onYouTubeIframeAPIReady() {
     console.debug("onYouTubeIframeAPIReady()...");
     player = new YT.Player('player', {
-        videoId : videosDesktop[3], // replace                    
+        videoId : videosMobile[0], 
         playerVars: {  
             'autoplay' : 1,
             'controls' : 0,
@@ -68,7 +68,6 @@ function onytplayerStateChange(newState) {
    switch (newState.data) {
         case 0:
             //showPostPage();
-            console.log("onytplayerStateChange() :: End of playlist");
             window.focus();
             break;
     }
