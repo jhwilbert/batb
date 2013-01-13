@@ -46,7 +46,7 @@ function startApp() {
         if(keysEnabled) {
             if(key == 32) {
                 player.nextVideo();
-                videoInterrupted(player.getDuration(),player.getCurrentTime())
+                //videoInterrupted(player.getDuration(),player.getCurrentTime())
             }
         } else {
             if(DEBUG){
