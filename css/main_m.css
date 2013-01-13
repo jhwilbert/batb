@@ -2,7 +2,8 @@ body {
     background:#1c1b1a;
     margin:0px;
     padding:0px;
-    background:url("../imgs/bg_m.png");
+    background:url("../imgs/bg_m.jpg");
+    background-width:100%;
 }
 
 @font-face {
@@ -13,16 +14,23 @@ body {
 }
 
 
+@font-face {
+    font-family: 'FuturaSB-Bold';
+    src: url('../fonts/FuturaSB-Bold.eot?') format('eot'), 
+         url('../fonts/FuturaSB-Bold.woff') format('woff'), 
+         url('../fonts/FuturaSB-Bold.ttf') format('truetype');
+}
+
+
 #button a {
     color:white;
     text-decoration:none;
 }
-.clear{
+.clear
 	clear: both;
 }
 
 #header{
-    margin-top: -70px;
 }
 
 /* ====================
@@ -138,34 +146,28 @@ body {
 
 @media only screen and (min-width : 321px) and (max-device-width : 480px) {
     body {
-        overflow:hidden;
-    }
-    #container {
-        width:100%;
-        height:100%;
-    }
-    #player {
-        display:block;
-        width:100%;
         height:100%;
     }
     
     #button{
-            font-family: 'FuturaSB-Book';
-            padding:15px;
-            width:50%;
+            font-family: 'FuturaSB-Bold';
+            padding-top:5px;
             font-size:1.4em;
-            text-shadow: 1px 1px #000000;
             text-align:center;
-            background: #343231;
             margin: 0 auto;
             margin-bottom: 20px;
+            float:left;
+            width: 65%;
+            margin-left:18%;
      }
 
     #player{
+        float:left;
         height: 180px;
-        width: 80%;
-        margin-left: 12%;
+        width: 55%;
+        margin-left:23%;
+        margin-top:-15px;
+        margin-bottom:5px;
     }
     
     #header{
@@ -173,27 +175,26 @@ body {
     }
     
     #header img{
-        width: 100px;
+        margin-top:-30px;
+        width: 120px;
     }
     
     #content{
+        width: 65%;
+        margin-left:18%;
+        float:left;
         display: block;
-        margin: 20px 0;
-        margin-left: 12%;
         color: #fff;
         font-family: 'FuturaSB-Book';
         font-size: 1.0em;
-        width: 80%;
+        text-align:center;
     }    
     
     .video-container {
         width: 100%;
-        height: 430px;
-        padding-bottom: 20px;
     }
     
     #container{
-        padding-bottom: 20px;
         height: 100%;
     }
         
@@ -203,8 +204,10 @@ body {
 @media only screen and (max-width : 320px) {
 	body{
 		width: 320px;
+		background-size:100%;
 	}
     #button {
+        /* old
         font-family: 'FuturaSB-Book';
         padding:15px;
         width:70%;
@@ -215,18 +218,26 @@ body {
         margin-left:auto;
         margin-right:auto;
         margin-bottom:30px;
+        */
+        margin-left:auto;
+        margin-right:auto;
+        text-align:center;
+        font-size:1.3em;
+        font-family: 'FuturaSB-Bold';
     }	
 	#content {
+
         font-family:'FuturaSB-Book';
         font-size:1.2em;
         color:white;
+        text-align:center;
         width:90%;
-        padding-top:20px;
-        padding-bottom:20px;
+        padding-top:40px;
         margin-left:auto;
         margin-right:auto;
     }
     #player {
+        margin-top:250px;
     	width: 100%;
     	height:180px;
     	margin-left:auto;
@@ -238,14 +249,14 @@ body {
         left:0px;
         padding:0px;
         max-width:100%;
-        margin-bottom:20px;
+        margin-bottom:40px;
         display: block;
+        margin-top:-30px;
 
     }
 
 	#header img{
-	    width:35%;
-
+	    width:45%;
 	}
 
     

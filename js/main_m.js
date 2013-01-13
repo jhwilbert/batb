@@ -3,7 +3,7 @@
  *  MOBILE  main_m.js                   *
  ****************************************/
 var player;
-var content_pre = "A Barbican season to celebrate the work and influence of the 20th century's greatest artist.";
+var content_pre = "click above to watch the trailer and";
 var content_post = "Post page content.";
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -12,7 +12,7 @@ var content_post = "Post page content.";
 
 function startApp() {
     $("#container").append('');
-    $("#container").html('<div id="header"><img src="../imgs/logo.png"></div><div id="player"></div><div id="content">'+content_pre+'<br><br><strong>14 Feb-9 Jun 2013</strong></div><div id="button"><a href="http://www.barbican.org.uk/duchamp/">PURCHASE TICKETS</a></div>');
+    $("#container").html('<div id="header"><img src="../imgs/logo.png"></div><div id="player"></div><div id="content">'+content_pre+'</div><div id="button"><a href="http://www.barbican.org.uk/duchamp/">here for more info</a></div>');
 
     // https://gist.github.com/4438876 // load custom poster frame
     
@@ -67,9 +67,8 @@ function onytplayerStateChange(newState) {
    var state = newState.data;
    switch (newState.data) {
         case 0:
-            showPostPage();
+            //showPostPage();
             console.log("onytplayerStateChange() :: End of playlist");
-            $("#post-player").show();
             window.focus();
             break;
     }
