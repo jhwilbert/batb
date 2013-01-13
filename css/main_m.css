@@ -22,7 +22,7 @@ body {
 }
 
 #header{
-    margin-top: -40px;
+    margin-top: -70px;
 }
 
 /* ====================
@@ -30,11 +30,10 @@ body {
    ==================*/
 
 
-
-
-/* iPads (portrait and landscape) ----------- */
+/* iPads Pixel ratio: 1 (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 768px) {
     body { 
+
 	}
 	#button {
         font-family: 'FuturaSB-Book';
@@ -62,7 +61,7 @@ body {
     
 	#content {
         font-family:'FuturaSB-Book';
-        font-size:1.8em;
+        font-size:1.0em;
         width:80%;
         color:white;
         margin-left:auto;
@@ -79,10 +78,7 @@ body {
     }
     
 }
-
-
-
-
+/* iPads Retina:(portrait and landscape) ----------- */
 
 @media only screen  and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation : landscape) and (-webkit-min-device-pixel-ratio: 2){
     #player {
@@ -116,6 +112,8 @@ body {
 	    top: -170px;
 	}
 }
+
+/* ????? */
 
 @media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
     #player {
@@ -184,7 +182,7 @@ body {
         margin-left: 12%;
         color: #fff;
         font-family: 'FuturaSB-Book';
-        font-size: 120%;
+        font-size: 1.0em;
         width: 80%;
     }    
     
@@ -200,9 +198,6 @@ body {
     }
         
 }
-
-
-
 
 /* Smartphones (portrait) ----------- */
 @media only screen and (max-width : 320px) {
@@ -223,9 +218,9 @@ body {
     }	
 	#content {
         font-family:'FuturaSB-Book';
-        font-size:1.4em;
-        width:90%;
+        font-size:1.2em;
         color:white;
+        width:90%;
         padding-top:20px;
         padding-bottom:20px;
         margin-left:auto;
@@ -245,10 +240,12 @@ body {
         max-width:100%;
         margin-bottom:20px;
         display: block;
+
     }
 
 	#header img{
 	    width:35%;
+
 	}
 
     

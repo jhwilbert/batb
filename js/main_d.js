@@ -12,6 +12,7 @@ var timeron = false;
 var noiseon = true;
 var DEBUG = true;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
+var defaultQuality = 'hd720'; // check qualities available
 
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -214,7 +215,7 @@ function onPlayerReady(event) {
     $("#player").css("opacity","1");
     
     // Cue playlist and play first video
-    player.cuePlaylist(videosDesktop,0,0,'hd720');
+    player.cuePlaylist(videosDesktop,0,0,defaultQuality);
     
     if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1 || $.browser.msie == true ) {
         player.playVideoAt(0); // fix for Chrome to start on first video
@@ -243,7 +244,7 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
             'wmode' : 'opaque',
             'modestbranding' : 1,
@@ -360,7 +361,7 @@ function onytplayerStateChange(newState) {
                 console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
                 console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             }
-            player.setPlaybackQuality('hd720');
+            player.setPlaybackQuality(defaultQuality);
             showNoise();  
             window.focus();
             keysEnabled = false; // disable ketys on static noise
