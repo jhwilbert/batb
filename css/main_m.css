@@ -42,18 +42,24 @@ body {
     body { 
 
 	}
-	#button {
-        font-family: 'FuturaSB-Book';
-        padding:35px;
-        width:30%;
-        font-size:1.4em;
-        text-shadow: 1px 1px #000000;
-        text-align:center;
-        background: #343231;
+	
+		#content {
+        font-family:'FuturaSB-Book';
+		  text-align: center;
+        width: 100%;
+        color:white;
+		  font-size: 1.9em;
         margin-left:auto;
         margin-right:auto;
-        margin-top:60px;
-        margin-bottom:60px;
+    }
+	
+	#button {
+        margin-left:auto;
+        margin-right:auto;
+		  font-size: 1.9em;
+        text-align:center;
+		  display: block;
+        font-family: 'FuturaSB-Bold';
     }
     #header {
         float:left;
@@ -66,14 +72,6 @@ body {
         width:20%;
 	}
     
-	#content {
-        font-family:'FuturaSB-Book';
-        font-size:1.0em;
-        width:80%;
-        color:white;
-        margin-left:auto;
-        margin-right:auto;
-    }
     #player {
         display:block;
     	width: 80%;
@@ -94,17 +92,28 @@ body {
     
     #container{
         width:100%;
-    }
+	  }
     
     #content{
-        height: 300px;
+        font-size:1.9em !important;
+		  display: block !important;
+		  padding-top: 30px;
     }
+	 
+	#button {
+	   margin-left:auto;
+        margin-right:auto;
+        text-align:center;
+        font-size:1.9em;
+        font-family: 'FuturaSB-Bold';
+	}
+	
     
     .video-container {
         position: relative;
         padding-bottom: 56.25%;
-        padding-top: 30px; height: 0; overflow: hidden;
-        height: 430px;
+        padding-top: 0px; height: 0; overflow: hidden;
+        height: 250px;
     }
 
     .video-container iframe,
@@ -114,10 +123,15 @@ body {
     }
     
     
-	#button {
-	    position: relative;
-	    top: -170px;
-	}
+	#content{
+        width: 65%;
+        margin-left:18%;
+        display: block;
+        color: #fff;
+        font-family: 'FuturaSB-Book';
+        font-size: 1.0em;
+        text-align:center;
+    }    
 }
 
 /* ????? */
@@ -130,9 +144,13 @@ body {
     .video-container {
         position: relative;
         padding-bottom: 56.25%;
-        padding-top: 30px; height: 0;
+        height: 0;
         width: 100%;
     }
+	 
+	 #content{
+	 	padding-top: 30px;
+	 }
     
     
     #header{
@@ -176,8 +194,7 @@ body {
     }
     
     #header img{
-        margin-top:-30px;
-        width: 120px;
+        width: 80px;
     }
     
     #content{
@@ -252,13 +269,12 @@ body {
         max-width:100%;
         margin-bottom:40px;
         display: block;
-        margin-top:-30px;
         margin-left:-10px;
 
     }
 
 	#header img{
-	    width:45%;
+	    width:35%;
 	}
 
     
