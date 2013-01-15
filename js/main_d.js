@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = true;
+var DEBUG = false;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 var defaultQuality = 'hd720'; // check qualities available
 
@@ -341,7 +341,7 @@ function onytplayerStateChange(newState) {
    switch (newState.data) {
         case 0:
             if(DEBUG) {
-                console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"End Playlist -----------------------------");
+                console.log("onytplayerStateChange() :: State",newState.data,"End Playlist");
             }
             //stopCheck();
             restartPlaylist();
@@ -349,7 +349,7 @@ function onytplayerStateChange(newState) {
             break;
         case 1:
             if(DEBUG) {
-                console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Playing ----------------------------------");
+                console.log("onytplayerStateChange() :: State",newState.data,"Playing");
                 console.log("Playing........",player.getPlaylistIndex());
             }
             
@@ -358,7 +358,7 @@ function onytplayerStateChange(newState) {
             break;
         case -1:
             if(DEBUG) {
-                console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Unstarted -------------------------------");
+                console.log("onytplayerStateChange() :: State",newState.data,"Unstarted");
                 console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             }
             player.setPlaybackQuality(defaultQuality);
@@ -368,13 +368,13 @@ function onytplayerStateChange(newState) {
             break;
         case 2:
             if(DEBUG) {
-                console.log("------------------------------- onytplayerStateChange() :: State",newState.data,"Paused ----------------------------------");            
+                console.log("onytplayerStateChange() :: State",newState.data,"Paused");            
             }
             window.focus();
             break;
         case 3:
             if(DEBUG) {
-                console.log("------------------------------- onytplayerStateChange() :: State",newState.data, "Buffering -------------------------------");
+                console.log("onytplayerStateChange() :: State",newState.data, "Buffering");
             }
             break;
    }

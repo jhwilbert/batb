@@ -15,8 +15,6 @@ function startApp() {
     $("#container").html('<div id="header"><img src="../imgs/logo.png"></div><div id="player"></div><div id="content">'+content_pre+'</div><div id="button"><a href="http://www.barbican.org.uk/duchamp/">here for more info</a></div>');
 
     // https://gist.github.com/4438876 // load custom poster frame
-    
-    console.debug("App started...");
     loadPlayer();
 }
 
@@ -36,14 +34,12 @@ function loadPlayer() {
  
 function onPlayerReady(event) {
      $("#player").css("display","block");
-     console.debug("Player ready!")
 }
 
 
 function onYouTubeIframeAPIReady() {
-    console.debug("onYouTubeIframeAPIReady()...");
     player = new YT.Player('player', {
-        videoId : videosMobile[0], 
+        videoId : videosMobile[0],
         playerVars: {  
             'autoplay' : 1,
             'controls' : 0,
