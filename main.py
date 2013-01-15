@@ -49,7 +49,7 @@ class Admin(webapp2.RequestHandler):
                 except TypeError:
                     return None 
                            
-        if user == 'disarm' and password == 'batb':
+        if user == 'dis4rm' and password == 'batb300':
             return user
         return user
         
@@ -168,6 +168,7 @@ class MainHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([('/', Redirect),
                                ('/r', Redirect),
+                               ('/main', MainHandler),
                                ('/admin', Admin),
                                ('/a/add', Add),
                                ('/a/remove', Remove),
