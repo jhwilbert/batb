@@ -231,7 +231,7 @@ body {
         width: 55%;
         margin-left:23%;
         margin-top:-15px;
-        margin-bottom:5px !important;
+        margin-bottom:0px !important;
     }
     
     #header{
@@ -239,7 +239,7 @@ body {
     }
     
     #header img{
-        width: 120px;
+        width: 90px;
     }
     
     #content{
