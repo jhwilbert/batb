@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = false;
+var DEBUG = true;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 var defaultQuality = 'hd720'; // check qualities available
 
@@ -217,10 +217,15 @@ function onPlayerReady(event) {
     // Cue playlist and play first video
     player.cuePlaylist(videosDesktop,0,0,defaultQuality);
     
-    if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1 || $.browser.msie == true ) {
-        player.playVideoAt(0); // fix for Chrome to start on first video
-    }
-    
+    //if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1 || $.browser.msie == true ) {
+    /*
+    setTimeout(function() {
+        console.debug("Called Playvideo")
+        player.playVideo(); // fix for Chrome to start on first video
+        
+    },100);
+    //}
+    */
     startCheck(); // start timer to check if it its really playing
 }
 
@@ -244,7 +249,7 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 0,
+            'controls': 1,
             'showinfo' : 0,
             'wmode' : 'opaque',
             'modestbranding' : 1,
@@ -255,7 +260,8 @@ function onYouTubeIframeAPIReady() {
             'rel' : 0
         },    
         width : '100%',
-        height : '100%'
+        height : '100%',
+        videoId : videosDesktop[0]
   });
 }
 
