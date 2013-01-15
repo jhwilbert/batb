@@ -5,6 +5,7 @@
 var player;
 var content_pre = "click above to watch the trailer and";
 var content_post = "Post page content.";
+var defaultQuality = 'hd720'
 /**
  * Start page defines the start of the application. It gets the videos from
  * the backend, creates the loader and starts the loader of the player.
@@ -34,6 +35,7 @@ function loadPlayer() {
  
 function onPlayerReady(event) {
      $("#player").css("display","block");
+     player.setPlaybackQuality(defaultQuality);
 }
 
 
@@ -64,7 +66,10 @@ function onytplayerStateChange(newState) {
    switch (newState.data) {
         case 0:
             //showPostPage();
-            window.focus();
             break;
+        case -1:
+             player.setPlaybackQuality(defaultQuality);
+             break;
+            
     }
 }

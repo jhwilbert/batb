@@ -12,7 +12,7 @@ var timeron = false;
 var noiseon = true;
 var DEBUG = true;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
-var defaultQuality = 'hd720'; // check qualities available
+var defaultQuality = 'large'; // check qualities available
 
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -38,6 +38,7 @@ function startApp() {
     });
     
     $(document).keypress(function (e){ 
+        console.debug(e);
         var key;
         if ( $.browser.msie ) {  // if IE it uses keyCode instead of charcode
             key = e.keyCode;
@@ -47,7 +48,6 @@ function startApp() {
         if(keysEnabled) {
             if(key == 32) {
                 player.nextVideo();
-                //videoInterrupted(player.getDuration(),player.getCurrentTime())
             }
         } else {
             if(DEBUG){
@@ -111,82 +111,6 @@ function noiseLoaded(noiseImage) {
 }
 
 /**
- * Detects the video when it's interrupted. And creates an object that stores 
- * The percent watched by the user, if the percent is lower than set in the bar
- * it will take the user to the last video.
- */
- 
-function videoInterrupted(duration,currentTime) {
-    if(duration != 0 && currentTime !=0) {
-        var percentPlayed = Math.round((currentTime/duration) * 100);
-        var videoIndex = player.getPlaylistIndex();
-        if(DEBUG) {
-            console.log("videoInterrupted() :: Duration:",duration,"CurrentTime:",currentTime,"PercentPlayed",percentPlayed + "%","video index",player.getPlaylistIndex());
-        }
-        storeStatus(videoIndex,percentPlayed)
-    } else {
-        if(DEBUG) {
-            console.log("videoInterrupted() :: Film hasn't started",duration,currentTime);
-        }
-    }
-}
-
-function storeStatus(videoIndex,percentPlayed) {
-    videoStatus[videoIndex] = percentPlayed;
-    if(DEBUG) {
-        console.log("storeStatus() ::", videoStatus);
-    }
-    if(videoIndex > 1 && videoIndex  < videosDesktop.length-1) {
-        checkWatched(); //check if we need Barbican cards to appear
-    } else if (videoIndex < 1) {
-        if(DEBUG) {
-            console.log("storeStatus() :: Still Gathering Data");
-        }
-    } else if (videoIndex == videosDesktop.length-1) {
-        if(DEBUG) {
-            console.log("storeStatus() :: Last Video No Storing")
-        }
-    }
-}
-
-function storeStatusPlayed() {
-    if(player.getPlaylistIndex() > 0) { 
-        var prevVideo = player.getPlaylistIndex()-1;
-        if(videoStatus[prevVideo] == undefined && player.getPlaylistIndex() != videosDesktop.length-1) { // Update the video object 100% if it hasn't been interrupted
-            if(DEBUG) {
-                console.log("storeStatusPlayed() :: Previous Played fully");
-            }
-            storeStatus(prevVideo,100);
-        }
-    }
-}
-
-function checkWatched() {
-    var percentWatched = Math.round(updateTotalPercent());
-    if ( percentWatched > threshold) {
-        if(DEBUG) {
-            console.log("checkWatched() :: Overall Percent Watched:", percentWatched,"All Good, let's keep playing videos");
-        }
-    } else {
-        if(DEBUG) {
-            console.log("checkWatched() :: Overall Percent Watched:", percentWatched," ** SKIPPED TO MUCH ** Play Barbican Card Next", videosDesktop.length-1);
-        }
-        player.playVideoAt(videosDesktop.length-1);
-        
-    }
-}
-
-function updateTotalPercent() {
-    var totalPercent = 0;
-    var numItems = 0;
-    $.each(videoStatus,function(index,content) {
-        totalPercent += content;
-        numItems++;
-    });
-    return totalPercent/numItems;
-}
-
-/**
  * This set of functions load the player and inject it into the DOM. Player
  * is loaded by loadPlayer() function. With the callback onPlayerReady(). On player
  * ready it positions and resizes the player to windowwith and waits 100ms to cue a playlist.
@@ -216,16 +140,6 @@ function onPlayerReady(event) {
     
     // Cue playlist and play first video
     player.cuePlaylist(videosDesktop,0,0,defaultQuality);
-    
-    //if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1 || $.browser.msie == true ) {
-    /*
-    setTimeout(function() {
-        console.debug("Called Playvideo")
-        player.playVideo(); // fix for Chrome to start on first video
-        
-    },100);
-    //}
-    */
     startCheck(); // start timer to check if it its really playing
 }
 
@@ -358,7 +272,6 @@ function onytplayerStateChange(newState) {
                 console.log("onytplayerStateChange() :: State",newState.data,"Playing");
                 console.log("Playing........",player.getPlaylistIndex());
             }
-            
             keysEnabled = true; // enable keys back
             window.focus();
             break;
