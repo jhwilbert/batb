@@ -166,9 +166,8 @@ class MainHandler(webapp2.RequestHandler):
         self.response.out.write(template.render(path, template_values))
         
 
-app = webapp2.WSGIApplication([('/', Redirect),
+app = webapp2.WSGIApplication([('/', MainHandler),
                                ('/r', Redirect),
-                               ('/main', MainHandler),
                                ('/admin', Admin),
                                ('/a/add', Add),
                                ('/a/remove', Remove),
