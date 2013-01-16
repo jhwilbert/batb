@@ -12,7 +12,7 @@ var timeron = false;
 var noiseon = true;
 var DEBUG = false;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
-var defaultQuality = 'large'; // check qualities available
+var defaultQuality = 'hd720'; // check qualities available
 
 /**
  * Start page defines the start of the application. It gets the videos from
