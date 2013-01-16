@@ -52,7 +52,7 @@ function onYouTubeIframeAPIReady() {
         width: "100%",
         events: {
             'onReady': onPlayerReady,
-            'onStateChange' : onytplayerStateChange,
+            'onStateChange' : onytplayerStateChange
         }
     });
 }

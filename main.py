@@ -22,6 +22,10 @@ import models
 from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 
+if os.environ.get('HTTP_HOST'): 
+  host_url = "http://" + os.environ['HTTP_HOST'] 
+else: 
+  host_url = "http://" + os.environ['SERVER_NAME']
 
 ###############################################################################################
 # ADMIN
@@ -158,6 +162,7 @@ class MainHandler(webapp2.RequestHandler):
         videos_mobile = models.MobileVideoEntity().all()
         
         template_values = {
+            'host_url'       : host_url,
             'videos_mobile'  : videos_mobile,
             'videos_desktop' : videos_desktop
         }

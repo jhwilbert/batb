@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = true;
+var DEBUG = false;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 var defaultQuality = 'large'; // check qualities available
 
@@ -163,7 +163,7 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
             'wmode' : 'opaque',
             'modestbranding' : 1,
