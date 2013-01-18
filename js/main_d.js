@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = false;
+var DEBUG = true;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 var defaultQuality = 'hd720'; // check qualities available
 
@@ -139,7 +139,7 @@ function onPlayerReady(event) {
     $("#player").css("opacity","1");
     
     // Cue playlist and play first video
-    player.cuePlaylist(videosDesktop,0,0,defaultQuality);
+    player.cuePlaylist(videosDesktop);
     startCheck(); // start timer to check if it its really playing
 }
 
@@ -163,7 +163,7 @@ function onYouTubeIframeAPIReady() {
         },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 0,
+            'controls': 1,
             'showinfo' : 0,
             'wmode' : 'opaque',
             'modestbranding' : 1,
@@ -280,7 +280,7 @@ function onytplayerStateChange(newState) {
                 console.log("onytplayerStateChange() :: State",newState.data,"Unstarted");
                 console.log("onytplayerStateChange(): Availible:", player.getAvailableQualityLevels(),"Decided:", player.getPlaybackQuality());
             }
-            player.setPlaybackQuality(defaultQuality);
+            //player.setPlaybackQuality(defaultQuality);
             showNoise();  
             window.focus();
             keysEnabled = false; // disable ketys on static noise
