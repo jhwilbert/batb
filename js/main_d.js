@@ -10,7 +10,7 @@ var videoStatus = {};
 var timer;  
 var timeron = false;
 var noiseon = true;
-var DEBUG = true;
+var DEBUG = false;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
 var defaultQuality = 'hd720'; // check qualities available
 
@@ -38,7 +38,6 @@ function startApp() {
     });
     
     $(document).keypress(function (e){ 
-        console.debug(e);
         var key;
         if ( $.browser.msie ) {  // if IE it uses keyCode instead of charcode
             key = e.keyCode;
@@ -83,6 +82,7 @@ function noiseLoaded(noiseImage) {
     // Add Noise & Link
     $('#container').append('<div id="video-container"></div>');
     $("#container").append('<div id="link-container">'+copyLink+'</div>');
+    $("#container").append('<div id="transparent"></div>');
     $('#video-container').append(noiseImage);
     
     positionNoise();
@@ -135,11 +135,10 @@ function onPlayerReady(event) {
     if(DEBUG) {
         console.log("onPlayerReady(e) :: Calling noise and cueing playlist...",videosDesktop);
     }
-
-    $("#player").css("opacity","1");
     
     // Cue playlist and play first video
     player.cuePlaylist(videosDesktop);
+    $("#player").css("opacity","1");
     startCheck(); // start timer to check if it its really playing
 }
 
@@ -156,14 +155,9 @@ function onYouTubeIframeAPIReady() {
     }
     
     player = new YT.Player('player', {  
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange' : onytplayerStateChange,
-            'onError' : onPlayerError
-        },  
         playerVars: {
             'autoplay' : 1,
-            'controls': 1,
+            'controls': 0,
             'showinfo' : 0,
             'wmode' : 'opaque',
             'modestbranding' : 1,
@@ -173,6 +167,10 @@ function onYouTubeIframeAPIReady() {
             'origin': window.location.host,
             'rel' : 0
         },    
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange' : onytplayerStateChange
+        },
         width : '100%',
         height : '100%',
         videoId : videosDesktop[0]

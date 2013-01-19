@@ -16,6 +16,10 @@ body {
     background:black;
 }
 
+#container {
+    height:100%;
+    width:100%;
+}
 
 #link-container {
     font-size:16px;
@@ -27,7 +31,7 @@ body {
     color:white;
     font-weight:bold;
     cursor:pointer;
-    z-index:999;
+    z-index:10000;
 }
 
 #link-container:hover {
@@ -65,13 +69,24 @@ body {
 }
 
 #video-container {
+/*    visibility:hidden;*/
     position:absolute;
-    opacity:0;
     top:0;
     left:0;
-    z-index:1000;
+    z-index:998;
 }
 
+#transparent {
+    position:absolute;
+    top:0;
+    left:0;
+    opacity:0;
+    width:100%;
+    height:100%;
+    background:red;
+    z-index:1000;
+    filter:alpha(opacity=0); /* For IE8 and earlier */
+}
 #player {
     position:absolute;
     top:0;

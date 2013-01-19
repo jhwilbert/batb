@@ -23,9 +23,9 @@
                        
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
         <link rel="stylesheet" href="css/normalize.min.css">
-        
-                   
+     
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script src="js/vendor/jquery-1.8.3.min.js"></script>   
     </head>
     
     <body> 
@@ -50,25 +50,24 @@
         <!-- Modernizr -->
         
         <script>
+        //var videosDesktop = ['1rYqvMK929I','Nf_UgfIMRPk','GeHoDQJnkUA','cDzqBxL6CeQ','FBoYxosfIS0','iP84GeJ9JLs','kbgSd7tNWVU','KB6i60xs03Q','KNZkX5NIr4Q'];
         var videosDesktop = [{% for video in videos_desktop %}{% if forloop.last %}'{{ video.url }}'{% else %}'{{ video.url }}',{% endif %}{% endfor %}];
         var videosMobile = [{% for video in videos_mobile %}{% if forloop.last %}'{{ video.url }}'{% else %}'{{ video.url }}',{% endif %}{% endfor %}];
 
         Modernizr.load({            
           // --- Minified ---//
-         
           /*
-          test: Modernizr.touch,
-          both: ["/js/vendor/jquery-1.8.3.min.js"],
-          yep : ['css/main_m.css','js/main_m.min.js'],
-          nope: ['css/main_d.css','js/main_d.min.js'],
-          */
-          
-          // --- Src ---// 
+          // --- Src ---//
           test: Modernizr.touch,
           both: ["/js/vendor/jquery-1.8.3.min.js"],
           yep : ['css/main_m.css','js/main_m.js'],
           nope: ['css/main_d.css','js/main_d.js'],
-
+          */
+          
+          test: Modernizr.touch,
+          yep : ['css/main_m.css','js/main_m.min.js'],
+          nope: ['css/main_d.css','js/vendor/BrowserDetect.js','js/vendor/swfobject.js','js/main_d_embed.js'],
+          
           complete : function () {
             startApp();
           }

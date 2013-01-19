@@ -154,7 +154,13 @@ class Reorder(webapp2.RequestHandler):
 class Redirect(webapp2.RequestHandler):
     def get(self):
         self.redirect("http://www.barbican.org.uk/duchamp")
-                
+
+class Alternative(webapp2.RequestHandler):
+    def get(self):
+        template_values = {}
+        path = os.path.join(os.path.dirname(__file__), 'alternative2.html')
+        self.response.out.write(template.render(path, template_values))
+                                
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         
