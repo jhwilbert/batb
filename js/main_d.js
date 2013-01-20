@@ -12,7 +12,9 @@ var timeron = false;
 var noiseon = true;
 var DEBUG = false;
 var copyLink = "CLICK HERE FOR MORE INFORMATION & TICKETS";
-var defaultQuality = 'hd720'; // check qualities available
+var playing;
+
+//var defaultQuality = 'hd720'; // check qualities available
 
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -38,6 +40,12 @@ function startApp() {
     });
     
     $(document).keypress(function (e){ 
+        var currVideo = player.getPlaylistIndex();
+        var totalVideos = videosDesktop.length-1;
+        if(DEBUG) {
+            console.log(e);
+        }
+        
         var key;
         if ( $.browser.msie ) {  // if IE it uses keyCode instead of charcode
             key = e.keyCode;
@@ -46,7 +54,11 @@ function startApp() {
         }
         if(keysEnabled) {
             if(key == 32) {
-                player.nextVideo();
+                if( currVideo == totalVideos) { // last video
+                    player.playVideoAt(1);
+                } else {
+                    player.nextVideo();
+                }
             }
         } else {
             if(DEBUG){
@@ -187,13 +199,13 @@ function onYouTubeIframeAPIReady() {
 function checkPlay() {
     
     if(DEBUG) {
-        console.log("checkPlay() :: CurrentTime:",player.getCurrentTime(),"Totaltime",player.getDuration());
+        console.log("checkPlay() :: CurrentVideo:",player.getPlaylistIndex(),"CurrentTime:",player.getCurrentTime(),"Totaltime",player.getDuration());
     }
     
-    if(player.getCurrentTime() > 0 && player.getCurrentTime() < player.getDuration() - 0.5) {
+    if(player.getCurrentTime() > 0.5 && player.getCurrentTime() < player.getDuration() -  1 && player.getPlayerState() == 1) { // duration values have to be the same
         hideNoise();
     }
-    if(player.getCurrentTime() != 0 && player.getCurrentTime() > player.getDuration() - 0.5) {
+    if(player.getCurrentTime() != 0.5 && player.getCurrentTime() > player.getDuration() - 1 ) { // duration values have to be the same
         showNoise();
     }
 }
@@ -201,10 +213,10 @@ function checkPlay() {
 function showNoise() {
     if(!noiseon) {
         if(DEBUG) {
-            console.log("hidenoise() :: Noise fadein...");
+            console.log("showNoise() :: Noise fadein...");
         }
-        $("#link-container").hide();
-        $("#video-container").fadeIn(); // fadeout noise
+        $("#link-container").css("visibility","hidden");
+        $("#video-container").fadeIn('fast'); // fadeout noise
         noiseon = true;
     }
 }
@@ -214,8 +226,8 @@ function hideNoise() {
         if(DEBUG) {
             console.log("hidenoise() :: Noise fadeout...");
         }
-        $("#link-container").show();
-        $("#video-container").fadeOut(); // fadeout noise
+        $("#link-container").css("visibility","visible");
+        $("#video-container").fadeOut('fast'); // fadeout noise
         noiseon = false;
     }
 }
@@ -225,7 +237,7 @@ function startCheck() {
         console.log("startCheck() :: Starting Timer");
     }
     if(!timeron) {
-        timer = setInterval('checkPlay()',300);
+        timer = setInterval('checkPlay()',500);
     }
     timeron = true;
 }

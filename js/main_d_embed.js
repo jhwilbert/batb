@@ -10,10 +10,12 @@ var origin = "http://" + window.location.host;
  
 function startApp() {
     $("#container").append('<div id="loading"><img src="imgs/loader.gif">LOADING</div>');
-    loadNoise();
+    
     if(DEBUG) {
         console.log("Origin:",origin);
     }
+    
+    loadNoise();
 }
 
 function loadNoise() {
