@@ -5,34 +5,59 @@
 
 var player,videoElement;
 var noiseon = true;
-var selectedVideo = 'ry8ORxwoqPo';
+var selectedVideo = 'o3arVWLbuMQ'; //'o3arVWLbuMQ'
 var timecodes = [];
+var t;
+var playerReady = false;
 
 /* Debug Settings */
 var debug = false;
-var controls = 1;
+var controls = 0;
+
+// video id: 'o3arVWLbuMQ' / tue 
 
 var chapters  = {
    'card1': '00:00',
    'card2' : '00:06',
-   'card3' : '00:24',
+   'card3' : '00:13',
    'card4' : '00:31',
-   'card5' : '00:38',
-   'card6' : '00:44',
-   'card7' : '01:06',
-   'card8' : '01:13',
-   'card9' : '01:44',
-   'card10' : '01:51',
-   'card11' : '02:16',
-   'card12' : '02:22',
+   'card5' : '00:52 ',
+   'card6' : '00:58',
+   'card7' : '01:04',
+   'card8' : '01:27',
+   'card9' : '01:33',
+   'card10' : '02:04',
+   'card11' : '02:11',
+   'card12' : '02:36',
    'card13' : '02:42',
-   'card14' : '02:47',
-   'card15' : '02:53',
-   'card16' : '03:31',
-   'card17' : '03:44',
-   'card18' : '03:51'
+   'card14' : '02:48',
+   'card15' : '02:54',
+   'card16' : '03:17',
+   'card17' : '03:24'
 }
-
+/*
+// video id: 'S7gT9nIGqPY' no cunningham
+var chapters  = {
+   'card1': '00:00',
+   'card2' : '00:06',
+   'card3' : '00:13',
+   'card4' : '00:31',
+   'card5' : '00:51',
+   'card6' : '00:58',
+   'card7' : '01:04',
+   'card8' : '01:27',
+   'card9' : '01:33',
+   'card10' : '02:04',
+   'card11' : '02:11',
+   'card12' : '02:36',
+   'card13' : '02:42',
+   'card14' : '02:48',
+   'card15' : '02:53',
+   'card16' : '03:22',
+   'card17' : '03:45',
+   'card18' : '03:52'
+}
+*/
 
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -45,13 +70,16 @@ function startApp() {
     }
     // Add loader
     $('#container').append('<div id="loader"><img src="imgs/loader.gif">LOADING</div>');
-
     // Add Events
     addEvents();
     
+    // Split Into Timecodes
     convertTimecodes();
+    
     //  Load Player
-    loadPlayer();    
+    //setTimeout(function() {
+        loadPlayer();    
+    //},200);
 }
 
 /**
@@ -64,7 +92,7 @@ function skipNext() {
                
     var currentTime = player.getCurrentTime();
     var seekTimecode = higherThan(currentTime,timecodes);
-    player.seekTo(seekTimecode,true);
+    player.seekTo(seekTimecode,true );
     
     if(debug) {
         console.log("skipNext() :: currentTime:",currentTime,"nextClip:",seekTimecode,"currentIndex");
@@ -125,6 +153,13 @@ function noiseLoaded(noiseImage) {
     $("#container").append('<div id="transparent"></div>');
     $('#video-container').append(noiseImage);
     
+    /* Link Handle */
+    $("#link-container").click(function() {
+        $(this).target = "_blank";
+        window.open("http://www.barbican.org.uk/duchamp/");
+        return false; 
+    });
+    
     positionNoise();
 
     $("#player").css("opacity","1");
@@ -160,22 +195,21 @@ function loadPlayer() {
     
 }
 
-function onPlayerReady(event) {
+function checkPlayer() {
     if(debug) {
-        console.log("onPlayerReady(e) :: Loading noise...");
+        console.log("checkPlayer() :: Player started:", playerReady)
     }
-    player.pauseVideo(); // pause to start loading
-    
-    setTimeout(function() {
-      loadNoiseVideo();  
-    },3000)
-    
+    if(playerReady == true) {
+        clearInterval(t);
+    } else {
+        document.location.reload(true);
+    }
 }
-
 function onYouTubeIframeAPIReady() {    
     if(debug) {
         console.log("onYouTubeIframeAPIReady() :: IframeAPIReady...");
     }
+    t = setInterval(checkPlayer,2000);
     
     player = new YT.Player('player', {  
         playerVars: {
@@ -201,6 +235,18 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
+function onPlayerReady(event) {
+    if(debug) {
+        console.log("onPlayerReady(e) :: Loading noise...");
+    }
+    playerReady = true;
+    
+    player.pauseVideo(); // pause to start loading
+    setTimeout(function() {
+        loadNoiseVideo();  
+    },1000)
+}
+
 function onPlayerStateChange(newState) {   
     switch (newState.data) {
          case 0:
@@ -209,26 +255,27 @@ function onPlayerStateChange(newState) {
              }
              showNoise();
              player.playVideoAt(0);
-             //window.focus();
+             window.focus();
              break;
          case 1:
              if(debug) {
                  console.log("onPlayerStateChange() ::",newState.data,"Playing");
              }
              hideNoise();    
-             //window.focus();
+             window.focus();
              break;
          case -1:
              if(debug) {
                  console.log("onPlayerStateChange() ::",newState.data,"Unstarted");
+                 
              }
-             //window.focus();
+             window.focus();
              break;
          case 2:
              if(debug) {
                  console.log("onPlayerStateChange() ::",newState.data,"Paused");            
              }
-             //window.focus();
+             window.focus();
              break;
          case 3:
              if(debug) {
@@ -262,7 +309,7 @@ function hideNoise() {
         
         setTimeout(function() {
             $("#video-container").fadeOut('fast'); // fadeout noise
-        },500);
+        },200);
         
         noiseon = false;
     }
@@ -342,13 +389,6 @@ function positionNoise() {
 }
  
 function addEvents() {
-    
-    /* Link Handle */
-    $("#link-container").click(function() {
-        $(this).target = "_blank";
-        window.open("/r");
-        return false; 
-    });
     
     /* Focus */
     $(window).focus(function() {
