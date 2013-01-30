@@ -13,7 +13,7 @@ var c;
 var playerReady = false;
 
 /* Debug Settings */
-var debug = false;
+var debug = true;
 var controls = 0;
 
 // video id: 'o3arVWLbuMQ' / tue 
@@ -298,25 +298,29 @@ function showNoise() {
         }
         $("#link-container").css("visibility","hidden");
         $("#video-container").fadeIn('fast'); // fadeout noise
+
         noiseon = true;
+
+        /* Fix to Safari bug of not catching the player state event */
+        c = setInterval(function() {
+            if(debug) {
+                console.log("state",player.getPlayerState());
+            }
+            if(player.getPlayerState() == 1) {
+                if(debug) {
+                    console.log("Playing - hidenoise");
+                }
+                hideNoise();
+            }
+
+        },200);
     }
     
-    /* Fix to Safari bug of not catching the player state event */
-    c = setInterval(function() {
-        if(debug) {
-            console.log("state",player.getPlayerState());
-        }
-        if(player.getPlayerState() == 1) {
-            if(debug) {
-                console.log("Playing - hidenoise");
-            }
-            hideNoise();
-        }
-        
-    },100);
+
 }
 
 function hideNoise() {
+    
     clearInterval(c);
     
     if(noiseon) {
