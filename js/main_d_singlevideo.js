@@ -5,9 +5,11 @@
 
 var player,videoElement;
 var noiseon = true;
-var selectedVideo = 'o3arVWLbuMQ'; //'o3arVWLbuMQ'
+var selectedVideo = 'S7gT9nIGqPY'; //'o3arVWLbuMQ'
 var timecodes = [];
 var t;
+var c;
+
 var playerReady = false;
 
 /* Debug Settings */
@@ -15,7 +17,7 @@ var debug = false;
 var controls = 0;
 
 // video id: 'o3arVWLbuMQ' / tue 
-
+/*
 var chapters  = {
    'card1': '00:00',
    'card2' : '00:06',
@@ -35,7 +37,7 @@ var chapters  = {
    'card16' : '03:17',
    'card17' : '03:24'
 }
-/*
+*/
 // video id: 'S7gT9nIGqPY' no cunningham
 var chapters  = {
    'card1': '00:00',
@@ -57,7 +59,7 @@ var chapters  = {
    'card17' : '03:45',
    'card18' : '03:52'
 }
-*/
+
 
 /**
  * Start page defines the start of the application. It gets the videos from
@@ -92,7 +94,7 @@ function skipNext() {
                
     var currentTime = player.getCurrentTime();
     var seekTimecode = higherThan(currentTime,timecodes);
-    player.seekTo(seekTimecode,true );
+    player.seekTo(seekTimecode,true);
     
     if(debug) {
         console.log("skipNext() :: currentTime:",currentTime,"nextClip:",seekTimecode,"currentIndex");
@@ -209,7 +211,7 @@ function onYouTubeIframeAPIReady() {
     if(debug) {
         console.log("onYouTubeIframeAPIReady() :: IframeAPIReady...");
     }
-    t = setInterval(checkPlayer,2000);
+    //t = setInterval(checkPlayer,2000);
     
     player = new YT.Player('player', {  
         playerVars: {
@@ -288,7 +290,7 @@ function onPlayerStateChange(newState) {
 /**
  * Noise Control. Switches the noise in and out and hides the link
  */
- 
+
 function showNoise() {
     if(!noiseon) {
         if(debug) {
@@ -298,9 +300,25 @@ function showNoise() {
         $("#video-container").fadeIn('fast'); // fadeout noise
         noiseon = true;
     }
+    
+    /* Fix to Safari bug of not catching the player state event */
+    c = setInterval(function() {
+        if(debug) {
+            console.log("state",player.getPlayerState());
+        }
+        if(player.getPlayerState() == 1) {
+            if(debug) {
+                console.log("Playing - hidenoise");
+            }
+            hideNoise();
+        }
+        
+    },100);
 }
 
 function hideNoise() {
+    clearInterval(c);
+    
     if(noiseon) {
         if(debug) {
             console.log("hidenoise() :: Noise fadeout...");
