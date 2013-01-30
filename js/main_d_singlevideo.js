@@ -313,7 +313,7 @@ function showNoise() {
                 hideNoise();
             }
 
-        },200);
+        },1000);
     }
     
 
@@ -331,7 +331,7 @@ function hideNoise() {
         
         setTimeout(function() {
             $("#video-container").fadeOut('fast'); // fadeout noise
-        },200);
+        },300);
         
         noiseon = false;
     }
