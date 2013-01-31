@@ -5,7 +5,7 @@
 
 var player,videoElement;
 var noiseon = true;
-var selectedVideo = 'S7gT9nIGqPY'; //'o3arVWLbuMQ'
+var selectedVideo = 'S7gT9nIGqPY';
 var timecodes = [];
 var t;
 var c;
@@ -16,29 +16,6 @@ var playerReady = false;
 var debug = false;
 var controls = 0;
 
-// video id: 'o3arVWLbuMQ' / tue 
-/*
-var chapters  = {
-   'card1': '00:00',
-   'card2' : '00:06',
-   'card3' : '00:13',
-   'card4' : '00:31',
-   'card5' : '00:52 ',
-   'card6' : '00:58',
-   'card7' : '01:04',
-   'card8' : '01:27',
-   'card9' : '01:33',
-   'card10' : '02:04',
-   'card11' : '02:11',
-   'card12' : '02:36',
-   'card13' : '02:42',
-   'card14' : '02:48',
-   'card15' : '02:54',
-   'card16' : '03:17',
-   'card17' : '03:24'
-}
-*/
-// video id: 'S7gT9nIGqPY' no cunningham
 var chapters  = {
    'card1': '00:00',
    'card2' : '00:06',
