@@ -13,7 +13,7 @@ var c;
 var playerReady = false;
 
 /* Debug Settings */
-var debug = true;
+var debug = false;
 var controls = 0;
 
 // video id: 'o3arVWLbuMQ' / tue 
@@ -313,7 +313,7 @@ function showNoise() {
                 hideNoise();
             }
 
-        },1000);
+        },2000);
     }
     
 
